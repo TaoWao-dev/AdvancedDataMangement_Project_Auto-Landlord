@@ -22,11 +22,29 @@
     return;
   }
 
-  let sr;
+  let daten, sr;
   try {
-    sr = JSON.parse(el.textContent).props.pageProps.searchResult;
+    daten = JSON.parse(el.textContent);
+    sr = daten.props.pageProps.searchResult;
   } catch (e) {
     console.error('[wh] JSON nicht lesbar:', e.message);
+    return;
+  }
+
+  // Ohne searchResult ist es keine Suchergebnisseite (Startseite, Detailseite,
+  // Cookie-Abfrage) - oder willhaben hat das Feld umbenannt. Beides soll mit
+  // Namen gemeldet werden, nicht als TypeError ein paar Zeilen weiter unten.
+  if (!sr) {
+    const keys = Object.keys((daten.props && daten.props.pageProps) || {});
+    console.error('%c[wh] ABGEBROCHEN - keine Suchergebnisseite',
+      'font-weight:bold;color:#A83E27');
+    console.error('   . URL: ' + location.href);
+    console.error('   . Next.js-Seite: ' + daten.page);
+    console.error('   . pageProps enthaelt: ' + (keys.join(', ') || '(nichts)'));
+    console.info('%cDie Bezirkssuche direkt aufrufen (URL eintippen, Enter), z. B.\n'
+      + 'https://www.willhaben.at/iad/immobilien/mietwohnungen/wien/wien-1020-leopoldstadt?rows=90\n'
+      + 'Steht dort trotzdem kein searchResult, hat sich die Seitenstruktur geaendert.',
+      'color:#2A6058');
     return;
   }
 
@@ -76,9 +94,13 @@
   }
 
   // Dateiname aus den Daten selbst, nicht aus dem Gedaechtnis
+  // JJJJ-MM-TTTHHMM: 15 Zeichen, sonst fehlen die Minuten und Seite 1 und 2
+  // derselben Stunde bekommen denselben Namen.
   const ts = (sr.searchDate || new Date().toISOString())
-    .replace(/[+Z].*$/, '').replace(/:/g, '').slice(0, 13);
-  const name = 'wh_' + haeufigste + '_mietwohnungen_' + ts + '.json';
+    .replace(/[+Z].*$/, '').replace(/:/g, '').slice(0, 15);
+  const seite = new URLSearchParams(location.search).get('page');
+  const name = 'wh_' + haeufigste + '_mietwohnungen_' + ts
+    + (seite && seite !== '1' ? '_s' + seite : '') + '.json';
 
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([el.textContent], { type: 'application/json' }));
