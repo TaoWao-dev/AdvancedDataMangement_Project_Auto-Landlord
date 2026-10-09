@@ -1,2 +1,2 @@
-plz;bezirk_name;inserate;davon_zensiert;anteil_zensiert;mittel_tage_abgeschlossen;max_tage_beobachtet;befund
-1020;Leopoldstadt;205;178;0.87;0.0;14;mit Vorsicht: ueberwiegend zensiert
+plz;bezirk_name;inserate;davon_zensiert;anteil_zensiert;abgaenge_ungemessen;mittel_tage_abgeschlossen;max_tage_beobachtet;anteil_aeltere_noch_online;befund
+1020;Leopoldstadt;205;178;0.87;27;;14;0.7;Dauer noch nicht messbar, nur Anteil noch online

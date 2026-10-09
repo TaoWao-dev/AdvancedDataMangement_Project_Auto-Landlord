@@ -412,6 +412,22 @@ def test_kein_inserat_doppelt_im_angebot_eines_abrufs(tmp_path=None):
     assert doppelt == 0
 
 
+def test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage(tmp_path=None):
+    """Ein Inserat, das nur am 25.09. zu sehen war, ist irgendwann in den
+    14 Tagen danach verschwunden. Seine Dauer ist unbekannt, nicht 0 - im
+    Mittelwert hatte es aber als 0 gezaehlt."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_abgaenge.sqlite"
+    con = _baue(ziel)
+    r = con.execute((C.SQL / "kennzahl_inseratsdauer.sql")
+                    .read_text(encoding="utf-8")).fetchone()
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert r["abgaenge_ungemessen"] == 27, dict(r)
+    assert r["mittel_tage_abgeschlossen"] is None, dict(r)
+    # 63 von 90 Inseraten des 25.09. stehen am 09.10. noch online
+    assert r["anteil_aeltere_noch_online"] == 0.7, dict(r)
+
+
 def test_datenbankname_kommt_aus_der_konfiguration():
     """Die Vorgabe: der Datenbankname steht in src/config.py (PROJEKT).
     Zweimal dieselbe Zeichenkette zu pflegen ist eine Fehlerquelle."""
