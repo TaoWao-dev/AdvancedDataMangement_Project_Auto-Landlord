@@ -54,6 +54,17 @@ def test_abrufzeit_kommt_vom_server_nicht_vom_parser():
     assert all(i.abruf_ts == s.abruf_ts for i in s.inserate)
 
 
+def test_abrufzeit_ist_fuer_sqlite_lesbar():
+    """willhaben liefert '+0200' ohne Doppelpunkt. SQLite liest das nicht,
+    julianday() gibt NULL - und jede Inseratsdauer waere still leer gewesen.
+    Gefunden mit dem zweiten Abruf am 09.10."""
+    s = P.parse(ECHT)
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}",
+                        s.abruf_ts), s.abruf_ts
+    con = sqlite3.connect(":memory:")
+    assert con.execute("SELECT julianday(?)", (s.abruf_ts,)).fetchone()[0]
+
+
 def test_pflichtfelder_vollstaendig():
     s = P.parse(ECHT)
     assert all(i.ad_id and i.plz and i.miete_eur for i in s.inserate)
@@ -324,6 +335,19 @@ def test_fehlende_bezirke_erscheinen_als_luecke_nicht_als_annahme(tmp_path=None)
 
 
 # ------------------------------------------------- Vorgaben der Lehrveranstaltung
+def test_inseratsdauer_wird_gemessen_sobald_zwei_abrufe_da_sind(tmp_path=None):
+    """Ein Inserat, das am 25.09. und am 09.10. online war, hat eine Dauer von
+    mindestens 14 Tagen. Vor der Korrektur stand dort NULL."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_dauer.sqlite"
+    con = _baue(ziel)
+    tage = con.execute("SELECT dauer_tage FROM v_inseratsdauer"
+                       " WHERE beobachtungen > 1").fetchall()
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert tage, "kein Inserat in zwei Abrufen - Testdaten fehlen"
+    assert all(t[0] == 14 for t in tage), sorted({t[0] for t in tage})
+
+
 def test_datenbankname_kommt_aus_der_konfiguration():
     """Die Vorgabe: der Datenbankname steht in src/config.py (PROJEKT).
     Zweimal dieselbe Zeichenkette zu pflegen ist eine Fehlerquelle."""

@@ -202,6 +202,10 @@ def parse(pfad: Path) -> Schnappschuss:
         raise ValueError(f"unerwartete JSON-Struktur, fehlend: {e}") from e
 
     abruf = sr.get("searchDate") or datetime.now(timezone.utc).isoformat()
+    # willhaben schreibt den Versatz ohne Doppelpunkt ('+0200'). SQLite liest
+    # nur '+02:00'; sonst liefert julianday() NULL, und jede Dauer zwischen zwei
+    # Abrufen waere still leer. Ziffern und Zeitpunkt bleiben unveraendert.
+    abruf = re.sub(r"([+-]\d{2})(\d{2})$", r"\1:\2", abruf)
     ads = sr.get("advertSummaryList", {}).get("advertSummary", []) or []
 
     inserate = []
