@@ -48,7 +48,8 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E31](#e31) | 09.10. | Studierender als Autor, Claude als Co-Autor | Claude bleibt Autor (E24) | Wunsch des Studierenden; wer was beigetragen hat, steht weiterhin hier | `Git-Historie, CLAUDE.md` |
 | [E32](#e32) | 09.10. | Seiten eines Tages sind ein Abruf | jede Seite als eigener Abruf; Seiten beim Einlesen zu einer Datei zusammenfuegen | sonst galten alle Inserate von Seite 1 als verschwunden; Zusammenfuegen haette die Herkunft je Datei verwischt | `src/sql/views.sql (v_abruf), src/clean.py, Commit 2d853b0` |
 | [E33](#e33) | 09.10. | WG-Zimmer aus dem Angebot, sichtbar mit Grund | behalten; schon beim Einlesen verwerfen | Zimmerpreis auf Wohnungsflaeche ist kein Quadratmeterpreis; Verwerfen beim Einlesen waere unsichtbar | `src/config.py, objekttyp_ausschluss, Commit f6dd973` |
-| [E34](#e34) | 09.10. | **offen:** Gemeindewohnungen im Angebot | behalten; per Schlagwort im Titel ausschliessen; per Prompt klassifizieren | Entscheidung des Studierenden, siehe Eintrag | `-` |
+| [E34](#e34) | 09.10. | Gemeindewohnungen per Prompt klassifizieren | behalten; per Schlagwort im Titel ausschliessen | Entscheidung des Studierenden; liefert die Klassifikationsreferenz, die E28 offenlaesst | `E37, evals/references/ (folgt)` |
+| [E37](#e37) | 09.10. | Referenz markiert der Studierende selbst; Modell-Labeling nur als Testfall | Modellmarkierung als Referenz uebernehmen | ein Modell als Massstab fuer ein Modell misst die eigene Formulierung (E02, E28) | `evals/references/ (folgt)` |
 | [E35](#e35) | 09.10. | view-source als empfohlener Beschaffungsweg | gerendertes HTML parsen; nur snapshot.js | view-source holt die Seite immer frisch; das gerenderte HTML traegt Preise nur in CSS-Klassen | `02_schritt1_datenzugriff.md, docs/betrieb.md` |
 | [E36](#e36) | 09.10. | Ungemessene Abgaenge nicht als null Tage; Anteil noch online als Kennzahl | Mittelwert mit 0 fuer Einmal-Gesehene; nur Mittelwert der Wiedergesehenen | eine unbekannte Dauer ist nicht null; mit zwei Abrufen ist der Anteil die einzige ehrliche Aussage | `src/sql/kennzahl_inseratsdauer.sql, Commit 8e7565a` |
 
@@ -1055,8 +1056,8 @@ dieselbe Liste — mit eigenem Grund.
 ---
 
 ## E34 {#e34}
-### Offen: Gemeindewohnungen im Angebot
-**Datum:** 09.10.2026 · **Status: offen, Entscheidung des Studierenden**
+### Gemeindewohnungen im Angebot: per Prompt klassifizieren
+**Datum:** 09.10.2026 · **Status: entschieden, Variante 3**
 
 **Situation.** Am 09.10. standen mehrere Gemeindewohnungen im Angebot:
 Direktvergaben von Wiener Wohnen und eine Weitergabe „mit Wohnticket", alle
@@ -1073,8 +1074,9 @@ verwirft die Allowlist (E11), weil Freitexte Namen tragen können.
 3. Titel per Prompt klassifizieren lassen und gegen händisch markierte Fälle
    prüfen — eine Klassifikationsaufgabe mit Referenzantworten.
 
-**Entscheidung.** Noch keine. Heute gilt (1): Im Zielsegment 80–100 m² liegt
-nur ein Inserat unter 13 €/m², der Median ist davon kaum berührt.
+**Entscheidung.** Variante 3, auf Wunsch des Studierenden. Bis die Klassifikation
+läuft, gilt (1): Im Zielsegment 80–100 m² liegt nur ein Inserat unter 13 €/m²,
+der Median ist davon kaum berührt. Die Referenz entsteht nach E37.
 
 **Was die Entscheidung abhängig macht.** (2) ist schnell und prüfbar, aber
 ein Schlagwort, das fehlt, lässt den Fall durch. (3) wäre die erste echte
@@ -1143,4 +1145,52 @@ Wochen. Für die Leerstandsannahme ist das eine Untergrenze, kein Schätzwert.
 **Revisionspunkt.** `test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage`.
 Ab dem dritten Abruf muss `mittel_tage_abgeschlossen` gefüllt sein, sonst
 fehlt der Abruf oder die Abfrage ist falsch.
+
+---
+
+## E37 {#e37}
+### Die Referenz zur Titelklassifikation markiert der Studierende selbst
+**Datum:** 09.10.2026
+
+**Situation.** Für E34 (Variante 3) braucht die Klassifikation eine
+Referenzantwort, die vor dem Modell existiert. Die erste ausgefüllte Markierliste
+(178 Titel) stammte, wie sich auf Nachfrage zeigte, von einem Sprachmodell. Sie
+war formal einwandfrei: ad_id und Titel stimmten mit der Vorlage überein, die
+Regeln waren nachvollziehbar.
+
+**Befunde an dieser Liste.**
+- Das Label „unklar" beruhte auf dem Preis (Privatanbieter unter 15 €/m²),
+  nicht auf dem Titel. Ein Modell, das nur den Titel sieht, kann es nicht
+  treffen.
+- Nur 3 von 178 Titeln waren „ja", alle mit ausdrücklichem Stichwort
+  (Gemeindebau, Wiener Wohnen, Gemeindewohnung). Eine Stichwortsuche findet
+  sie alle; „immer nein" erreicht 98 % Trefferquote.
+- Die Spalte „Personenname" war auf Projekt- und Firmennamen ausgeweitet,
+  Blueground und Marina Tower blieben außen vor — uneinheitlich.
+
+**Alternativen.**
+1. Die Modellmarkierung als Referenz übernehmen, mit Vermerk.
+2. Der Studierende markiert selbst, auf einer neuen Liste ohne Preise und
+   ohne Vorbefüllung, in anderer Reihenfolge.
+
+**Entscheidung.** Variante 2. Die Modellmarkierung bleibt außerhalb des
+Repositories und dient höchstens als Testfall für den Ablauf der Auswertung —
+nie als Maßstab für die Qualität eines Modells.
+
+**Begründung.** Eine Referenz aus einer Modellmarkierung misst, wie sehr zwei
+Modelle sich ähneln, nicht ob eines recht hat. Das ist derselbe Fehler wie in
+E02 und E28; er ist hier bei der Prüfung aufgefallen, bevor er im Repository
+stand. Die neue Liste zeigt nur den Titel, weil ein Modell später auch nur den
+Titel sieht. Als zweite Spalte steht „möbliert / Kurzzeit" (optional): sie hat
+deutlich mehr Treffer und ist sprachlich unschärfer — Blueground allein stellt
+18 der 178 Inserate. Eine dritte Spalte „Person im Titel" bestimmt, welche
+Titel ins Repository dürfen (Regel 1 in `CLAUDE.md`).
+
+**Offen.** Wie „unklar" gewertet wird: Vorschlag ist, diese Fälle aus der
+Trefferquote zu nehmen und getrennt auszuweisen.
+
+**Revisionspunkt.** Stimmt die Markierung des Studierenden in mehr als einem
+Fall nicht mit dem Titel überein, den ein zweiter Mensch lesen würde, ist die
+Regel zu unscharf. Eine zweite Person für eine Stichprobe würde das messbar
+machen.
 
