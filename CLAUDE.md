@@ -41,7 +41,7 @@ der Prioritäten: eine belegte Unsicherheit ist wertvoller als eine glatte Zahl.
 
 ```bash
 python3 -m src.run                  # die ganze Pipeline: 4 Schritte, 3 Gates
-python3 tests/test_pipeline.py      # 32 Tests (pytest-kompatibel, läuft auch ohne)
+python3 tests/test_pipeline.py      # 40 Tests (pytest-kompatibel, läuft auch ohne)
 python3 tests/test_modell.py        # 26 Tests
 ```
 

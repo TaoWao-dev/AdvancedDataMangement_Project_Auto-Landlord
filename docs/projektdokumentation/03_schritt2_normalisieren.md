@@ -10,13 +10,14 @@ reproduzierbar`).
 
 ## Die Zahlen aus dem Lauf
 
-Wörtlich aus der Ausgabe von `python3 -m src.run`, Lauf vom 9.10.2026:
+Wörtlich aus der Ausgabe von `python3 -m src.run`, Lauf vom 9.10.2026 mit
+beiden Abrufen (25.09. und 09.10.):
 
 ```
-extract: 1 Datei(en) aus 1 Rohordner(n) -> data/interim/
-         willhaben: 1
-clean willhaben: 1 Schnappschuss/e aufgenommen, 0 abgelehnt, 90 Inserate;
-                 1 ohne Flaeche, 3 reserviert, 1 Teilseite(n);
+extract: 3 Datei(en) aus 2 Rohordner(n) -> data/interim/
+         willhaben: 3
+clean willhaben: 3 Schnappschuss/e aufgenommen, 0 abgelehnt, 268 Inserate;
+                 1 ohne Flaeche, 14 reserviert, 1 unvollstaendige(r) Abruf(e);
                  1 Feld(er) als PII verworfen (seo_url)
 clean tariflohnindex: keine Datei vorhanden - uebersprungen
 clean vpi: keine Datei vorhanden - uebersprungen
@@ -24,20 +25,27 @@ clean vpi: keine Datei vorhanden - uebersprungen
 
 | Quelle | gelesen | aufgenommen | abgelehnt | geändert | fehlend | PII-Felder verworfen |
 |---|---:|---:|---:|---:|---:|---:|
-| willhaben | 90 Inserate | 90 | 0 | 0 Werte überschrieben | 1 ohne Fläche | 13 Feldnamen, davon 1 im Parser belegt (`seo_url`) |
+| willhaben | 268 Beobachtungen aus 3 Dateien | 268 | 0 | Zeitstempel-Versatz aller 3 Dateien (`+0200` → `+02:00`), sonst kein Wert | 1 ohne Fläche | 13 Feldnamen, davon 1 im Parser belegt (`seo_url`) |
 | Tariflohnindex | — | — | — | — | **ganze Quelle** | — |
 | VPI | — | — | — | — | **ganze Quelle** | — |
 
-Zur Spalte „geändert": in dieser Quelle wird **kein** Wert korrigiert. Zahlen
-werden umgewandelt (Text → Zahl), aber nichts wird geglättet, ersetzt oder
-geschätzt. Ein fehlender Wert bleibt `NULL` und zählt in der Spalte „fehlend".
-Die eine Wohnung ohne Flächenangabe hat deshalb auch keinen €/m²-Wert, statt
-eines aus dem Durchschnitt gerechneten.
+Zur Spalte „geändert": korrigiert wird **ein** Format, kein Wert. willhaben
+schreibt den Zeitzonenversatz ohne Doppelpunkt; SQLite liest das nicht, und
+jede Inseratsdauer war deshalb still leer (Korrektur `c679e95`, gefunden erst
+mit dem zweiten Abruf). Zahlen werden umgewandelt (Text → Zahl), aber nichts
+wird geglättet, ersetzt oder geschätzt. Ein fehlender Wert bleibt `NULL`.
 
-**Keine Duplikate innerhalb der Quelle:** 90 Inserate, 90 verschiedene
-`ad_id`. Zwischen Schnappschüssen sind Wiederholungen dagegen gewollt — die
-Faktentabelle ist append-only (Entscheidungslog E13), weil genau daraus
-Preisänderung und Inseratsdauer messbar werden.
+**Duplikate:** innerhalb eines Abrufs keine — 90 verschiedene `ad_id` am
+25.09., 178 am 09.10., Seite 1 und 2 ohne Überschneidung. Über die Abrufe
+hinweg sind Wiederholungen gewollt: 268 Beobachtungen von 205 Inseraten, 63
+davon an beiden Tagen. Die Faktentabelle ist append-only (E13), weil genau
+daraus Preisänderung und Inseratsdauer messbar werden. Sollte ein Inserat
+doch auf zwei Seiten desselben Abrufs stehen, zählt `v_angebot` es einmal
+(E32).
+
+**Ausgeschlossen:** 2 Beobachtungen vom Typ `Zimmer/WG` (E33). Sie bleiben in
+der Faktentabelle und fehlen nur im Angebot; `integrate` meldet die Zahl bei
+jedem Lauf.
 
 ## Qualitätsbericht, sechs Fragen je Quelle
 
@@ -51,6 +59,17 @@ Preisänderung und Inseratsdauer messbar werden.
 | **Aktuell?** | Abruf 25.09.2026, 15:55 — Zeitstempel aus der Serverantwort (`searchDate`), nicht von der Uhr des Rechners. Zum Abgabetag ist der Stand **14 Tage alt**. | Für ein Inseratsportal ist das grenzwertig: Angebote wechseln wöchentlich. Jede Kennzahl trägt `abruf_datum` in der Zeile. Vor der Entscheidungsvorlage gehört ein frischer Schnappschuss her. |
 | **Wem gehört sie?** | willhaben internet service GmbH & Co KG. Keine offene API, `robots.txt` untersagt automatisierten Zugriff. | Manuelle Beschaffung durch einen Menschen, automatisierte Verarbeitung danach (E06). Die `robots.txt` ist als `docs/willhaben_robots_2026-09-25.txt` archiviert. |
 | **Woher kommt sie?** | `__NEXT_DATA__` einer serverseitig gerenderten Next.js-Suchseite, im Browser gespeichert. SHA256 beider Fassungen in `data/raw/2026-09-25/HERKUNFT.md`. | Provenienz je Datei in `data/interim/provenienz.json`. Ein wiederkehrender SHA256 löst eine Warnung aus — genau der Fall, der dreimal passiert ist (E09). |
+
+### willhaben Mietinserate (1020 Wien, 09.10.2026, 17:45 und 17:47)
+
+| Frage | Befund | Konsequenz |
+|---|---|---|
+| **Vollständig?** | **Ja.** Seite 1 mit 90 und Seite 2 mit 88 Inseraten, zusammen 178 von 178 Treffern, ohne Überschneidung. Vier Bezirke fehlen weiterhin. | Seiten eines Tages gelten als ein Abruf (`v_abruf`, E32); die Teilseiten-Warnung fällt nur für vollständige Abrufe weg. |
+| **Korrekt?** | Kreuzprobe Portal-€/m² gegen Miete/Fläche: 178 von 178 prüfbar, 0 Abweichungen. **Aber:** zwei WG-Zimmer (Zimmerpreis auf Wohnungsfläche, bis 6,99 €/m²) und mehrere Gemeindewohnungen (Direktvergaben, 7,50–10 €/m²). | WG-Zimmer ausgeschlossen (E33). Gemeindewohnungen sind am Titel erkennbar, den die Allowlist verwirft — **offene Entscheidung** (E34). |
+| **Konsistent?** | `ISPRIVATE` und `advertiserInfo.label` widersprechen sich in 0 von 178 Fällen. Alle 178 Inserate PLZ 1020. | wie am 25.09. |
+| **Aktuell?** | Abruf 09.10.2026, laut `searchDate`. | Der Abgabestand ist am Tag der Abgabe aktuell. Der Vergleich mit dem 25.09. ist durch dessen Teilseite verzerrt: Der Median im Zielsegment sinkt von 26,67 auf 24,01 €/m², aber am 25.09. fehlen 64 von 154 Inseraten. Kein Markttrend ablesbar. |
+| **Wem gehört sie?** | wie am 25.09. | — |
+| **Woher kommt sie?** | gespeicherte `view-source:`-Ansicht, `__NEXT_DATA__` daraus extrahiert. Erster Versuch lieferte die Startseite (Vorfall 2 in `02_schritt1_datenzugriff.md`). | SHA256 beider Fassungen in `data/raw/2026-10-09/HERKUNFT.md`. |
 
 ### Tariflohnindex und VPI (Statistik Austria, OGD)
 

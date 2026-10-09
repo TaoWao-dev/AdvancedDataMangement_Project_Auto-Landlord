@@ -12,7 +12,7 @@ Eine erneut verarbeitete Datei erhält denselben Zeitstempel wie beim ersten Mal
 
 | Quelle | Form | Beschaffung | Lizenz | Pflicht | Stand |
 |---|---|---|---|---|---|
-| willhaben Mietinserate | JSON (`__NEXT_DATA__` einer Next.js-Suchseite) | **manuell** im Browser gespeichert | Nutzung nur als unwesentlicher Teil; robots.txt archiviert | ja | 1 von 5 Bezirken |
+| willhaben Mietinserate | JSON (`__NEXT_DATA__` einer Next.js-Suchseite) | **manuell** im Browser gespeichert | Nutzung nur als unwesentlicher Teil; robots.txt archiviert | ja | 1 von 5 Bezirken, zwei Abrufe (25.09. Teilseite, 09.10. vollständig) |
 | Tariflohnindex | CSV, Statistik Austria OGD | automatisch, `data.statistik.gv.at` | CC-BY 4.0 | nein | noch nicht beschafft |
 | VPI | CSV, Statistik Austria OGD | automatisch, `data.statistik.gv.at` | CC-BY 4.0 | nein | noch nicht beschafft |
 
@@ -91,27 +91,27 @@ und dem Abrufzeitstempel des Servers.
 
 ## Ablauf der manuellen Beschaffung
 
-Pro Bezirk und Woche:
+Pro Bezirk und Abruf. Der sichere Weg ist die Quelltextansicht, weil sie die
+Seite immer neu vom Server holt (Vorfall 2 unten):
 
-1. Suchseite im Browser öffnen, zum Beispiel
-   `willhaben.at/iad/immobilien/mietwohnungen/wien/wien-1020-leopoldstadt?rows=90`
-2. DevTools-Konsole öffnen und diesen Ausdruck ausführen — er lädt nur den
-   Datenblock herunter:
-   ```js
-   const el = document.getElementById('__NEXT_DATA__');
-   const a = document.createElement('a');
-   a.href = URL.createObjectURL(new Blob([el.textContent], {type:'application/json'}));
-   a.download = 'wh_1020_mietwohnungen.json';
-   a.click();
-   ```
-   Alternativ `view-source:` aufrufen und mit Strg+S speichern — der Parser
-   verarbeitet beide Formen.
-3. Datei nach `data/snapshots/` legen, Benennung
-   `wh_<plz>_<suche>_<datum>T<zeit>.json`
-4. `python3 -m src.ingest_markt --ordner data/snapshots --plz 1020`
+1. Im **privaten Fenster** — dann landen keine Kontodaten in der Datei — die
+   Adresse eintippen, nicht hinklicken:
+   `view-source:https://www.willhaben.at/iad/immobilien/mietwohnungen/wien/wien-1020-leopoldstadt?rows=90`
+2. Mit Strg+S speichern. Bei mehr als 90 Treffern dasselbe mit `&page=2` usw.
+3. Prüfen: Strg+F nach `"searchResult"`. Fehlt es, ist es die falsche Seite.
 
-**Achtung, aus Erfahrung:** Prüfen, dass die Konsole auf der richtigen Seite
-läuft. Siehe den nächsten Abschnitt.
+Alternative mit Selbstprüfung: die Suchseite normal laden (URL eintippen,
+Strg+Shift+R), dann `tools/snapshot.js` in der DevTools-Konsole. Das Skript
+prüft Rubrik, PLZ und Trefferzahl und benennt die Datei aus den Daten.
+
+Danach, für beide Wege gleich (`docs/betrieb.md`, Abschnitt 2):
+
+4. Original nach `data/raw_original/` (nicht im Repository), Benennung
+   `wh_<plz>_<suche>_<JJJJ-MM-TT>T<hhmm>[_s<seite>].json`. Der Parser liest
+   reines JSON, gespeicherten Quelltext und die gespeicherte view-source-Ansicht.
+5. Redigieren nach `data/raw/<datum>/` mit `tools/redigiere_schnappschuss.py`,
+   SHA256 beider Fassungen in `data/raw/<datum>/HERKUNFT.md`.
+6. `python3 -m src.run`. Seiten desselben Tages zählen als ein Abruf (E32).
 
 ## Der Vorfall, der das Gate begründet
 
@@ -131,6 +131,24 @@ Die Datei liegt deshalb als **Negativ-Fixture** im Repository und ist Teil der
 Testsuite (`test_gate_faengt_falsche_seite_ab`). Das Gate lehnt sie mit vier
 Begründungen ab: unplausible Trefferzahl, keine einheitliche PLZ, falsche PLZ,
 Flächenfeld zu 0 % belegt.
+
+## Vorfall 2: die Startseite, am 09.10.
+
+Beim ersten Abruf seit dem 25.09. entstanden zwei Dateien, Seite 1 und
+Seite 2 der Suche für 1020. Die Adresszeile zeigte die Suche, das
+`__NEXT_DATA__` beider Dateien war aber **byteweise dieselbe Startseite**
+(`page: /iad`) — samt Nutzer-Feed und Profildaten des angemeldeten Kontos.
+Ursache wie in E09: Startseite geöffnet, zur Suche geklickt, gespeichert.
+
+| Was | Wo es auffiel |
+|---|---|
+| `tools/snapshot.js` brach mit einem TypeError ab, statt den Grund zu nennen | beim Ausführen; seit Commit `b388e47` meldet es URL, Seite und vorhandene Felder |
+| beide Dateien hatten denselben Hash | bei der Prüfung vor dem Einlesen; wäre an Gate 1 gescheitert (`sha256 schon aufgenommen`, kein `searchResult`) |
+
+Die Dateien wurden nicht verwendet und nicht aufbewahrt. Der zweite Versuch
+über `view-source:` war sofort richtig — deshalb ist das jetzt der empfohlene
+Weg. Lehre: Der Fehler aus E09 kam beim ersten neuen Abruf wieder. Eine
+Anleitung verhindert ihn nicht; ein Weg, auf dem er nicht entstehen kann, schon.
 
 ## Personenbezogene Daten
 
@@ -199,3 +217,14 @@ Unterscheidung bleibt, der Name verschwindet.
 Kennzahl-CSV sind vor und nach der Redaktion bit-identisch. Die Hashes beider
 Fassungen stehen in `data/raw/2026-09-25/HERKUNFT.md`; das unveränderte
 Original bleibt beim Menschen, der es gespeichert hat.
+
+## Jede Datei in `data/raw/`
+
+| Datei | Abruf (Server) | Seite | Inserate / Treffer | Herkunft im Detail |
+|---|---|---|---|---|
+| `2026-09-25/wh_1020_mietwohnungen_2026-09-25T1555.json` | 25.09.2026, 15:55 | 1 | 90 / 154 — Teilseite | [`2026-09-25/HERKUNFT.md`](../../data/raw/2026-09-25/HERKUNFT.md) |
+| `2026-10-09/wh_1020_mietwohnungen_2026-10-09T1745.json` | 09.10.2026, 17:45 | 1 | 90 / 178 | [`2026-10-09/HERKUNFT.md`](../../data/raw/2026-10-09/HERKUNFT.md) |
+| `2026-10-09/wh_1020_mietwohnungen_2026-10-09T1747_s2.json` | 09.10.2026, 17:47 | 2 | 88 / 178 — mit Seite 1 vollständig | dito |
+
+Alle drei sind redigierte Fassungen; die SHA256 der Originale stehen in der
+jeweiligen `HERKUNFT.md`. Was fehlt: vier der fünf Bezirke (`v_abdeckung`).

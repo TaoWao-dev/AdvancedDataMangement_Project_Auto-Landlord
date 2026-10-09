@@ -4,7 +4,7 @@
 Quellen über Schlüssel verknüpft — und was keinen Partner findet, wird gezählt
 statt verworfen.
 
-**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (32 Tests,
+**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (40 Tests,
 darunter zweiter Lauf identisch, keine doppelten Schlüssel, alle Tabellen
 vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
@@ -12,7 +12,7 @@ vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
 ```bash
 python3 -m src.run                 # baut data/processed/mietportfolio.sqlite neu
-python3 tests/test_pipeline.py     # 32 Tests
+python3 tests/test_pipeline.py     # 40 Tests
 sqlite3 data/processed/mietportfolio.sqlite "SELECT * FROM v_abdeckung;"
 ```
 
@@ -26,18 +26,27 @@ erzeugen dieselbe Datei, geprüft über SHA256 mit mehr als einer Sekunde Abstan
 
 | Tabelle | Primärschlüssel | Fremdschlüssel | Herkunft | Zeilen |
 |---|---|---|---|---:|
-| `snapshot` | `snapshot_id` (autoincrement), `sha256` UNIQUE | `plz` → `bezirk` | eine Zeile je gespeicherter Datei | 1 |
+| `snapshot` | `snapshot_id` (autoincrement), `sha256` UNIQUE | `plz` → `bezirk` | eine Zeile je gespeicherter Datei (Seite) | 3 |
 | `bezirk` | `plz` | — | `config.BEZIRKE`, von Hand gepflegt | 5 |
-| `inserat_beobachtung` | **`(snapshot_id, ad_id)`** | `snapshot_id` → `snapshot`, `plz` → `bezirk` | willhaben-Schnappschuss | 90 |
+| `inserat_beobachtung` | **`(snapshot_id, ad_id)`** | `snapshot_id` → `snapshot`, `plz` → `bezirk` | willhaben-Schnappschüsse | 268 (205 Inserate, 63 an beiden Tagen) |
 | `indexreihe` | `(reihe, jahr)` | — | Tariflohnindex, VPI | **0** — Quelle nicht beschafft |
 | `zuordnungsluecke` | — (Protokolltabelle) | — | von `integrate.py` geschrieben | **0** — keine Lücke |
-| `qs_befund` | — (Protokolltabelle) | — | Gate-Befunde aus Schritt 2 | 1 (eine Warnung) |
+| `qs_befund` | — (Protokolltabelle) | — | Gate-Befunde aus Schritt 2 | 1 (Teilseite 25.09.) |
+| `objekttyp_ausschluss` | `objekttyp` | — | `config.OBJEKTTYP_AUSGESCHLOSSEN`, mit Grund (E33) | 1 (`Zimmer/WG`) |
 
 `NOT NULL` steht dort, wo eine Zeile ohne den Wert bedeutungslos wäre:
 `snapshot.sha256`, `snapshot.abruf_ts`, `inserat_beobachtung.status`,
 `inserat_beobachtung.plz`. **Nicht** auf `miete_eur` oder `flaeche_m2` — ein
 Inserat ohne Flächenangabe ist eine echte Beobachtung, und es soll in der
 Fallzahl auftauchen, statt am Fremdschlüssel zu scheitern.
+
+### Abruf: kein eigener Schlüssel, eine View
+
+Ein **Abruf** sind alle Seiten einer PLZ an einem Tag (`v_abruf`, E32). Er hat
+keine eigene Tabelle, weil er vollständig aus `snapshot` folgt — Schlüssel
+`(plz, substr(abruf_ts, 1, 10))`. Vollständigkeit, Zensierung der
+Inseratsdauer und `v_abdeckung` beziehen sich auf den Abruf, nicht auf die
+Seite.
 
 ## Die Beziehungen
 
@@ -132,3 +141,19 @@ Keine Personenspalten. Von der Anbieterseite ist nur das Flag `privat` /
 `gewerblich` übrig. Ein Test prüft die gebaute Datenbank gegen die Liste der
 verworfenen Feldnamen (`test_keine_personenspalte_in_der_datenbank`) — er
 schlägt an, sobald eine solche Spalte angelegt wird, auch wenn sie leer ist.
+
+## Korrekturen nach dem zweiten Abruf (09.10.)
+
+Mit einem einzigen Schnappschuss waren zwei Views fehlerhaft, ohne dass es
+auffallen konnte — beide brauchen zwei Zeitpunkte, um überhaupt etwas zu
+liefern. Der zweite Abruf hat sie sichtbar gemacht; jede Korrektur hat einen
+Test, der vorher rot war.
+
+| Fehler | Wirkung | Korrektur | Test |
+|---|---|---|---|
+| Zeitstempel `+0200` ohne Doppelpunkt; SQLite liest nur `+02:00` | `julianday()` gab NULL, jede Inseratsdauer leer | Parser normalisiert den Versatz (`c679e95`) | `test_abrufzeit_ist_fuer_sqlite_lesbar`, `test_inseratsdauer_wird_gemessen_sobald_zwei_abrufe_da_sind` |
+| `v_preisaenderung` rechnete (Maximum − Minimum) / Minimum | jede Senkung erschien als Erhöhung; am 09.10. waren 6 von 10 Änderungen Senkungen | erster gegen letzten Preis, Spalten `miete_erst`, `miete_zuletzt` (`39d16f8`) | `test_preissenkung_erscheint_als_senkung` |
+
+Dazu drei Modellierungsentscheidungen aus demselben Abruf: Abruf statt Seite
+(E32, `v_abruf`), WG-Zimmer ausgeschlossen (E33, `objekttyp_ausschluss`),
+ungemessene Abgänge nicht als null Tage (E36).

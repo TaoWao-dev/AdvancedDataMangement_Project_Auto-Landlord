@@ -71,6 +71,15 @@ bestanden, wenn die Abfrage die Unauswertbarkeit meldet (`anteil_zensiert` = 1,
 `auswertbar` = false) — und nicht, wenn sie eine Dauer von null Tagen als
 Messwert ausgibt. Eine Referenz darf verlangen, dass nichts behauptet wird.
 
+**Stand 09.10.: Fall 3 beschreibt den Stand vom 25.09.** Mit dem zweiten
+Abruf ist die Inseratsdauer teilweise auswertbar. Die Referenz ist dadurch
+nicht falsch, sondern auf den 25.09. bezogen, wie alle Referenzen hier —
+`nachrechnen_marktniveau.py` liest nur diese Datei. Dass die Abfrage auch mit
+zwei Abrufen nichts behauptet, was sie nicht messen kann, prüfen seitdem
+Tests auf echten Daten: 27 ungemessene Abgänge, Mittelwert leer, 0,70 noch
+online (`test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage`, E36). Eine
+Referenz für den Zwei-Abruf-Stand gehört zu Deliverable 3.
+
 **Die Referenz selbst steht auf einer Teilseite.** 90 von 154 Treffern. Sie ist
 korrekt für die gespeicherte Seite und falsch für „den Markt in 1020". Jede
 Zeile trägt `abruf_datum`, damit das nicht verloren geht.

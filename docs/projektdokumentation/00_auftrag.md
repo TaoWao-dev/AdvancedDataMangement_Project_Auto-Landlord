@@ -40,13 +40,15 @@ einer Vermutung über „den Markt". Drei Dinge liefert das Projekt dafür:
 
 | Nr | Frage | Werkzeug | Abfrage | Belastbarkeit heute |
 |---|---|---|---|---|
-| 1 | Was kostet eine Wohnung im Zielsegment 80–100 m² je Bezirk? | SQL | `kennzahl_marktniveau.sql`, `kennzahl_bezirksvergleich.sql` | 1020: n=15, belastbar. Vier Bezirke fehlen |
-| 2 | Wie unterscheidet sich das Angebot privater und gewerblicher Anbieter? | SQL | `kennzahl_anbietertyp.sql` | 1020: 3 privat gegen 12 gewerblich — dünn, aber aussagekräftig genug für den Vorbehalt |
-| 3 | Wie lange steht ein Inserat, und ändert sich der Preis dabei? | SQL | `kennzahl_inseratsdauer.sql`, `v_preisaenderung` | **noch nicht messbar**, braucht einen zweiten Schnappschuss |
+| 1 | Was kostet eine Wohnung im Zielsegment 80–100 m² je Bezirk? | SQL | `kennzahl_marktniveau.sql`, `kennzahl_bezirksvergleich.sql` | 1020 am 09.10.: n=32, belastbar, vollständiger Abruf. Vier Bezirke fehlen |
+| 2 | Wie unterscheidet sich das Angebot privater und gewerblicher Anbieter? | SQL | `kennzahl_anbietertyp.sql` | 1020 am 09.10.: 12 privat gegen 20 gewerblich — privat dünn, gewerblich belastbar |
+| 3 | Wie lange steht ein Inserat, und ändert sich der Preis dabei? | SQL | `kennzahl_inseratsdauer.sql`, `v_preisaenderung` | zwei Abrufe, 14 Tage Abstand: 70 % der Inserate vom 25.09. stehen noch; 10 Preisänderungen, 6 davon Senkungen. Eine Dauer ist noch nicht messbar |
 
 Analyse 3 ist der Schätzer für die Leerstandsannahme im Entscheidungsmodell —
-heute eine Annahme von 2,5 Monaten, künftig eine Messung. Dass sie heute leer
-ist, steht in der Kennzahl-CSV als leere Datei mit Kopfzeile, nicht als Null.
+heute eine Annahme von 2,5 Monaten, künftig eine Messung. Mit zwei Abrufen
+lässt sich erst sagen, dass ein typisches Inserat länger als zwei Wochen
+steht; eine Dauer braucht weitere Abrufe (`kennzahl_inseratsdauer.csv`,
+Spalte `befund`).
 
 Die drei Analysen sind reines SQL. Dazu kommen zwei Aufgaben für das
 Sprachmodell (Prompt), die keine eigene Kennzahl liefern, sondern die

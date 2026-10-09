@@ -46,6 +46,11 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E29](#e29) | 09.10. | Auftrag nach dem Pitch unveraendert | Scope oder Analysen nach dem Feedback anpassen | das Feedback war durchgehend positiv und stellte nichts davon in Frage | `00_auftrag.md` |
 | [E30](#e30) | 09.10. | Repository-Stand entpackt committen, Schritte als einzelne Commits | ZIP als Abgabe belassen | ein ZIP ist fuer die Bewertung nicht lesbar und hat keine Historie | `Commits ab b65e6cf` |
 | [E31](#e31) | 09.10. | Studierender als Autor, Claude als Co-Autor | Claude bleibt Autor (E24) | Wunsch des Studierenden; wer was beigetragen hat, steht weiterhin hier | `Git-Historie, CLAUDE.md` |
+| [E32](#e32) | 09.10. | Seiten eines Tages sind ein Abruf | jede Seite als eigener Abruf; Seiten beim Einlesen zu einer Datei zusammenfuegen | sonst galten alle Inserate von Seite 1 als verschwunden; Zusammenfuegen haette die Herkunft je Datei verwischt | `src/sql/views.sql (v_abruf), src/clean.py, Commit 2d853b0` |
+| [E33](#e33) | 09.10. | WG-Zimmer aus dem Angebot, sichtbar mit Grund | behalten; schon beim Einlesen verwerfen | Zimmerpreis auf Wohnungsflaeche ist kein Quadratmeterpreis; Verwerfen beim Einlesen waere unsichtbar | `src/config.py, objekttyp_ausschluss, Commit f6dd973` |
+| [E34](#e34) | 09.10. | **offen:** Gemeindewohnungen im Angebot | behalten; per Schlagwort im Titel ausschliessen; per Prompt klassifizieren | Entscheidung des Studierenden, siehe Eintrag | `-` |
+| [E35](#e35) | 09.10. | view-source als empfohlener Beschaffungsweg | gerendertes HTML parsen; nur snapshot.js | view-source holt die Seite immer frisch; das gerenderte HTML traegt Preise nur in CSS-Klassen | `02_schritt1_datenzugriff.md, docs/betrieb.md` |
+| [E36](#e36) | 09.10. | Ungemessene Abgaenge nicht als null Tage; Anteil noch online als Kennzahl | Mittelwert mit 0 fuer Einmal-Gesehene; nur Mittelwert der Wiedergesehenen | eine unbekannte Dauer ist nicht null; mit zwei Abrufen ist der Anteil die einzige ehrliche Aussage | `src/sql/kennzahl_inseratsdauer.sql, Commit 8e7565a` |
 
 ---
 
@@ -985,3 +990,157 @@ hat. Wer was entschieden hat, steht wie bisher in diesem Log (vgl. E24).
 
 **Revisionspunkt.** Verlangt die Lehrveranstaltung eine andere Kennzeichnung
 von KI-Beiträgen, wird sie für künftige Commits übernommen.
+
+---
+
+## E32 {#e32}
+### Alle Seiten einer PLZ an einem Tag sind ein Abruf
+**Datum:** 09.10.2026
+
+**Situation.** Am 09.10. wurde 1020 vollständig gespeichert, als Seite 1
+(17:45) und Seite 2 (17:47). Die Pipeline kannte nur Schnappschüsse, also
+Dateien. Folgen: Jede Seite trug eine Teilseiten-Warnung, obwohl zusammen
+178 von 178 Treffern vorlagen, und `v_inseratsdauer` hielt alle 90 Inserate
+von Seite 1 für verschwunden, weil Seite 2 zwei Minuten später lag.
+
+**Alternativen.**
+1. Jede Seite bleibt ein eigener Abruf; Seiten nur in Abständen von Tagen
+   speichern.
+2. Seiten beim Einlesen zu einer Datei zusammenfügen.
+3. Seiten bleiben eigene Schnappschüsse; ein Abruf ist die Gruppe aller
+   Seiten einer PLZ an einem Tag (`v_abruf`).
+
+**Entscheidung.** Variante 3.
+
+**Begründung.** (1) macht eine Regel aus einem Fehler. (2) verwischt die
+Herkunft: Jede Datei hat ihren eigenen SHA256 und ihr eigenes Gate-Ergebnis,
+eine zusammengefügte Datei hätte keines davon. (3) lässt die Faktentabelle
+unverändert und definiert den Abruf dort, wo er gebraucht wird. Ein Inserat,
+das zwischen zwei Seitenaufrufen die Seite wechselt, zählt in `v_angebot`
+trotzdem nur einmal.
+
+**Revisionspunkt.** `test_seiten_eines_tages_sind_ein_abruf`,
+`test_zensiert_heisst_im_letzten_abruf_noch_online`. Werden je Tag zwei
+Abrufe derselben PLZ gebraucht (morgens, abends), ist die Tagesgrenze zu grob.
+
+---
+
+## E33 {#e33}
+### WG-Zimmer gehören nicht ins Wohnungsangebot
+**Datum:** 09.10.2026
+
+**Situation.** Unter den Inseraten vom 09.10. standen zwei vom Objekttyp
+`Zimmer/WG`. Eines davon: 699 € für ein möbliertes Zimmer, Fläche 100 m² —
+die der ganzen Wohnung. Das ergibt 6,99 €/m² im Zielsegment und zog
+Minimum und erstes Quartil nach unten.
+
+**Alternativen.**
+1. Behalten: Es ist ein Mietinserat in 1020.
+2. Beim Einlesen in `clean.py` verwerfen.
+3. In der Faktentabelle behalten, aus `v_angebot` ausschließen, Liste mit
+   Grund in der Konfiguration und in der Datenbank.
+
+**Entscheidung.** Variante 3. Ausgeschlossen sind heute 2 Beobachtungen.
+
+**Begründung.** (1) mischt einen Zimmerpreis mit einer Wohnungsfläche — der
+Quotient misst nichts. (2) wäre ein unsichtbarer Filter: keine Zeile, kein
+Zähler, kein Grund. (3) hält die Beobachtung, nennt den Grund in
+`objekttyp_ausschluss` und meldet die Zahl bei jedem Lauf. Am 25.09. gab es
+keine WG-Zimmer; Referenzantworten und Handproben sind unberührt.
+
+**Revisionspunkt.** `test_wg_zimmer_sind_kein_wohnungsangebot`. Taucht ein
+weiterer Objekttyp auf, dessen Fläche nicht zur Miete gehört, gehört er in
+dieselbe Liste — mit eigenem Grund.
+
+---
+
+## E34 {#e34}
+### Offen: Gemeindewohnungen im Angebot
+**Datum:** 09.10.2026 · **Status: offen, Entscheidung des Studierenden**
+
+**Situation.** Am 09.10. standen mehrere Gemeindewohnungen im Angebot:
+Direktvergaben von Wiener Wohnen und eine Weitergabe „mit Wohnticket", alle
+privat inseriert, zu 7,50–10 €/m². Für einen institutionellen Vermieter von
+Neubauwohnungen sind das keine Vergleichsmieten — sie sind reguliert und an
+Zugangsvoraussetzungen gebunden. Erkennbar sind sie nur am Titel, und den
+verwirft die Allowlist (E11), weil Freitexte Namen tragen können.
+
+**Alternativen.**
+1. Behalten und als bekannte Verzerrung nach unten benennen.
+2. Per Schlagwort im Titel ausschließen („Gemeinde", „Wiener Wohnen",
+   „Wohnticket"), bevor der Titel verworfen wird — nur das Ergebnis, ein
+   Flag, geht in die Datenbank.
+3. Titel per Prompt klassifizieren lassen und gegen händisch markierte Fälle
+   prüfen — eine Klassifikationsaufgabe mit Referenzantworten.
+
+**Entscheidung.** Noch keine. Heute gilt (1): Im Zielsegment 80–100 m² liegt
+nur ein Inserat unter 13 €/m², der Median ist davon kaum berührt.
+
+**Was die Entscheidung abhängig macht.** (2) ist schnell und prüfbar, aber
+ein Schlagwort, das fehlt, lässt den Fall durch. (3) wäre die erste echte
+Prompt-Aufgabe an den Inseratsdaten und würde die fehlende
+Klassifikationsreferenz (E28) liefern — kostet aber händische Markierung.
+
+**Revisionspunkt.** Zeigt ein Abruf im Zielsegment mehr als zwei
+Gemeindewohnungen, ist (1) nicht mehr haltbar.
+
+---
+
+## E35 {#e35}
+### Die Quelltextansicht ist der empfohlene Beschaffungsweg
+**Datum:** 09.10.2026
+
+**Situation.** Der erste Abruf am 09.10. lieferte zweimal die Startseite
+statt der Suche (Vorfall 2 in `02_schritt1_datenzugriff.md`). Im gerenderten
+HTML derselben Dateien standen die Inserate korrekt, das `__NEXT_DATA__` war
+aber veraltet.
+
+**Alternativen.**
+1. Die Inserate aus dem gerenderten HTML lesen.
+2. Bei `tools/snapshot.js` bleiben und die Anleitung schärfen.
+3. Die Quelltextansicht (`view-source:`) als ersten Weg empfehlen,
+   `snapshot.js` als Alternative mit Selbstprüfung.
+
+**Entscheidung.** Variante 3.
+
+**Begründung.** (1) würde Preise und Flächen aus generierten CSS-Klassen
+lesen — genau das hat E07 verworfen —, und Rubrik, Trefferzahl und
+Abrufzeitpunkt fehlen dort, also alles, was Gate 1 prüft. (2) verlässt sich
+auf eine Anleitung, die schon einmal nicht gereicht hat (E09). Die
+Quelltextansicht holt die Seite immer vom Server; der Fehler kann dort nicht
+entstehen. Der Parser liest die gespeicherte Ansicht direkt. Im privaten
+Fenster landen zudem keine Kontodaten in der Datei.
+
+**Revisionspunkt.** Scheitert ein über `view-source:` gespeicherter Abruf an
+Gate 1, stimmt die Begründung nicht.
+
+---
+
+## E36 {#e36}
+### Ungemessene Abgänge zählen nicht als null Tage
+**Datum:** 09.10.2026
+
+**Situation.** Mit zwei Abrufen stand `mittel_tage_abgeschlossen` auf 0,0.
+Grund: 27 Inserate waren nur am 25.09. zu sehen. Sie sind irgendwann in den
+14 Tagen danach verschwunden; die Abfrage zählte sie mit 0 Tagen.
+
+**Alternativen.**
+1. So lassen und im Kommentar erklären.
+2. Mittelwert nur über Inserate, die in mindestens zwei Abrufen standen und
+   danach fehlen; die übrigen als `abgaenge_ungemessen` zählen.
+3. Zusätzlich den Anteil der älteren Inserate ausweisen, der im jüngsten
+   Abruf noch steht.
+
+**Entscheidung.** Variante 2 und 3 zusammen.
+
+**Begründung.** Eine unbekannte Dauer ist nicht null, und ein Mittelwert von
+0,0 würde in der Vorlage als Messwert gelesen. Mit zwei Abrufen gibt es noch
+keinen Abgang mit gemessener Dauer — der Mittelwert ist deshalb leer, und
+`befund` sagt das. Was schon belastbar ist: 70 % der Inserate vom 25.09.
+stehen am 09.10. noch. Ein typisches Inserat steht also länger als zwei
+Wochen. Für die Leerstandsannahme ist das eine Untergrenze, kein Schätzwert.
+
+**Revisionspunkt.** `test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage`.
+Ab dem dritten Abruf muss `mittel_tage_abgeschlossen` gefüllt sein, sonst
+fehlt der Abruf oder die Abfrage ist falsch.
+

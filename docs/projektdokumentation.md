@@ -25,7 +25,7 @@ für Datei. Die Inhalte stehen in den verlinkten Dateien, nicht hier.
 | Datenbank | `data/processed/mietportfolio.sqlite` | committet, 84 kB, ohne Personenspalten (Test) |
 | Abfragen | `src/sql/kennzahl_*.sql` | 5 Abfragen, Ergebnis als CSV in `data/processed/` |
 | Referenzantworten | `evals/references/` | 8 numerische Fälle + 3 Handproben; **8 Extraktionsfälle offen**, Grund in 05 |
-| Test | `tests/test_pipeline.py` | 32 Tests grün, dazu `tests/test_modell.py` mit 26 |
+| Test | `tests/test_pipeline.py` | 40 Tests grün, dazu `tests/test_modell.py` mit 26 |
 | Projektdokumentation 00–05 | dieser Ordner | fertig |
 | Betriebshandbuch, Entwurf | [`docs/betrieb.md`](betrieb.md) | Starten, neue Daten, Schwächen, Störungen |
 
