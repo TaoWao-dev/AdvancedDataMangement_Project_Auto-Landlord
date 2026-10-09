@@ -198,6 +198,11 @@ def test_gate_meldet_plz_abweichung():
 
 
 # ------------------------------------------------- Datenbank und Kennzahlen
+def _snapshot_id(con: sqlite3.Connection, datei: Path) -> int:
+    return con.execute("SELECT snapshot_id FROM snapshot WHERE datei = ?",
+                       (datei.name,)).fetchone()[0]
+
+
 def _baue(pfad: Path) -> sqlite3.Connection:
     res = integrate.ausfuehren(pfad=pfad)
     derive.ausfuehren(res["con"])
@@ -287,10 +292,16 @@ def test_reservierte_inserate_zaehlen_nicht_zum_angebot(tmp_path=None):
     attraktiv - sie wuerden den Median nach oben ziehen."""
     ziel = Path(tmp_path or C.PROCESSED) / "test_status.sqlite"
     con = _baue(ziel)
-    alle = con.execute("SELECT COUNT(*) FROM inserat_beobachtung").fetchone()[0]
-    angebot = con.execute("SELECT COUNT(*) FROM v_angebot").fetchone()[0]
+    # Auf den Schnappschuss vom 25.09. beschraenkt: dessen Zahlen sind von Hand
+    # geprueft. Jeder weitere Abruf aendert die Gesamtsummen, nicht diese Regel.
+    sid = _snapshot_id(con, ECHT)
+    alle = con.execute("SELECT COUNT(*) FROM inserat_beobachtung"
+                       " WHERE snapshot_id = ?", (sid,)).fetchone()[0]
+    angebot = con.execute("SELECT COUNT(*) FROM v_angebot"
+                          " WHERE snapshot_id = ?", (sid,)).fetchone()[0]
     res = con.execute("SELECT COUNT(*) FROM inserat_beobachtung"
-                      " WHERE status = 'reserviert'").fetchone()[0]
+                      " WHERE status = 'reserviert' AND snapshot_id = ?",
+                      (sid,)).fetchone()[0]
     con.close()
     ziel.unlink(missing_ok=True)
     assert res == 3
@@ -333,6 +344,10 @@ def test_alle_tabellen_des_schemas_existieren_und_sind_gefuellt_oder_erklaert(
     fehlend = erwartet - da
     zahlen = {t: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
               for t in sorted(erwartet & da)}
+    echt = con.execute("SELECT COUNT(*) FROM inserat_beobachtung"
+                       " WHERE snapshot_id = ?", (_snapshot_id(con, ECHT),)
+                       ).fetchone()[0]
+    geliefert = con.execute("SELECT SUM(geliefert) FROM snapshot").fetchone()[0]
     con.close()
     ziel.unlink(missing_ok=True)
     assert not fehlend, fehlend
@@ -345,7 +360,9 @@ def test_alle_tabellen_des_schemas_existieren_und_sind_gefuellt_oder_erklaert(
     assert not unerwartet_leer, (unerwartet_leer, zahlen)
     assert zahlen["bezirk"] == len(C.BEZIRKE)
     assert zahlen["snapshot"] >= 1
-    assert zahlen["inserat_beobachtung"] == 90
+    # 90 im geprueften Schnappschuss; insgesamt so viele, wie die Seiten liefern
+    assert echt == 90
+    assert zahlen["inserat_beobachtung"] == geliefert
 
 
 def test_keine_personenspalte_in_der_datenbank(tmp_path=None):
