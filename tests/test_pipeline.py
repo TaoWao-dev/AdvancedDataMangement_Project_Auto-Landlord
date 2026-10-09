@@ -428,6 +428,27 @@ def test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage(tmp_path=None):
     assert r["anteil_aeltere_noch_online"] == 0.7, dict(r)
 
 
+def test_wg_zimmer_sind_kein_wohnungsangebot(tmp_path=None):
+    """Ein WG-Zimmer kostet 699 EUR bei 100 m2 Wohnungsflaeche - 6,99 EUR/m2.
+    Der Preis gilt fuer ein Zimmer, die Flaeche fuer die ganze Wohnung. Im
+    Zielsegment zog das am 09.10. Minimum und erstes Quartil nach unten.
+    Ausgeschlossen wird sichtbar: die Beobachtung bleibt in der Faktentabelle,
+    der Grund steht in der Datenbank."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_wg.sqlite"
+    con = _baue(ziel)
+    im_angebot = con.execute("SELECT COUNT(*) FROM v_angebot"
+                             " WHERE objekttyp = 'Zimmer/WG'").fetchone()[0]
+    beobachtet = con.execute("SELECT COUNT(*) FROM inserat_beobachtung"
+                             " WHERE objekttyp = 'Zimmer/WG'").fetchone()[0]
+    grund = con.execute("SELECT grund FROM objekttyp_ausschluss"
+                        " WHERE objekttyp = 'Zimmer/WG'").fetchone()
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert im_angebot == 0
+    assert beobachtet == 2, "die Beobachtung selbst bleibt erhalten"
+    assert grund and grund[0]
+
+
 def test_datenbankname_kommt_aus_der_konfiguration():
     """Die Vorgabe: der Datenbankname steht in src/config.py (PROJEKT).
     Zweimal dieselbe Zeichenkette zu pflegen ist eine Fehlerquelle."""

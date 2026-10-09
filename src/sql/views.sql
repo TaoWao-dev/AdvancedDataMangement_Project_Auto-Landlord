@@ -44,6 +44,8 @@ SELECT * FROM (
   WHERE b.status = 'aktiv'
     AND b.miete_eur  IS NOT NULL
     AND b.flaeche_m2 IS NOT NULL
+    -- kein Wohnungsangebot (WG-Zimmer); Liste und Grund in objekttyp_ausschluss
+    AND COALESCE(b.objekttyp, '') NOT IN (SELECT objekttyp FROM objekttyp_ausschluss)
 ) WHERE _nr = 1;
 
 -- Preisniveau je PLZ, Groessenklasse und Abruf.

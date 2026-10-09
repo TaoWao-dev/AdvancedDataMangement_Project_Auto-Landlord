@@ -103,6 +103,17 @@ BEZIRKE = [
      "cluster_id": None, "rolle": "referenz"},
 ]
 
+# ─────────────────────────────────────────────── Datenausschluesse
+# Objekttypen, die kein Wohnungsangebot sind. Die Beobachtung bleibt in der
+# Faktentabelle; nur v_angebot (und damit jede Kennzahl) laesst sie aus.
+# Jeder Eintrag braucht einen Grund - er steht in der Datenbank
+# (objekttyp_ausschluss) und im Entscheidungslog.
+OBJEKTTYP_AUSGESCHLOSSEN = {
+    "Zimmer/WG": "Miete gilt fuer ein Zimmer, Flaeche fuer die ganze Wohnung - "
+                 "der Quadratmeterpreis ist bedeutungslos (09.10.: 699 EUR "
+                 "bei 100 m2 = 6,99 EUR/m2 im Zielsegment)",
+}
+
 # ─────────────────────────────────────────────── Qualitaetsschwellen
 SCHWELLEN = {
     "min_inserate_je_schnappschuss": 20,

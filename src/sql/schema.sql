@@ -36,6 +36,14 @@ CREATE TABLE bezirk (
   rolle       TEXT NOT NULL                  -- portfolio | referenz
 );
 
+-- Ausgeschlossene Objekttypen mit Grund, aus config.OBJEKTTYP_AUSGESCHLOSSEN.
+-- Steht in der Datenbank, damit ein Ausschluss sichtbar bleibt und nicht nur
+-- als Filter in einer View existiert.
+CREATE TABLE objekttyp_ausschluss (
+  objekttyp TEXT PRIMARY KEY,
+  grund     TEXT NOT NULL
+);
+
 CREATE TABLE indexreihe (
   reihe     TEXT    NOT NULL,
   jahr      INTEGER NOT NULL,

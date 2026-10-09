@@ -110,6 +110,9 @@ def ausfuehren(bereinigt: dict | None = None,
                     ("willhaben", "-", "Inserat ohne bekannte PLZ",
                      verworfen_plz))
 
+    con.executemany("INSERT INTO objekttyp_ausschluss VALUES (?, ?)",
+                    sorted(C.OBJEKTTYP_AUSGESCHLOSSEN.items()))
+
     # Indexreihen, soweit beschafft
     idx = (bereinigt.get("tariflohnindex", {}).get("zeilen", [])
            + bereinigt.get("vpi", {}).get("zeilen", []))
@@ -135,6 +138,15 @@ def ausfuehren(bereinigt: dict | None = None,
     print(f"integrate: {C.DB.name}: "
           + ", ".join(f"{t} {n}" for t, n in zahlen.items())
           + f"; Zuordnungsluecken: {luecken}")
+    # Ausschluesse sichtbar machen: wie viele Beobachtungen nicht ins Angebot
+    # gehen und warum. Ein Filter, der nicht zaehlt, faellt nie auf.
+    for r in con.execute(
+            """SELECT a.objekttyp, COUNT(io.ad_id) n
+               FROM objekttyp_ausschluss a
+               LEFT JOIN inserat_beobachtung io ON io.objekttyp = a.objekttyp
+               GROUP BY a.objekttyp ORDER BY a.objekttyp"""):
+        print(f"           ausgeschlossen: {r['n']} Beobachtung(en) "
+              f"'{r['objekttyp']}' (Grund in objekttyp_ausschluss)")
     for r in con.execute(
             """SELECT b.plz, b.bezirk_name, b.rolle,
                       COUNT(DISTINCT s.snapshot_id) n_snap,
