@@ -38,11 +38,14 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E21](#e21) | 25.09. | Redigierte Schnappschuesse im Repo, Originale nur lokal | Repo privat halten und Originale committen | ein Push ist unumkehrbar; git rm entfernt nichts aus der Historie | `tools/redigiere_schnappschuss.py` |
 | [E22](#e22) | 25.09. | verticalId als erste Pruefung in Gate 1 | bei Trefferzahl und PLZ-Streuung bleiben | Indizien haetten eine seltene Marktplatzsuche durchgelassen | `src/validierung.py` |
 | [E23](#e23) | 25.09. | Ein Dokument je Schritt | Schrittdokument fasst zusammen und verweist | eine Zusammenfassung, die niemand nachzieht, ist schlechter als keine | `02_schritt1_datenzugriff.md` |
-| [E24](#e24) | 25.09. | Claude bleibt Autor der Commits | Studierender als Autor, Claude als Co-Autor | Wunsch des Studierenden; die Konsequenz ist benannt | `Git-Historie` |
+| [E24](#e24) | 25.09. | Claude bleibt Autor der Commits | Studierender als Autor, Claude als Co-Autor | Wunsch des Studierenden; die Konsequenz ist benannt | `revidiert durch E31` |
 | [E25](#e25) | 25.09. | data/raw/ wird committet | Vorgabe woertlich; oder nach data/sample/ verschieben | der Zweck des Satzes ist durch die Redaktion erfuellt; sample heisst synthetisch | `gitignore` |
 | [E26](#e26) | 25.09. | Datenbank committet, Uhrzeit aus ihr entfernt | Datenbank ignorieren; oder Diff je Lauf hinnehmen | eine committete Datei mit Uhrzeit widerlegt die Reproduzierbarkeit | `src/sql/schema.sql, src/integrate.py` |
 | [E27](#e27) | 09.10. | Je Aufgabe festgelegt: Programm oder Prompt | alles dem Modell geben; alles selbst programmieren | was pruefbar sein muss, gehoert in Code; was Sprache ist, ins Modell | `CLAUDE.md, 05_schritt4_abfragen_referenzen.md` |
 | [E28](#e28) | 09.10. | Keine Extraktionsreferenzen ohne Quelldokument | acht Faelle aus der Modellrecherche bilden | eine Referenz aus einer Modellzusammenfassung prueft das Modell gegen sich selbst (E02) | `evals/references/README.md` |
+| [E29](#e29) | 09.10. | Auftrag nach dem Pitch unveraendert | Scope oder Analysen nach dem Feedback anpassen | das Feedback war durchgehend positiv und stellte nichts davon in Frage | `00_auftrag.md` |
+| [E30](#e30) | 09.10. | Repository-Stand entpackt committen, Schritte als einzelne Commits | ZIP als Abgabe belassen | ein ZIP ist fuer die Bewertung nicht lesbar und hat keine Historie | `Commits ab b65e6cf` |
+| [E31](#e31) | 09.10. | Studierender als Autor, Claude als Co-Autor | Claude bleibt Autor (E24) | Wunsch des Studierenden; wer was beigetragen hat, steht weiterhin hier | `Git-Historie, CLAUDE.md` |
 
 ---
 
@@ -906,3 +909,79 @@ Extraktionsfälle gehören zu Deliverable 3, Termin 23.10.
 **Revisionspunkt.** Liegt die gespeicherte Seite vor, werden die acht Fälle
 wörtlich daraus erfasst — mit Fundstelle, und `rohtext` enthält den kopierten
 Satz, nicht eine Nachschrift.
+
+---
+
+## E29 {#e29}
+### Der Auftrag bleibt nach dem Pitch unverändert
+**Datum:** 09.10.2026
+
+**Situation.** Pitch im Gallery Walk am 26.09.2026. Das Feedback war
+durchgehend positiv; keine Rückmeldung stellte Adressat, Entscheidung oder
+Analysen in Frage.
+
+**Alternativen.**
+1. Scope oder Analysen nachschärfen, etwa eine vierte Kennzahl aufnehmen.
+2. Den Auftrag unverändert lassen und die Zeit in die offenen Punkte stecken.
+
+**Entscheidung.** Variante 2.
+
+**Begründung.** Es gab keinen Befund, der eine Änderung verlangt hätte. Die
+offenen Punkte — vier fehlende Bezirke, die Indexreihen, die
+Extraktionsreferenzen (E28) — sind Datenlücken, keine Zuschnittsfragen.
+Vermerkt in `00_auftrag.md` unter „Änderungen seit dem Pitch".
+
+**Revisionspunkt.** Wenn bis Termin 4 ein Bezirk nicht beschafft werden kann,
+muss Analyse 1 auf die vorhandenen Bezirke eingeschränkt werden — das wäre
+dann eine Scope-Änderung mit eigenem Eintrag.
+
+---
+
+## E30 {#e30}
+### Der Projektstand liegt entpackt im Repository, nicht als ZIP
+**Datum:** 09.10.2026
+
+**Situation.** E20 sah vor, dass die Historie ab dem ersten Commit entsteht.
+Tatsächlich lag bis zum 09.10. nur ein Upload über die GitHub-Oberfläche im
+Repository: `README.md` und eine ZIP-Datei mit dem Stand vom 25.09. Der
+Revisionspunkt von E20 („Commits nur zu Abgabeterminen") ist damit
+eingetreten, und das wird hier nicht beschönigt.
+
+**Alternativen.**
+1. ZIP belassen und nur aktualisieren.
+2. ZIP entfernen, Stand entpackt committen, jede Korrektur als eigener Commit.
+
+**Entscheidung.** Variante 2.
+
+**Begründung.** Ein ZIP ist für die Bewertung nicht lesbar und zeigt keine
+Arbeitsschritte. Die Historie vor dem 09.10. lässt sich nicht nachträglich
+herstellen, ohne sie zu erfinden — deshalb steht die Abfolge der
+Entscheidungen in diesem Log mit Datum, und die Historie beginnt ehrlich
+mit dem Entpacken.
+
+**Revisionspunkt.** Bis Termin 4 entsteht je abgeschlossener Arbeitseinheit
+ein Commit. Liegen zwischen 9.10. und 23.10. nur Commits am Abgabetag, ist
+die Entscheidung gescheitert.
+
+---
+
+## E31 {#e31}
+### Der Studierende ist Autor der Commits, Claude Co-Autor
+**Datum:** 09.10.2026 · revidiert E24
+
+**Situation.** E24 hatte Claude als Autor festgelegt. Mit dem ersten Commit
+aus der Arbeitssitzung war die Frage erneut zu entscheiden.
+
+**Alternativen.**
+1. Claude bleibt Autor (E24).
+2. Der Studierende als Autor, Claude als `Co-Authored-By`.
+
+**Entscheidung.** Variante 2, auf ausdrücklichen Wunsch des Studierenden.
+
+**Was die Autorenzeile belegt und was nicht.** Code und Dokumentation sind
+zum großen Teil von Claude formuliert. Die Autorenzeile belegt deshalb, wer
+die Arbeit freigegeben und eingereicht hat, nicht wer jede Zeile geschrieben
+hat. Wer was entschieden hat, steht wie bisher in diesem Log (vgl. E24).
+
+**Revisionspunkt.** Verlangt die Lehrveranstaltung eine andere Kennzeichnung
+von KI-Beiträgen, wird sie für künftige Commits übernommen.

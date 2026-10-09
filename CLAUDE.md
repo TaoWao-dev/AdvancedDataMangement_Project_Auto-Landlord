@@ -81,9 +81,9 @@ der ersten Zeile **was**, im Rumpf **warum** — und bei einer Korrektur, was
 schiefgegangen war. Commits nur zu Abgabeterminen wären wieder eine
 rekonstruierte Historie.
 
-Autor ist derzeit `Claude <noreply@anthropic.com>`; die inhaltlichen
-Entscheidungen des Projekts stehen im Entscheidungslog, nicht in der
-Autorenzeile.
+Autor ist der Studierende, Claude steht als `Co-Authored-By` in der
+Nachricht (E31). Wer was entschieden hat, steht im Entscheidungslog, nicht in
+der Autorenzeile.
 
 Abgabemarkierungen: `termin3` (Schritte 1–4, 9.10.), `termin4` (Schritt 5,
 23.10.).

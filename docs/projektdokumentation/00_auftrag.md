@@ -38,15 +38,21 @@ einer Vermutung über „den Markt". Drei Dinge liefert das Projekt dafür:
 
 ## Die drei Analysen
 
-| Nr | Frage | Abfrage | Belastbarkeit heute |
-|---|---|---|---|
-| 1 | Was kostet eine Wohnung im Zielsegment 80–100 m² je Bezirk? | `kennzahl_marktniveau.sql`, `kennzahl_bezirksvergleich.sql` | 1020: n=15, belastbar. Vier Bezirke fehlen |
-| 2 | Wie unterscheidet sich das Angebot privater und gewerblicher Anbieter? | `kennzahl_anbietertyp.sql` | 1020: 3 privat gegen 12 gewerblich — dünn, aber aussagekräftig genug für den Vorbehalt |
-| 3 | Wie lange steht ein Inserat, und ändert sich der Preis dabei? | `kennzahl_inseratsdauer.sql`, `v_preisaenderung` | **noch nicht messbar**, braucht einen zweiten Schnappschuss |
+| Nr | Frage | Werkzeug | Abfrage | Belastbarkeit heute |
+|---|---|---|---|---|
+| 1 | Was kostet eine Wohnung im Zielsegment 80–100 m² je Bezirk? | SQL | `kennzahl_marktniveau.sql`, `kennzahl_bezirksvergleich.sql` | 1020: n=15, belastbar. Vier Bezirke fehlen |
+| 2 | Wie unterscheidet sich das Angebot privater und gewerblicher Anbieter? | SQL | `kennzahl_anbietertyp.sql` | 1020: 3 privat gegen 12 gewerblich — dünn, aber aussagekräftig genug für den Vorbehalt |
+| 3 | Wie lange steht ein Inserat, und ändert sich der Preis dabei? | SQL | `kennzahl_inseratsdauer.sql`, `v_preisaenderung` | **noch nicht messbar**, braucht einen zweiten Schnappschuss |
 
 Analyse 3 ist der Schätzer für die Leerstandsannahme im Entscheidungsmodell —
 heute eine Annahme von 2,5 Monaten, künftig eine Messung. Dass sie heute leer
 ist, steht in der Kennzahl-CSV als leere Datei mit Kopfzeile, nicht als Null.
+
+Die drei Analysen sind reines SQL. Dazu kommen zwei Aufgaben für das
+Sprachmodell (Prompt), die keine eigene Kennzahl liefern, sondern die
+Analysen stützen — sie stehen in `05_schritt4_abfragen_referenzen.md` als
+Nummer 4 und 5: die Extraktion der Kollektivvertragsabschlüsse und die
+Formulierung der Entscheidungsvorlage aus der Kennzahltabelle (siehe unten).
 
 ## Wo das Sprachmodell arbeitet, und wo nicht
 
@@ -89,3 +95,10 @@ nicht knapp erfüllt, sondern mit Abstand.
   Unschärfegrad steht je Berufsgruppe in `config/berufsgruppen.json`.
 - Der Rechtsrahmen ist nach öffentlichen Zusammenfassungen modelliert, nicht aus
   dem Gesetzestext, und ist kein Rechtsrat.
+
+## Änderungen seit dem Pitch
+
+| Datum | Änderung |
+|---|---|
+| 26.09.2026 | Pitch im Gallery Walk. Das Feedback war durchgehend positiv; es kam keine Rückmeldung, die Adressat, Entscheidung oder Analysen in Frage gestellt hätte. |
+| 26.09.–09.10.2026 | **Keine Änderungen am Auftrag.** Adressat, Entscheidung und die drei Analysen sind unverändert. Nach dem Pitch fielen zwei Umsetzungsentscheidungen, die den Auftrag nicht ändern, aber festlegen, wie er erfüllt wird: die Zuordnung Programm oder Prompt je Aufgabe (E27) und der Aufschub der Extraktionsreferenzen, bis das Quelldokument gespeichert ist (E28). |
