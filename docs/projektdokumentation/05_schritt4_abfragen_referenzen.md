@@ -35,9 +35,20 @@ jeder mit der Rechnung, die man in einen Taschenrechner tippt:
 | Q1 | `1606747239` | 1745,00 / 84,00 | 20,7738 €/m² |
 | Q3 | `1729042096` | 2525,00 / 82,00 | 30,7927 €/m² |
 
-Das Feld `von_hand_bestaetigt` steht in allen drei Fällen auf `false`. Es wird
-erst `true`, wenn der Studierende die Rechnung tatsächlich nachvollzogen hat —
-nicht, weil das Skript sie ausgegeben hat.
+**Bestätigt am 9.10.2026.** Der Studierende hat alle drei Divisionen mit dem
+Taschenrechner nachgerechnet und kam auf 26,66666666666667, 20,77380952380952
+und 30,79268292682927 €/m² — übereinstimmend mit der Referenz. Seine Werte
+stehen als `handwert` in `handproben.json`, eingetragen über
+`HANDPROBEN_BESTAETIGT` im Skript, nicht von Hand in der JSON.
+
+`von_hand_bestaetigt` wird nur `true`, wenn der eingetragene Handwert zum
+heute berechneten Wert passt. Ändert sich die Rohdatei oder die Auswahl des
+Median-Inserats, fällt die Bestätigung beim nächsten Lauf von selbst weg,
+statt auf einem anderen Inserat stehen zu bleiben.
+
+Was die Handprobe nicht abdeckt: dass Miete und Fläche in der Spalte
+„Rechnung" wirklich die Werte der Rohdatei sind. Das prüfen die
+Zweitimplementierung und `test_eur_pro_m2_des_portals_stimmt_mit_eigener_rechnung`.
 
 ## Wo „richtig" unsicher ist
 

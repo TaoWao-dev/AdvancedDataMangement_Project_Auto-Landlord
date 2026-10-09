@@ -28,6 +28,22 @@ ERFASST = {"wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den "
                   "data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"}
 
 
+# Handproben, die ein Mensch mit dem Taschenrechner nachvollzogen hat.
+# Eingetragen wird der Wert, den ER ausgerechnet hat - nicht der des Skripts.
+# Bestaetigt gilt eine Probe nur, wenn dieser Wert zum heute berechneten passt:
+# aendert sich die Rohdatei oder die Auswahl, faellt die Bestaetigung von
+# selbst weg, statt still auf einem anderen Inserat stehen zu bleiben.
+HANDPROBEN_BESTAETIGT = {
+    "808118316": {"handwert": 26.66666666666667},
+    "1606747239": {"handwert": 20.77380952380952},
+    "1729042096": {"handwert": 30.79268292682927},
+}
+HANDPROBE_WER = "Studierender (Repository-Inhaber), Taschenrechner"
+HANDPROBE_WANN = "2026-10-09"
+HANDPROBE_WIE = ("Division Miete / Flaeche aus der Spalte 'rechnung' "
+                 "nachgerechnet; Ergebnis im Chat mitgeteilt und hier eingetragen")
+
+
 def klasse(fl: float) -> str:
     return ("bis 50" if fl < 50 else "50-80" if fl < 80
             else "80-100" if fl <= 100 else "ueber 100")
@@ -155,11 +171,18 @@ def faelle() -> dict:
                       ("Q1", (len(w80) + 3) // 4 - 1),
                       ("Q3", (3 * len(w80) + 3) // 4 - 1)):
         x = w80[idx]
-        handproben.append({
+        wert = x["miete"] / x["flaeche"]
+        probe = {
             "rolle": name, "ad_id": x["ad_id"],
             "rechnung": f"{x['miete']:.2f} / {x['flaeche']:.2f}",
-            "erwartet_eur_m2": round(x["miete"] / x["flaeche"], 4),
-            "von_hand_bestaetigt": False})
+            "erwartet_eur_m2": round(wert, 4),
+            "von_hand_bestaetigt": False}
+        hand = HANDPROBEN_BESTAETIGT.get(x["ad_id"])
+        if hand and abs(hand["handwert"] - wert) < 1e-4:
+            probe.update(von_hand_bestaetigt=True, handwert=hand["handwert"],
+                         bestaetigt={"wer": HANDPROBE_WER, "wann": HANDPROBE_WANN,
+                                     "wie": HANDPROBE_WIE})
+        handproben.append(probe)
 
     return {"marktniveau": f_marktniveau, "anbietertyp": f_anbieter,
             "abdeckung_und_dauer": abdeckung, "handproben": handproben,

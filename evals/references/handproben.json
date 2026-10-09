@@ -9,21 +9,39 @@
    "ad_id": "808118316",
    "rechnung": "2400.00 / 90.00",
    "erwartet_eur_m2": 26.6667,
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true,
+   "handwert": 26.66666666666667,
+   "bestaetigt": {
+    "wer": "Studierender (Repository-Inhaber), Taschenrechner",
+    "wann": "2026-10-09",
+    "wie": "Division Miete / Flaeche aus der Spalte 'rechnung' nachgerechnet; Ergebnis im Chat mitgeteilt und hier eingetragen"
+   }
   },
   {
    "rolle": "Q1",
    "ad_id": "1606747239",
    "rechnung": "1745.00 / 84.00",
    "erwartet_eur_m2": 20.7738,
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true,
+   "handwert": 20.77380952380952,
+   "bestaetigt": {
+    "wer": "Studierender (Repository-Inhaber), Taschenrechner",
+    "wann": "2026-10-09",
+    "wie": "Division Miete / Flaeche aus der Spalte 'rechnung' nachgerechnet; Ergebnis im Chat mitgeteilt und hier eingetragen"
+   }
   },
   {
    "rolle": "Q3",
    "ad_id": "1729042096",
    "rechnung": "2525.00 / 82.00",
    "erwartet_eur_m2": 30.7927,
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true,
+   "handwert": 30.79268292682927,
+   "bestaetigt": {
+    "wer": "Studierender (Repository-Inhaber), Taschenrechner",
+    "wann": "2026-10-09",
+    "wie": "Division Miete / Flaeche aus der Spalte 'rechnung' nachgerechnet; Ergebnis im Chat mitgeteilt und hier eingetragen"
+   }
   }
  ]
 }
