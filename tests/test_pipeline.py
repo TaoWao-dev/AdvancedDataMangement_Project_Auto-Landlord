@@ -365,6 +365,53 @@ def test_preissenkung_erscheint_als_senkung(tmp_path=None):
         assert abs(pct - round(100 * (zuletzt - erst) / erst, 1)) < 0.05
 
 
+def test_seiten_eines_tages_sind_ein_abruf(tmp_path=None):
+    """Seite 1 (17:45) und Seite 2 (17:47) vom 09.10. sind EIN Abruf mit 178
+    von 178 Treffern - nicht zwei Teilseiten."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_abruf.sqlite"
+    con = _baue(ziel)
+    a = con.execute("SELECT seiten, geliefert, treffer, vollstaendig FROM v_abruf"
+                    " WHERE plz = '1020' AND abruf_datum = '2026-10-09'"
+                    ).fetchone()
+    warn = con.execute("SELECT COUNT(*) FROM qs_befund WHERE objekt LIKE"
+                       " '%2026-10-09%' AND pruefung = 'Vollstaendigkeit'"
+                       " AND stufe = 'warnung'").fetchone()[0]
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert tuple(a) == (2, 178, 178, 1), tuple(a)
+    assert warn == 0, "vollstaendiger Abruf darf keine Teilseiten-Warnung tragen"
+
+
+def test_zensiert_heisst_im_letzten_abruf_noch_online(tmp_path=None):
+    """Vorher galt: zensiert, wenn zuletzt im juengsten SCHNAPPSCHUSS gesehen.
+    Seite 2 lag zwei Minuten nach Seite 1 - alle 90 Inserate von Seite 1
+    galten dadurch als verschwunden."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_zensiert.sqlite"
+    con = _baue(ziel)
+    zensiert = con.execute("SELECT SUM(zensiert) FROM v_inseratsdauer"
+                           " WHERE plz = '1020'").fetchone()[0]
+    im_letzten = con.execute("SELECT COUNT(DISTINCT ad_id) FROM"
+                             " inserat_beobachtung WHERE plz = '1020' AND"
+                             " substr(abruf_ts, 1, 10) = '2026-10-09'"
+                             ).fetchone()[0]
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert zensiert == im_letzten == 178, (zensiert, im_letzten)
+
+
+def test_kein_inserat_doppelt_im_angebot_eines_abrufs(tmp_path=None):
+    """Verschiebt sich die Liste zwischen zwei Seitenaufrufen, steht ein
+    Inserat auf beiden Seiten. Es darf trotzdem nur einmal in den Median."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_doppelt.sqlite"
+    con = _baue(ziel)
+    doppelt = con.execute("SELECT COUNT(*) FROM (SELECT 1 FROM v_angebot"
+                          " GROUP BY plz, abruf_datum, ad_id"
+                          " HAVING COUNT(*) > 1)").fetchone()[0]
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert doppelt == 0
+
+
 def test_datenbankname_kommt_aus_der_konfiguration():
     """Die Vorgabe: der Datenbankname steht in src/config.py (PROJEKT).
     Zweimal dieselbe Zeichenkette zu pflegen ist eine Fehlerquelle."""

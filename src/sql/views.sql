@@ -9,19 +9,42 @@
 --   3. Alles ist nach PLZ gruppiert. Ein Bezirk mehr heisst eine Datei mehr,
 --      keine Aenderung an diesen Views.
 
--- Analysebasis: aktive Inserate mit Miete und Flaeche.
+-- Ein ABRUF sind alle Seiten einer PLZ an einem Tag. Seite 1 und Seite 2
+-- werden Minuten auseinander gespeichert und tragen deshalb verschiedene
+-- Zeitstempel; als zwei Abrufe gezaehlt, galten alle Inserate von Seite 1
+-- als verschwunden (09.10.). Zeitpunkt eines Abrufs ist sein Datum.
+DROP VIEW IF EXISTS v_abruf;
+CREATE VIEW v_abruf AS
+SELECT plz,
+       substr(abruf_ts, 1, 10)                       AS abruf_datum,
+       COUNT(*)                                      AS seiten,
+       SUM(geliefert)                                AS geliefert,
+       MAX(treffer_gesamt)                           AS treffer,
+       CASE WHEN SUM(geliefert) >= MAX(treffer_gesamt)
+            THEN 1 ELSE 0 END                        AS vollstaendig
+FROM snapshot
+GROUP BY plz, substr(abruf_ts, 1, 10);
+
+-- Analysebasis: aktive Inserate mit Miete und Flaeche, je Abruf jedes
+-- Inserat nur einmal. Verschiebt sich die Ergebnisliste zwischen zwei
+-- Seitenaufrufen, steht ein Inserat auf beiden Seiten - im Median zaehlt es
+-- trotzdem einfach (die zuerst gesehene Fassung).
 DROP VIEW IF EXISTS v_angebot;
 CREATE VIEW v_angebot AS
-SELECT b.*,
-       CASE WHEN b.flaeche_m2 <  50 THEN 'bis 50'
-            WHEN b.flaeche_m2 <  80 THEN '50-80'
-            WHEN b.flaeche_m2 <= 100 THEN '80-100'
-            ELSE 'ueber 100' END        AS groessenklasse,
-       substr(b.abruf_ts, 1, 10)        AS abruf_datum
-FROM inserat_beobachtung b
-WHERE b.status = 'aktiv'
-  AND b.miete_eur  IS NOT NULL
-  AND b.flaeche_m2 IS NOT NULL;
+SELECT * FROM (
+  SELECT b.*,
+         CASE WHEN b.flaeche_m2 <  50 THEN 'bis 50'
+              WHEN b.flaeche_m2 <  80 THEN '50-80'
+              WHEN b.flaeche_m2 <= 100 THEN '80-100'
+              ELSE 'ueber 100' END        AS groessenklasse,
+         substr(b.abruf_ts, 1, 10)        AS abruf_datum,
+         ROW_NUMBER() OVER (PARTITION BY b.plz, substr(b.abruf_ts, 1, 10), b.ad_id
+                            ORDER BY b.abruf_ts, b.snapshot_id) AS _nr
+  FROM inserat_beobachtung b
+  WHERE b.status = 'aktiv'
+    AND b.miete_eur  IS NOT NULL
+    AND b.flaeche_m2 IS NOT NULL
+) WHERE _nr = 1;
 
 -- Preisniveau je PLZ, Groessenklasse und Abruf.
 -- Median ueber Fensterfunktion, weil SQLite kein PERCENTILE_CONT kennt.
@@ -145,18 +168,23 @@ HAVING COUNT(DISTINCT miete_eur) > 1;
 -- noch offen, seine Dauer ist eine Untergrenze.
 DROP VIEW IF EXISTS v_inseratsdauer;
 CREATE VIEW v_inseratsdauer AS
-SELECT b.ad_id, b.plz,
-       MIN(b.abruf_ts)                          AS erst_gesehen,
-       MAX(b.abruf_ts)                          AS zuletzt_gesehen,
-       COUNT(*)                                 AS beobachtungen,
-       CAST(julianday(MAX(b.abruf_ts)) - julianday(MIN(b.abruf_ts))
-            AS INTEGER)                         AS dauer_tage,
-       CASE WHEN MAX(b.abruf_ts) = (SELECT MAX(abruf_ts)
-                                    FROM inserat_beobachtung
-                                    WHERE plz = b.plz)
-            THEN 1 ELSE 0 END                   AS zensiert
-FROM inserat_beobachtung b
-GROUP BY b.ad_id, b.plz;
+-- Auf Ebene der Abrufe (Tage), nicht der Seiten: zensiert ist ein Inserat,
+-- das im juengsten ABRUF seiner PLZ noch steht.
+WITH t AS (
+  SELECT DISTINCT ad_id, plz, substr(abruf_ts, 1, 10) AS tag
+  FROM inserat_beobachtung
+)
+SELECT t.ad_id, t.plz,
+       MIN(t.tag)                                     AS erst_gesehen,
+       MAX(t.tag)                                     AS zuletzt_gesehen,
+       COUNT(*)                                       AS beobachtungen,
+       CAST(julianday(MAX(t.tag)) - julianday(MIN(t.tag))
+            AS INTEGER)                               AS dauer_tage,
+       CASE WHEN MAX(t.tag) = (SELECT MAX(tag) FROM t AS u
+                               WHERE u.plz = t.plz)
+            THEN 1 ELSE 0 END                         AS zensiert
+FROM t
+GROUP BY t.ad_id, t.plz;
 
 -- Anbieterstruktur je Bezirk und Groessenklasse.
 DROP VIEW IF EXISTS v_anbieterstruktur;
@@ -172,12 +200,16 @@ GROUP BY plz, abruf_datum, groessenklasse;
 -- Abdeckung: welche Bezirke haben wir, welche fehlen, wie alt ist der Stand?
 DROP VIEW IF EXISTS v_abdeckung;
 CREATE VIEW v_abdeckung AS
+-- Vollstaendigkeit je Abruf (alle Seiten eines Tages), nicht je Seite.
 SELECT b.plz, b.bezirk_name, b.cluster_id, b.rolle,
-       COUNT(DISTINCT s.snapshot_id)                   AS schnappschuesse,
-       MAX(s.abruf_ts)                                 AS letzter_abruf,
-       SUM(s.geliefert)                                AS beobachtungen,
-       MAX(s.treffer_gesamt)                           AS treffer_letzter,
-       MIN(COALESCE(s.vollstaendig, 1))                AS immer_vollstaendig
+       COUNT(a.abruf_datum)                            AS abrufe,
+       COALESCE(SUM(a.seiten), 0)                      AS seiten,
+       MAX(a.abruf_datum)                              AS letzter_abruf,
+       SUM(a.geliefert)                                AS beobachtungen,
+       (SELECT treffer FROM v_abruf l WHERE l.plz = b.plz
+        ORDER BY abruf_datum DESC LIMIT 1)             AS treffer_letzter,
+       (SELECT vollstaendig FROM v_abruf l WHERE l.plz = b.plz
+        ORDER BY abruf_datum DESC LIMIT 1)             AS letzter_vollstaendig
 FROM bezirk b
-LEFT JOIN snapshot s ON s.plz = b.plz
+LEFT JOIN v_abruf a ON a.plz = b.plz
 GROUP BY b.plz, b.bezirk_name, b.cluster_id, b.rolle;

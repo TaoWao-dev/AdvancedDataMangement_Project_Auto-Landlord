@@ -229,14 +229,32 @@ def willhaben(interim: Path | None = None) -> dict:
         raise SystemExit("PII-Kontrolle fehlgeschlagen:\n  "
                          + "\n  ".join(pii_treffer[:10]))
 
+    # Vollstaendig ist der ABRUF (alle Seiten einer PLZ an einem Tag), nicht
+    # die einzelne Seite. Seite 1 mit 90 von 178 ist kein Mangel, wenn Seite 2
+    # die uebrigen 88 liefert - die Warnung bleibt nur, wo wirklich Inserate
+    # fehlen. Datumsgrenze: der Tag aus searchDate, wie in v_abruf.
+    abrufe: dict[tuple, list[dict]] = {}
+    for s in schnappschuesse:
+        abrufe.setdefault((s["plz"], s["abruf_ts"][:10]), []).append(s)
+    unvollstaendig = 0
+    for seiten in abrufe.values():
+        geliefert = sum(s["geliefert"] for s in seiten)
+        treffer = max(s["treffer_gesamt"] for s in seiten)
+        if geliefert >= treffer:
+            for s in seiten:
+                s["warnungen"] = [w for w in s["warnungen"]
+                                  if not w.startswith("Vollstaendigkeit")]
+        else:
+            unvollstaendig += 1
+
     ohne_flaeche = sum(1 for z in zeilen if z["flaeche_m2"] is None)
     reserviert = sum(1 for z in zeilen if z["status"] != "aktiv")
-    teilseiten = sum(1 for s in schnappschuesse if not s["vollstaendig"])
+    teilseiten = unvollstaendig
 
     print(f"clean willhaben: {len(schnappschuesse)} Schnappschuss/e "
           f"aufgenommen, {len(abgelehnt)} abgelehnt, {len(zeilen)} Inserate; "
           f"{ohne_flaeche} ohne Flaeche, {reserviert} reserviert, "
-          f"{teilseiten} Teilseite(n); "
+          f"{teilseiten} unvollstaendige(r) Abruf(e); "
           f"{len(verworfene_felder)} Feld(er) als PII verworfen "
           f"({', '.join(sorted(verworfene_felder))})")
     for a in abgelehnt:

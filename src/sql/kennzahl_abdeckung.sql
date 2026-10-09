@@ -10,13 +10,14 @@ SELECT plz,
        bezirk_name,
        COALESCE(cluster_id, '-')          AS cluster_id,
        rolle,
-       schnappschuesse,
+       abrufe,
+       seiten,
        COALESCE(letzter_abruf, '-')       AS letzter_abruf,
        COALESCE(beobachtungen, 0)         AS beobachtungen,
        COALESCE(treffer_letzter, 0)       AS treffer_letzter,
-       immer_vollstaendig,
-       CASE WHEN schnappschuesse = 0 THEN 'fehlt'
-            WHEN immer_vollstaendig = 0 THEN 'nur Teilseite'
+       letzter_vollstaendig,
+       CASE WHEN abrufe = 0 THEN 'fehlt'
+            WHEN letzter_vollstaendig = 0 THEN 'letzter Abruf unvollstaendig'
             ELSE 'ok' END                 AS befund
 FROM v_abdeckung
 ORDER BY rolle, plz;
