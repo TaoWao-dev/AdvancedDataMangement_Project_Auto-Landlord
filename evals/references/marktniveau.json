@@ -1,0 +1,156 @@
+{
+ "_zweck": "Referenzantworten fuer Schritt 4. Sie existieren VOR dem Modell und sind der Maßstab, an dem spaeter gemessen wird.",
+ "_quelle": "data/raw/2026-09-25/wh_1020_mietwohnungen_2026-09-25T1555.json",
+ "_erzeugt_von": "evals/nachrechnen_marktniveau.py",
+ "_warnung": "Diese Datei wird nicht von Hand bearbeitet. Wer eine Handprobe bestaetigt, setzt 'von_hand_bestaetigt' im Skript und laesst es neu laufen.",
+ "faelle": [
+  {
+   "fall_id": "marktniveau_1020_bis_50",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_marktniveau.sql",
+    "filter": {
+     "plz": "1020",
+     "groessenklasse": "bis 50",
+     "abruf_datum": "2026-09-25",
+     "status": "aktiv"
+    }
+   },
+   "erwartete_antwort": {
+    "fallzahl": 10,
+    "median_eur_m2": 33.49,
+    "q1_eur_m2": 25.16,
+    "q3_eur_m2": 41.94,
+    "min_eur_m2": 21.11,
+    "max_eur_m2": 62.1,
+    "davon_privat": 4,
+    "davon_gewerblich": 6,
+    "belastbarkeit": "duenn"
+   },
+   "pruefregel": "numerischer Vergleich",
+   "toleranz": {
+    "median_eur_m2": 0.01,
+    "q1_eur_m2": 0.01,
+    "q3_eur_m2": 0.01,
+    "fallzahl": 0
+   },
+   "herkunft": {
+    "wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-09",
+    "wie": "evals/nachrechnen_marktniveau.py liest data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Die Quartile verwenden die Rangformel der Views (r = (n+3)/4 bzw. (3n+3)/4), nicht lineare Interpolation. Andere Statistikprogramme liefern bei kleinem n leicht andere Quartile - gegen diese Referenz zu pruefen heisst, die Definition der View zu pruefen, nicht 'das Quartil an sich'."
+  },
+  {
+   "fall_id": "marktniveau_1020_50-80",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_marktniveau.sql",
+    "filter": {
+     "plz": "1020",
+     "groessenklasse": "50-80",
+     "abruf_datum": "2026-09-25",
+     "status": "aktiv"
+    }
+   },
+   "erwartete_antwort": {
+    "fallzahl": 37,
+    "median_eur_m2": 24.98,
+    "q1_eur_m2": 21.05,
+    "q3_eur_m2": 33.91,
+    "min_eur_m2": 7.51,
+    "max_eur_m2": 39.15,
+    "davon_privat": 14,
+    "davon_gewerblich": 23,
+    "belastbarkeit": "belastbar"
+   },
+   "pruefregel": "numerischer Vergleich",
+   "toleranz": {
+    "median_eur_m2": 0.01,
+    "q1_eur_m2": 0.01,
+    "q3_eur_m2": 0.01,
+    "fallzahl": 0
+   },
+   "herkunft": {
+    "wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-09",
+    "wie": "evals/nachrechnen_marktniveau.py liest data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Die Quartile verwenden die Rangformel der Views (r = (n+3)/4 bzw. (3n+3)/4), nicht lineare Interpolation. Andere Statistikprogramme liefern bei kleinem n leicht andere Quartile - gegen diese Referenz zu pruefen heisst, die Definition der View zu pruefen, nicht 'das Quartil an sich'."
+  },
+  {
+   "fall_id": "marktniveau_1020_80-100",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_marktniveau.sql",
+    "filter": {
+     "plz": "1020",
+     "groessenklasse": "80-100",
+     "abruf_datum": "2026-09-25",
+     "status": "aktiv"
+    }
+   },
+   "erwartete_antwort": {
+    "fallzahl": 15,
+    "median_eur_m2": 26.67,
+    "q1_eur_m2": 20.77,
+    "q3_eur_m2": 30.79,
+    "min_eur_m2": 18.4,
+    "max_eur_m2": 37.04,
+    "davon_privat": 3,
+    "davon_gewerblich": 12,
+    "belastbarkeit": "belastbar"
+   },
+   "pruefregel": "numerischer Vergleich",
+   "toleranz": {
+    "median_eur_m2": 0.01,
+    "q1_eur_m2": 0.01,
+    "q3_eur_m2": 0.01,
+    "fallzahl": 0
+   },
+   "herkunft": {
+    "wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-09",
+    "wie": "evals/nachrechnen_marktniveau.py liest data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Die Quartile verwenden die Rangformel der Views (r = (n+3)/4 bzw. (3n+3)/4), nicht lineare Interpolation. Andere Statistikprogramme liefern bei kleinem n leicht andere Quartile - gegen diese Referenz zu pruefen heisst, die Definition der View zu pruefen, nicht 'das Quartil an sich'."
+  },
+  {
+   "fall_id": "marktniveau_1020_ueber_100",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_marktniveau.sql",
+    "filter": {
+     "plz": "1020",
+     "groessenklasse": "ueber 100",
+     "abruf_datum": "2026-09-25",
+     "status": "aktiv"
+    }
+   },
+   "erwartete_antwort": {
+    "fallzahl": 24,
+    "median_eur_m2": 19.02,
+    "q1_eur_m2": 17.75,
+    "q3_eur_m2": 21.57,
+    "min_eur_m2": 14.07,
+    "max_eur_m2": 46.52,
+    "davon_privat": 3,
+    "davon_gewerblich": 21,
+    "belastbarkeit": "belastbar"
+   },
+   "pruefregel": "numerischer Vergleich",
+   "toleranz": {
+    "median_eur_m2": 0.01,
+    "q1_eur_m2": 0.01,
+    "q3_eur_m2": 0.01,
+    "fallzahl": 0
+   },
+   "herkunft": {
+    "wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-09",
+    "wie": "evals/nachrechnen_marktniveau.py liest data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Die Quartile verwenden die Rangformel der Views (r = (n+3)/4 bzw. (3n+3)/4), nicht lineare Interpolation. Andere Statistikprogramme liefern bei kleinem n leicht andere Quartile - gegen diese Referenz zu pruefen heisst, die Definition der View zu pruefen, nicht 'das Quartil an sich'."
+  }
+ ]
+}

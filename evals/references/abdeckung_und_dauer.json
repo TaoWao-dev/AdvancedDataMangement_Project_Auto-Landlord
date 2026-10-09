@@ -1,0 +1,55 @@
+{
+ "_zweck": "Referenzantworten fuer Schritt 4. Sie existieren VOR dem Modell und sind der Maßstab, an dem spaeter gemessen wird.",
+ "_quelle": "data/raw/2026-09-25/wh_1020_mietwohnungen_2026-09-25T1555.json",
+ "_erzeugt_von": "evals/nachrechnen_marktniveau.py",
+ "_warnung": "Diese Datei wird nicht von Hand bearbeitet. Wer eine Handprobe bestaetigt, setzt 'von_hand_bestaetigt' im Skript und laesst es neu laufen.",
+ "faelle": [
+  {
+   "fall_id": "abdeckung_bezirke",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_abdeckung.sql"
+   },
+   "erwartete_antwort": {
+    "bezirke_in_konfiguration": 5,
+    "bezirke_mit_schnappschuss": 1,
+    "beobachtungen_gesamt": 90,
+    "ohne_schnappschuss": [
+     "1010",
+     "1030",
+     "1100",
+     "1220"
+    ]
+   },
+   "pruefregel": "exakter Vergleich",
+   "toleranz": {},
+   "herkunft": {
+    "wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-09",
+    "wie": "evals/nachrechnen_marktniveau.py liest data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Keine. Der Fall prueft, dass die Luecke SICHTBAR bleibt - er faellt, sobald ein fehlender Bezirk stillschweigend verschwindet."
+  },
+  {
+   "fall_id": "inseratsdauer_nicht_messbar",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_inseratsdauer.sql"
+   },
+   "erwartete_antwort": {
+    "zeilen_mit_dauer_ueber_null": 0,
+    "anteil_zensiert": 1.0,
+    "auswertbar": false,
+    "begruendung": "ein einziger Schnappschuss; jede Dauer ist 0 Tage und zensiert"
+   },
+   "pruefregel": "exakter Vergleich",
+   "toleranz": {},
+   "herkunft": {
+    "wer": "Zweitimplementierung (LLM-gestuetzt), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-09",
+    "wie": "evals/nachrechnen_marktniveau.py liest data/raw/2026-09-25/wh_*.json direkt, ohne src/ und ohne SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Erwartet wird hier ausdruecklich ein NICHT-Ergebnis. Der Fall ist bestanden, wenn die Abfrage die Unauswertbarkeit meldet, statt eine Dauer von 0 Tagen als Messwert auszugeben."
+  }
+ ]
+}

@@ -1,0 +1,60 @@
+{
+  "_zweck": "Portfolio, Rechtsrahmen und Modellparameter. Jeder Wert ohne oeffentliche Quelle ist als ANNAHME markiert und hat eine Sensitivitaetsspanne.",
+
+  "cluster": [
+    {"cluster_id": "NORDBAHN", "bezeichnung": "Nordbahnviertel", "bezirk": 2,
+     "bezirk_name": "Leopoldstadt", "plz": "1020", "einheiten": 20, "baujahr": 2019,
+     "beleg": "Marktmiete kommt aus v_marktniveau (willhaben-Schnappschuss), nicht mehr aus einer Annahme."},
+    {"cluster_id": "SONNWEND", "bezeichnung": "Sonnwendviertel", "bezirk": 10,
+     "bezirk_name": "Favoriten", "plz": "1100", "einheiten": 20, "baujahr": 2018,
+     "beleg": "Schnappschuss fuer 1100 noch nicht beschafft."},
+    {"cluster_id": "SEESTADT", "bezeichnung": "Seestadt Aspern", "bezirk": 22,
+     "bezirk_name": "Donaustadt", "plz": "1220", "einheiten": 10, "baujahr": 2020,
+     "beleg": "Schnappschuss fuer 1220 noch nicht beschafft."}
+  ],
+
+  "wohnung": {"flaeche_min_m2": 80, "flaeche_max_m2": 100,
+    "_kommentar": "Eigentumswohnungen im Neubau, damit Teilanwendungsbereich MRG: freier Mietzins, aber Kuendigungsschutz."},
+
+  "recht": {
+    "_hinweis": "Modellierung nach oeffentlichen Zusammenfassungen des MieWeG / 5. MILG, Stand 2026. KEIN Rechtsrat.",
+    "anwendungsbereich": "teilanwendung",
+    "mindestbefristung_jahre_unternehmer": 5,
+    "mindestbefristung_jahre_privat": 3,
+    "wertsicherung_freibetrag_pct_pro_jahr": 3.0,
+    "wertsicherung_anteil_ueber_freibetrag": 0.5,
+    "wertsicherung_frueheste_anpassung_monat": 4,
+    "vollanwendung_deckel": {"2026": 1.0, "2027": 2.0},
+    "kuendigungsgruende_vermieter": "nur § 30 MRG - eine Einkommensaenderung des Mieters ist keiner"
+  },
+
+  "annahmen": {
+    "leerstand_monate": {"wert": 2.5, "typ": "ANNAHME", "sensitivitaet": [1.5, 2.5, 4.0],
+      "begruendung": "Zeit zwischen Auszug und Neubezug inkl. Vermarktung. Kuenftig messbar aus v_inseratsdauer."},
+    "neuvermietungskosten_monatsmieten": {"wert": 2.0, "typ": "ANNAHME", "sensitivitaet": [1.0, 2.0, 3.5],
+      "begruendung": "Vermarktung, Maklerleistung, Malerei, Grundreinigung."},
+    "diskontsatz_pa": {"wert": 0.045, "typ": "ANNAHME", "sensitivitaet": [0.03, 0.045, 0.06],
+      "begruendung": "Kalkulationszins des Bestandhalters."},
+    "umzugskosten_eur": {"wert": 4500, "typ": "ANNAHME", "sensitivitaet": [2500, 4500, 7000],
+      "begruendung": "Was der Mieter beim Wechsel traegt. Bindet ihn an einen Vertrag ueber Markt."},
+    "belastungsquote_schmerzgrenze": {"wert": 0.33, "typ": "ANNAHME", "sensitivitaet": [0.28, 0.33, 0.40],
+      "begruendung": "Anteil der Bruttomiete am Haushaltsnetto, ab dem die Annahmebereitschaft faellt."},
+    "wechselbereitschaft_k": {"wert": 0.55, "typ": "ANNAHME", "sensitivitaet": [0.30, 0.55, 0.90],
+      "begruendung": "Steilheit der Annahmekurve. DER SENSIBELSTE PARAMETER des Modells."},
+    "betriebskosten_eur_m2": {"wert": 2.60, "typ": "ANNAHME", "sensitivitaet": [2.20, 2.60, 3.20],
+      "begruendung": "Fuer die Bruttomiete in der Belastungsquote. Nicht Teil des Mietzinses."},
+    "netto_von_brutto_faktor": {"wert": 0.66, "typ": "ANNAHME", "sensitivitaet": [0.62, 0.66, 0.70],
+      "begruendung": "Grobe Ueberleitung Brutto-Jahreseinkommen auf verfuegbares Netto."},
+    "marktrisiko_abschlag": {"wert": 0.06, "typ": "ANNAHME", "sensitivitaet": [0.0, 0.06, 0.12],
+      "begruendung": "Abschlag auf die geschaetzte Marktmiete gegenueber dem sicheren Bestandsmietvertrag. Inserate sind Angebots-, keine Abschlussmieten."},
+    "ausfall_monate_je_fall": {"wert": 4.0, "typ": "ANNAHME", "sensitivitaet": [2.0, 4.0, 7.0],
+      "begruendung": "Mietausfall plus Verfahrensdauer je Zahlungsausfall."},
+    "leerstand_zuschlag_je_gleichzeitiger_neuvermietung": {"wert": 0.35, "typ": "ANNAHME", "sensitivitaet": [0.15, 0.35, 0.6],
+      "begruendung": "Wer viele idente Wohnungen im selben Quartal inseriert, konkurriert mit sich selbst. Dieser Parameter verkoppelt die 50 Einzelentscheidungen."}
+  },
+
+  "angebotsraster": {
+    "aufschlaege_pct": [0, 3, 6, 9, 12, 15, 20, 25, 30, 40],
+    "_kommentar": "Ueber diese Aufschlaege auf die aktuelle Nettomiete wird optimiert."
+  }
+}

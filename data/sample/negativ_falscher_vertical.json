@@ -1,0 +1,6334 @@
+{
+ "_redaktion": {
+  "werkzeug": "tools/redigiere_schnappschuss.py",
+  "quelle_datei": "negativ_falscher_vertical.json",
+  "quelle_sha256": "a2ca0e8bf95ae59880479fc8efbba7faa2a1d89996cea7ba23d93cf58d595114",
+  "hinweis": "Reduzierte Fassung. Werte nicht benoetigter Felder sind durch [ENTFERNT] ersetzt, Feldnamen bleiben stehen. Die unveraenderte Datei liegt nicht im Repository; Begruendung in der Modul-Dokumentation und in docs/datenbeschaffung.md.",
+  "entfernte_suchfelder": [
+   "advertisingParameters",
+   "advertisingParametersV2",
+   "autocompleteLinkList",
+   "brazeBanners",
+   "breadcrumbs",
+   "description",
+   "dmpParameters",
+   "dmpUserIdentities",
+   "id",
+   "lastUserAlertViewedDate",
+   "metaData",
+   "navigatorGroups",
+   "newAdsSeparatorPosition",
+   "pageRequested",
+   "pagingLinksList",
+   "searchContextLinks",
+   "searchExcludeList",
+   "searchSubTitle",
+   "searchTitle",
+   "seoMetaData",
+   "sortOrderList",
+   "statistics",
+   "taggingData"
+  ],
+  "entfernte_inseratsfelder": [
+   "adTypeId",
+   "advertImageList",
+   "children",
+   "contextLinkList",
+   "description",
+   "dmpParameters",
+   "productId",
+   "selfLink",
+   "teaserAttributes",
+   "upsellingOrganisationLogo"
+  ],
+  "entfernte_attributwerte": [
+   "ACTIVE_UNTIL",
+   "ADDRESS",
+   "ADTYPE_ID",
+   "AD_UUID",
+   "ALL_IMAGE_URLS",
+   "BODY_DYN",
+   "CHANGED",
+   "CHANGED_String",
+   "COORDINATES",
+   "COUNTRY",
+   "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+   "ENDDATE",
+   "ENDDATE_String",
+   "HEADING",
+   "IS_BUMPED",
+   "MMO",
+   "ORGID",
+   "ORG_UUID",
+   "PRICE/AMOUNT",
+   "PRICE_FOR_DISPLAY",
+   "PRODUCT_ID",
+   "PUBLISHED",
+   "RESULT_LIST_STYLE2",
+   "SEGMENT",
+   "SEO_URL",
+   "STATE",
+   "TEASER_ATTRIBUTE",
+   "categorytreeattributeids",
+   "categorytreeids",
+   "p2penabled"
+  ]
+ },
+ "props": {
+  "pageProps": {
+   "searchResult": {
+    "searchId": 301,
+    "verticalId": 5,
+    "rowsRequested": 30,
+    "heading": "Anzeigen",
+    "rowsFound": 13353029,
+    "rowsReturned": 30,
+    "searchDate": "2026-09-25T15:42:58+0200",
+    "advertSummaryList": {
+     "advertSummary": [
+      {
+       "id": "1112262344",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Hermagor"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "9620"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "RESULT_LIST_STYLE2",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Hermagor"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1112262344"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:44Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "IS_BUMPED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "4900"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1531740840",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Krottendorf-Gaisfeld"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "8564"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "RESULT_LIST_STYLE2",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Voitsberg"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1531740840"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:44Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "IS_BUMPED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "350"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ACTIVE_UNTIL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "892040905",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Spratzern"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "3100"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Sankt Pölten"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "892040905"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:24Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "25"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1327616344",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Kremsmünster"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "4550"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Kirchdorf an der Krems"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1327616344"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:23Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "0"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1621114879",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wien, 12. Bezirk, Meidling"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "1120"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wien"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1621114879"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:23Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADDRESS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "105"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1128475311",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Presseggersee"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "9620"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Hermagor"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1128475311"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:23Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "320"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1123936272",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wien, 11. Bezirk, Simmering"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "1110"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wien"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1123936272"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:23Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "20"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1053459312",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Kleinsölk"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "8961"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Liezen"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1053459312"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:23Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "25"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1159060895",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wien, 14. Bezirk, Penzing"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "1140"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wien"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1159060895"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:22Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "18"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "2051412600",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Elixhausen"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "5161"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Salzburg-Umgebung"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "2051412600"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:21Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "43"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "960465910",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Kleinwiesenhart"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "4774"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Schärding"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "960465910"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:21Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADDRESS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "20"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1776610501",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Berndorf"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "2560"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Baden"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1776610501"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADDRESS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "190"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1081245644",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "St. Pölten"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "3100"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Sankt Pölten"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1081245644"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "20"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "982345649",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Hohenems"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "6845"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Dornbirn"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "982345649"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "10"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1031902384",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Hollabrunn"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "2020"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Hollabrunn"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1031902384"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "249"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "838484086",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Puntigam"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "8055"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Graz"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "838484086"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "3"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1510445186",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wien, 22. Bezirk, Donaustadt"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "1220"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wien"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1510445186"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADDRESS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "30"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "899028505",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wien, 14. Bezirk, Penzing"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "1140"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wien"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "899028505"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "2"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1929066783",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wiener Neustadt"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "2700"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wiener Neustadt"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1929066783"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:20Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "28"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1659077045",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Lauterbach"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "4565"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Kirchdorf an der Krems"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1659077045"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:19Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADDRESS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "26"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1750607922",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Elixhausen"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "5161"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Salzburg-Umgebung"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1750607922"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:19Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "19"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1645064234",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Pinsdorf"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "4812"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Gmunden"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1645064234"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:18Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "5"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DOES_NOT_COME_FROM_SEARCH_ENGINE__TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "TEASER_ATTRIBUTE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "862436494",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Kottingbrunn"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "2542"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Baden"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "862436494"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:18Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "3"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "902568099",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wien, 12. Bezirk, Meidling"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "1120"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wien"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "902568099"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:18Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "7"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "857516041",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Waldhausen im Strudengau"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "4391"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Perg"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "857516041"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:18Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADDRESS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "300"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1703644132",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "St. Margarethen an der Raab"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "8321"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Weiz"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1703644132"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:18Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "6"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1281668889",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Flandorf"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "2102"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Korneuburg"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1281668889"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:18Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "7.5"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1515936143",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Graz"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "8044"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Graz"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1515936143"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:17Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "50"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "2047850284",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Wiener Neustadt"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "2700"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Wiener Neustadt"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "2047850284"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:17Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "5"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      },
+      {
+       "id": "1649339471",
+       "verticalId": 5,
+       "advertStatus": {
+        "id": "active",
+        "description": "aktiv"
+       },
+       "advertiserInfo": {
+        "label": null
+       },
+       "attributes": {
+        "attribute": [
+         {
+          "name": "LOCATION",
+          "values": [
+           "Horitschon"
+          ]
+         },
+         {
+          "name": "p2penabled",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "categorytreeattributeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "CHANGED_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "POSTCODE",
+          "values": [
+           "7312"
+          ]
+         },
+         {
+          "name": "BODY_DYN",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "STATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ORG_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "HEADING",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "DISTRICT",
+          "values": [
+           "Oberpullendorf"
+          ]
+         },
+         {
+          "name": "PUBLISHED",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COUNTRY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE/AMOUNT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE_String",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADTYPE_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ADID",
+          "values": [
+           "1649339471"
+          ]
+         },
+         {
+          "name": "ORGID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEGMENT",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "SEO_URL",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ALL_IMAGE_URLS",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PUBLISHED_String",
+          "values": [
+           "2026-09-25T15:39:17Z"
+          ]
+         },
+         {
+          "name": "ISPRIVATE",
+          "values": [
+           "1"
+          ]
+         },
+         {
+          "name": "categorytreeids",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRODUCT_ID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "MMO",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "ENDDATE",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "AD_UUID",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "COORDINATES",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         },
+         {
+          "name": "PRICE",
+          "values": [
+           "8"
+          ]
+         },
+         {
+          "name": "PRICE_FOR_DISPLAY",
+          "values": [
+           "[ENTFERNT]"
+          ]
+         }
+        ]
+       },
+       "description": "[ENTFERNT]",
+       "selfLink": "[ENTFERNT]"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

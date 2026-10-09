@@ -1,0 +1,29 @@
+{
+ "_zweck": "Die drei Werte, die laut Vorgabe von Hand nachzurechnen sind. Taschenrechner genuegt.",
+ "_quelle": "data/raw/2026-09-25/wh_1020_mietwohnungen_2026-09-25T1555.json",
+ "_erzeugt_von": "evals/nachrechnen_marktniveau.py",
+ "_warnung": "Diese Datei wird nicht von Hand bearbeitet. Wer eine Handprobe bestaetigt, setzt 'von_hand_bestaetigt' im Skript und laesst es neu laufen.",
+ "faelle": [
+  {
+   "rolle": "Median",
+   "ad_id": "808118316",
+   "rechnung": "2400.00 / 90.00",
+   "erwartet_eur_m2": 26.6667,
+   "von_hand_bestaetigt": false
+  },
+  {
+   "rolle": "Q1",
+   "ad_id": "1606747239",
+   "rechnung": "1745.00 / 84.00",
+   "erwartet_eur_m2": 20.7738,
+   "von_hand_bestaetigt": false
+  },
+  {
+   "rolle": "Q3",
+   "ad_id": "1729042096",
+   "rechnung": "2525.00 / 82.00",
+   "erwartet_eur_m2": 30.7927,
+   "von_hand_bestaetigt": false
+  }
+ ]
+}

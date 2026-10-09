@@ -1,0 +1,16 @@
+# Unredigierte Schnappschuesse. Sie enthalten Anbieternamen und eine Kennung
+# des Browsers, mit dem gespeichert wurde (Entscheidungslog E21). Sie bleiben
+# lokal; ihre SHA256 stehen in data/raw/<datum>/HERKUNFT.md.
+data/raw_original/
+
+# Arbeitskopie, wird bei jedem Lauf aus data/raw/ neu erzeugt.
+data/interim/
+
+# data/raw/ und data/processed/ sind NICHT ignoriert - Begruendung in
+# Entscheidungslog E25 und E26. Kurz: die redigierten Schnappschuesse machen
+# den Klon lauffaehig, und die Datenbank ist byteweise reproduzierbar.
+
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
