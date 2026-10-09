@@ -116,16 +116,26 @@ WHERE b.cluster_id IS NOT NULL;
 -- Braucht mindestens zwei Schnappschuesse derselben PLZ; sonst leer.
 DROP VIEW IF EXISTS v_preisaenderung;
 CREATE VIEW v_preisaenderung AS
+-- Erster gegen letzten Preis, nicht Minimum gegen Maximum: (max - min) / min
+-- ist immer positiv und machte jede Senkung zur Erhoehung (09.10.: drei von
+-- sechs Aenderungen waren Senkungen, ausgewiesen als bis zu +15,8 %).
+WITH b AS (
+  SELECT ad_id, plz, abruf_ts, miete_eur,
+         ROW_NUMBER() OVER (PARTITION BY ad_id, plz ORDER BY abruf_ts)      AS r_erst,
+         ROW_NUMBER() OVER (PARTITION BY ad_id, plz ORDER BY abruf_ts DESC) AS r_letzt
+  FROM inserat_beobachtung
+  WHERE miete_eur IS NOT NULL
+)
 SELECT ad_id, plz,
-       MIN(abruf_ts)                            AS erst_gesehen,
-       MAX(abruf_ts)                            AS zuletzt_gesehen,
-       COUNT(*)                                 AS beobachtungen,
-       MIN(miete_eur)                           AS miete_min,
-       MAX(miete_eur)                           AS miete_max,
-       ROUND(100.0 * (MAX(miete_eur) - MIN(miete_eur))
-             / MIN(miete_eur), 1)               AS aenderung_pct
-FROM inserat_beobachtung
-WHERE miete_eur IS NOT NULL
+       MIN(abruf_ts)                                        AS erst_gesehen,
+       MAX(abruf_ts)                                        AS zuletzt_gesehen,
+       COUNT(*)                                             AS beobachtungen,
+       MAX(CASE WHEN r_erst  = 1 THEN miete_eur END)        AS miete_erst,
+       MAX(CASE WHEN r_letzt = 1 THEN miete_eur END)        AS miete_zuletzt,
+       ROUND(100.0 * (MAX(CASE WHEN r_letzt = 1 THEN miete_eur END)
+                    - MAX(CASE WHEN r_erst  = 1 THEN miete_eur END))
+             / MAX(CASE WHEN r_erst = 1 THEN miete_eur END), 1) AS aenderung_pct
+FROM b
 GROUP BY ad_id, plz
 HAVING COUNT(DISTINCT miete_eur) > 1;
 

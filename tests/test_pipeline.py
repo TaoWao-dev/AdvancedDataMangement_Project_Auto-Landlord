@@ -348,6 +348,23 @@ def test_inseratsdauer_wird_gemessen_sobald_zwei_abrufe_da_sind(tmp_path=None):
     assert all(t[0] == 14 for t in tage), sorted({t[0] for t in tage})
 
 
+def test_preissenkung_erscheint_als_senkung(tmp_path=None):
+    """Die View rechnete (Maximum - Minimum) / Minimum - jede Aenderung wurde
+    so zur Erhoehung. Am 09.10. waren drei von sechs Aenderungen Senkungen,
+    etwa 3445 -> 2975 EUR, ausgewiesen als +15,8 %."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_preis.sqlite"
+    con = _baue(ziel)
+    zeilen = con.execute("SELECT miete_erst, miete_zuletzt, aenderung_pct"
+                         " FROM v_preisaenderung").fetchall()
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert zeilen, "keine Preisaenderung - Testdaten fehlen"
+    assert any(z[2] < 0 for z in zeilen), "keine einzige Senkung"
+    for erst, zuletzt, pct in zeilen:
+        assert (pct > 0) == (zuletzt > erst), (erst, zuletzt, pct)
+        assert abs(pct - round(100 * (zuletzt - erst) / erst, 1)) < 0.05
+
+
 def test_datenbankname_kommt_aus_der_konfiguration():
     """Die Vorgabe: der Datenbankname steht in src/config.py (PROJEKT).
     Zweimal dieselbe Zeichenkette zu pflegen ist eine Fehlerquelle."""
