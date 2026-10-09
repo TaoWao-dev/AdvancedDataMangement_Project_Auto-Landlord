@@ -21,6 +21,15 @@ from __future__ import annotations
 
 import sys
 from datetime import datetime, timezone
+from pathlib import Path
+
+# Die Vorgabe der LVA ruft `python src/run.py` auf, nicht `python -m src.run`.
+# Als Skript gestartet fehlt das Paket, und die relativen Importe brechen ab.
+# Deshalb hier das Projektverzeichnis eintragen und als Paket `src` laden -
+# beide Aufrufe liefern damit dieselbe Pipeline und dieselben Zahlen.
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    __package__ = "src"
 
 from . import clean, config as C, derive, extract, integrate
 
