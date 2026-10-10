@@ -65,7 +65,7 @@ jedem Lauf.
 | Frage | Befund | Konsequenz |
 |---|---|---|
 | **Vollständig?** | **Ja.** Seite 1 mit 90 und Seite 2 mit 88 Inseraten, zusammen 178 von 178 Treffern, ohne Überschneidung. Vier Bezirke fehlen weiterhin. | Seiten eines Tages gelten als ein Abruf (`v_abruf`, E32); die Teilseiten-Warnung fällt nur für vollständige Abrufe weg. |
-| **Korrekt?** | Kreuzprobe Portal-€/m² gegen Miete/Fläche: 178 von 178 prüfbar, 0 Abweichungen. **Aber:** zwei WG-Zimmer (Zimmerpreis auf Wohnungsfläche, bis 6,99 €/m²) und mehrere Gemeindewohnungen (Direktvergaben, 7,50–10 €/m²). | WG-Zimmer ausgeschlossen (E33). Gemeindewohnungen sind am Titel erkennbar, den die Allowlist verwirft — **offene Entscheidung** (E34). |
+| **Korrekt?** | Kreuzprobe Portal-€/m² gegen Miete/Fläche: 178 von 178 prüfbar, 0 Abweichungen. **Aber:** zwei WG-Zimmer (Zimmerpreis auf Wohnungsfläche, bis 6,99 €/m²) und mehrere Gemeindewohnungen (Direktvergaben, 7,50–10 €/m²). | WG-Zimmer ausgeschlossen (E33). Gemeindewohnungen sind am Titel nur erkennbar, wenn er sie nennt (3 von 178): Schlagwort bei der Redaktion, `gemeinde_explizit`, Ausschluss in `v_angebot`; die übrigen bleiben unerkannt (E38). |
 | **Konsistent?** | `ISPRIVATE` und `advertiserInfo.label` widersprechen sich in 0 von 178 Fällen. Alle 178 Inserate PLZ 1020. | wie am 25.09. |
 | **Aktuell?** | Abruf 09.10.2026, laut `searchDate`. | Der Abgabestand ist am Tag der Abgabe aktuell. Der Vergleich mit dem 25.09. ist durch dessen Teilseite verzerrt: Der Median im Zielsegment sinkt von 26,67 auf 24,01 €/m², aber am 25.09. fehlen 64 von 154 Inseraten. Kein Markttrend ablesbar. |
 | **Wem gehört sie?** | wie am 25.09. | — |
@@ -107,10 +107,10 @@ Umwandlung unauffällig aussieht: keine Zeile fällt aus, die Zahl ist nur falsc
 
 | | |
 |---|---|
-| Stelle im Code | `src/config.py` → `PII_ERLAUBT` (18 Felder) und `PII_VERWORFEN` (13 Felder mit Begründung); angewandt in `src/clean.py` → `drop_pii()` |
+| Stelle im Code | `src/config.py` → `PII_ERLAUBT` (19 Felder) und `PII_VERWORFEN` (13 Felder mit Begründung); angewandt in `src/clean.py` → `drop_pii()` |
 | Letzte Kontrolle | `src/clean.py` → `pii_kontrolle()`, sucht Kontaktmuster in **allen** Werten vor dem Schreiben. Ein Treffer ist ein Fehler, keine Warnung — dann stimmt die Allowlist nicht. |
 | Verworfen werden | `ORGNAME`, `advertiserInfo`, `ORGID`, `ORG_UUID`, `ADVERTISER_REF`, `seo_url`, `BODY_DYN`, `description`, `HEADING`, `COORDINATES`, `ADDRESS`, `ALL_IMAGE_URLS`, `MMO` |
-| Behalten wird von der Anbieterseite | **nur** `ISPRIVATE` — privat oder gewerblich ist eine Analysegröße (der gewerbliche Median liegt 16 % über dem privaten) und benennt niemanden |
+| Behalten wird von der Anbieterseite | **nur** `ISPRIVATE` — privat oder gewerblich ist eine Analysegröße (der gewerbliche Median liegt 16 % über dem privaten) und benennt niemanden. Dazu aus dem Titel ein einziges Ja/Nein: `gemeinde_explizit` (E38), berechnet bei der Redaktion; der Titel selbst nicht |
 
 **Warum Allowlist:** eine Blocklist lässt jedes neue Feld der Quelle
 stillschweigend durch. Die Richtung ist falsch. Mit einer Allowlist fällt ein

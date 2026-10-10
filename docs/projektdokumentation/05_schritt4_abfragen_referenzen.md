@@ -122,6 +122,16 @@ aussieht wie Arbeit.
 Die Beschaffungsanleitung steht in `evals/references/README.md`. Sie gehört zu
 Deliverable 3; der Termin dafür ist der 23.10.
 
+## Analyse 6 (Klassifikation): möbliert / Kurzzeit
+
+Eine dritte Prompt-Aufgabe an den Inseratsdaten, nicht an der Tabelle: aus dem
+Titel entscheiden, ob ein Inserat möbliert oder kurzzeitvermietet ist. Sie
+ersetzt die in E34 vorgesehene Gemeindewohnungs-Klassifikation (E38 — am
+Titel allein nicht entscheidbar). Werkzeug: Prompt. Referenz: Markierung des
+Studierenden, nur Titel, ohne Preis (E37); die Datei steht noch nicht im
+Repository. Prüfregel: Trefferquote je Klasse, „unklar" getrennt ausgewiesen.
+Nur Titel mit „Person im Titel = nein" dürfen in die Referenz.
+
 ## Was die Abfragen selbst dokumentieren
 
 Jede `kennzahl_*.sql` trägt im Kopf drei Dinge: die Frage, die sie beantwortet,

@@ -25,7 +25,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E08](#e08) | Datenzugriff | Abrufzeit aus searchDate des Servers | datetime.now() beim Verarbeiten | sonst haette dieselbe Datei bei jedem Lauf einen anderen Zeitstempel | `src/wh_next_data.py` |
 | [E09](#e09) | Datenzugriff | PLZ aus dem Dateinamen ist Pflichtpruefung | optionaler Parameter erwartete_plz | eine Pruefung, die man einschalten muss, ist an dem Tag aus, an dem sie gebraucht wird | `src/validierung.py` |
 | [E10](#e10) | Datenzugriff | Selbstpruefendes Beschaffungsskript | schriftliche Anleitung | die Fehlerquelle sitzt vor der Pipeline; ein Gate kostet einen ganzen Durchgang | `tools/snapshot.js` |
-| [E11](#e11) | Datenschutz | Allowlist im Code, 18 Felder | Blocklist; Filterung im Prompt | eine Blocklist laesst jedes neue Feld durch; ein Prompt ist nicht testbar | `src/config.py, src/clean.py` |
+| [E11](#e11) | Datenschutz | Allowlist im Code, 19 Felder (18 bis E38) | Blocklist; Filterung im Prompt | eine Blocklist laesst jedes neue Feld durch; ein Prompt ist nicht testbar | `src/config.py, src/clean.py` |
 | [E12](#e12) | Datenmodell | SQLite statt MySQL-Server | MySQL-Server betreiben | ein Server macht den Datenbankzustand zu etwas, das im Repository nicht steht | `src/sql/schema.sql` |
 | [E13](#e13) | Datenmodell | Schluessel (snapshot_id, ad_id), append-only | ad_id als Schluessel, Zeile aktualisieren | Aktualisieren wirft Preisaenderung und Inseratsdauer weg | `src/sql/schema.sql` |
 | [E14](#e14) | Datenmodell | PLZ als Fremdschluessel, Bezirke in der Konfiguration | Bezirk als Textspalte in der Faktenzeile | ein Bezirk mehr soll eine Datei mehr sein, keine Codeaenderung | `src/config.py, src/sql/views.sql` |
@@ -48,7 +48,8 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E31](#e31) | 09.10. | Studierender als Autor, Claude als Co-Autor | Claude bleibt Autor (E24) | Wunsch des Studierenden; wer was beigetragen hat, steht weiterhin hier | `Git-Historie, CLAUDE.md` |
 | [E32](#e32) | 09.10. | Seiten eines Tages sind ein Abruf | jede Seite als eigener Abruf; Seiten beim Einlesen zu einer Datei zusammenfuegen | sonst galten alle Inserate von Seite 1 als verschwunden; Zusammenfuegen haette die Herkunft je Datei verwischt | `src/sql/views.sql (v_abruf), src/clean.py, Commit 2d853b0` |
 | [E33](#e33) | 09.10. | WG-Zimmer aus dem Angebot, sichtbar mit Grund | behalten; schon beim Einlesen verwerfen | Zimmerpreis auf Wohnungsflaeche ist kein Quadratmeterpreis; Verwerfen beim Einlesen waere unsichtbar | `src/config.py, objekttyp_ausschluss, Commit f6dd973` |
-| [E34](#e34) | 09.10. | Gemeindewohnungen per Prompt klassifizieren | behalten; per Schlagwort im Titel ausschliessen | Entscheidung des Studierenden; liefert die Klassifikationsreferenz, die E28 offenlaesst | `E37, evals/references/ (folgt)` |
+| [E34](#e34) | 09.10. | Gemeindewohnungen: erst Prompt (Variante 3), **geaendert durch E38** | behalten; per Schlagwort ausschliessen | Studierender wollte die Klassifikationsreferenz; sie liess sich nicht herstellen | `E37, E38` |
+| [E38](#e38) | 10.10. | Gemeinde nur ausdruecklich erkennen (Schlagwort bei der Redaktion); Prompt-Aufgabe wird moebliert/Kurzzeit | Prompt fuer Gemeinde mit Referenz; Gemeinde aus dem Preis ableiten | was ein Mensch am Titel nicht entscheiden kann, hat keine Referenz; Preis als Kennzeichen waere zirkulaer | `src/titel.py, tools/redigiere_schnappschuss.py, v_angebot` |
 | [E37](#e37) | 09.10. | Referenz markiert der Studierende selbst; Modell-Labeling nur als Testfall | Modellmarkierung als Referenz uebernehmen | ein Modell als Massstab fuer ein Modell misst die eigene Formulierung (E02, E28) | `evals/references/ (folgt)` |
 | [E35](#e35) | 09.10. | view-source als empfohlener Beschaffungsweg | gerendertes HTML parsen; nur snapshot.js | view-source holt die Seite immer frisch; das gerenderte HTML traegt Preise nur in CSS-Klassen | `02_schritt1_datenzugriff.md, docs/betrieb.md` |
 | [E36](#e36) | 09.10. | Ungemessene Abgaenge nicht als null Tage; Anteil noch online als Kennzahl | Mittelwert mit 0 fuer Einmal-Gesehene; nur Mittelwert der Wiedergesehenen | eine unbekannte Dauer ist nicht null; mit zwei Abrufen ist der Anteil die einzige ehrliche Aussage | `src/sql/kennzahl_inseratsdauer.sql, Commit 8e7565a` |
@@ -1086,6 +1087,14 @@ Klassifikationsreferenz (E28) liefern — kostet aber händische Markierung.
 **Revisionspunkt.** Zeigt ein Abruf im Zielsegment mehr als zwei
 Gemeindewohnungen, ist (1) nicht mehr haltbar.
 
+**Nachtrag 10.10. — Variante 3 ist für diese Frage gescheitert (E38).** Der
+Studierende konnte die 178 Titel nicht als Gemeindewohnung oder nicht
+markieren, ohne den Preis zu kennen: nur drei Titel sagen es ausdrücklich. Eine
+Referenz, die ein Mensch am Titel nicht herstellen kann, gibt es nicht — und
+ohne sie ist die Klassifikation nicht prüfbar. Das war ein Fehler in der
+Entscheidung selbst: ich hatte „erkennbar nur am Titel" angenommen, ohne das
+an den Titeln zu prüfen. Was daraus folgt, steht in E38.
+
 ---
 
 ## E35 {#e35}
@@ -1193,4 +1202,78 @@ Trefferquote zu nehmen und getrennt auszuweisen.
 Fall nicht mit dem Titel überein, den ein zweiter Mensch lesen würde, ist die
 Regel zu unscharf. Eine zweite Person für eine Stichprobe würde das messbar
 machen.
+
+**Nachtrag 10.10.** Die Spalte „Gemeindewohnung" entfällt (E38). Die
+Referenz betrifft jetzt „möbliert / Kurzzeit"; nur Titel mit „Person im
+Titel = nein" dürfen in `evals/references/`.
+
+---
+
+## E38 {#e38}
+### Gemeindewohnung nur erkennen, wo der Titel sie nennt — die Prompt-Aufgabe wird „möbliert / Kurzzeit"
+**Datum:** 10.10.2026
+
+**Situation.** E34 sah eine Prompt-Klassifikation der Gemeindewohnungen vor,
+geprüft gegen eine händische Referenz (E37). Beim Markieren zeigte sich: der
+Studierende kann aus dem Titel allein nicht sagen, ob es eine Gemeindewohnung
+ist. Von 178 Titeln nennen es drei ausdrücklich („Gemeindebau
+Direktvergabe", „Direktvergabe Wiener Wohnen", „Gemeindewohnung Wohnticket");
+bei den übrigen steht dazu nichts. Der Status ergibt sich erst aus Preis,
+Anbieter und Beschreibung — und die sieht das Modell nicht.
+
+**Alternativen.**
+1. Prompt-Klassifikation beibehalten. Die Referenz müsste dann aus dem Preis
+   entstehen; ein Modell, das den Titel liest, würde gegen ein Label geprüft,
+   das aus etwas anderem stammt.
+2. Gemeindewohnung aus dem Preis ableiten (privat, unter 13 €/m²). Zirkulär:
+   die Verzerrung nach unten, die entfernt werden soll, wäre das Kriterium.
+3. Nur ausdrücklich Genanntes erkennen, per Schlagwort (`src/titel.py`), und
+   die Aufgabe des Modells auf eine Frage umstellen, die ein Mensch am Titel
+   entscheiden kann: **möbliert / Kurzzeit**.
+
+**Entscheidung.** Variante 3.
+
+**Wie.** Das Schlagwort läuft in `tools/redigiere_schnappschuss.py`, solange
+der Titel noch in der Datei steht, und schreibt `titel_merkmale.gemeinde_explizit`
+in die redigierte Rohdatei. Der Titel selbst bleibt entfernt (Regel 1
+CLAUDE.md); das Ja/Nein steht in der Allowlist (`PII_ERLAUBT`, jetzt 19
+Felder). `v_angebot` schließt `gemeinde_explizit = 1` aus — sichtbar: die
+Beobachtung bleibt, `integrate` zählt sie beim Lauf.
+
+**Dreiwertig, mit Absicht.** 1 = Titel nennt es, 0 = Titel geprüft, nicht
+genannt, NULL = Titel lag nicht vor. **0 heißt nicht „keine Gemeindewohnung"**,
+sondern „nicht genannt". Der Abruf vom 25.09. hat NULL: das Original liegt
+nicht mehr vor, das Merkmal lässt sich nicht nachholen. NULL bleibt im Angebot
+(`COALESCE(…, 0) = 0`); Lücke sichtbar statt aufgefüllt.
+
+**Wirkung am 09.10.** 3 Beobachtungen tragen das Merkmal (39, 52 und 67 m²).
+Zwei davon sind reserviert und waren ohnehin nicht im Angebot; nur das
+Inserat mit 52 m² (10,00 €/m², aktiv) fällt neu heraus. Die
+Größenklasse 80–100 m² ist unverändert (n = 32, Median 24,01 €/m²), die
+Referenzen vom 25.09. ebenso. 50–80 m²: n 72 → 71, Median 24,79 → 24,80,
+Q1 21,06 → 21,69. Die Rohdateien vom 09.10. wurden aus den Originalen neu
+redigiert (SHA256 in `data/raw/2026-10-09/HERKUNFT.md` aktualisiert); an
+Inhalten änderte sich nur das neue Merkmal. Dabei fiel auf, dass die
+Schlüsselreihenfolge im redigierten JSON vom Set-Iterieren abhing — jetzt
+sortiert, zwei Läufe liefern dieselbe Datei.
+
+**Was bleibt offen.** Gemeindewohnungen ohne Stichwort im Titel bleiben im
+Angebot. Das ist keine Entdeckung, sondern die Grenze des Verfahrens, und sie
+gehört in jede Aussage über das Preisniveau von Wohnungen unter ca. 13 €/m².
+Die Nennung im Titel ist außerdem nicht das Gleiche wie der Status: ein Titel
+„Neubau neben dem Gemeindebau" würde fälschlich anschlagen (bekannt, im Modul
+benannt, bei drei Treffern in 178 Titeln hinnehmbar).
+
+**Die Prompt-Aufgabe.** Klassifikation „möbliert / Kurzzeit" aus dem Titel:
+sprachlich, nicht prüfbar durch einen Filter, und von Bedeutung — ein
+einzelner Anbieter stellt 17 der 90 Inserate vom 25.09., der gewerbliche
+Median liegt 16 % über dem privaten. Referenz: Markierung des Studierenden
+(E37), ohne Preis, nur Titel.
+
+**Revisionspunkt.** Findet eine Stichprobe von 20 Privatinseraten unter
+13 €/m² im Zielsegment mehr Gemeindewohnungen ohne Treffer als mit Treffer,
+ist das Schlagwort zu eng; liegt umgekehrt ein Treffer auf einem Inserat, das
+ein Mensch nicht als Gemeindewohnung liest, ist es zu weit. Zeigt ein späterer
+Abruf im Zielsegment mehr als zwei Treffer, ändert sich die Größenklasse
+sichtbar — dann gehört das in die Vorlage.
 

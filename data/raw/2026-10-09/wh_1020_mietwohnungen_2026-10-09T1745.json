@@ -87,12 +87,12 @@
  "props": {
   "pageProps": {
    "searchResult": {
-    "searchDate": "2026-10-09T17:45:35+0200",
-    "rowsReturned": 90,
-    "searchId": 131,
-    "rowsRequested": 90,
     "heading": "Mietwohnungen in Wien, 02. Bezirk, Leopoldstadt",
     "rowsFound": 178,
+    "rowsRequested": 90,
+    "rowsReturned": 90,
+    "searchDate": "2026-10-09T17:45:35+0200",
+    "searchId": 131,
     "verticalId": 2,
     "advertSummaryList": {
      "advertSummary": [
@@ -375,6 +375,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -674,6 +677,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -944,6 +950,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -1237,6 +1246,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -1518,6 +1530,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -1793,6 +1808,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -2098,6 +2116,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -2349,6 +2370,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -2642,6 +2666,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -2947,6 +2974,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -3216,6 +3246,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -3521,6 +3554,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -3820,6 +3856,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -4114,6 +4153,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -4419,6 +4461,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -4706,6 +4751,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -5017,6 +5065,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -5274,6 +5325,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -5549,6 +5603,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -5794,6 +5851,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -6081,6 +6141,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -6380,6 +6443,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -6676,6 +6742,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -6976,6 +7045,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -7281,6 +7353,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -7568,6 +7643,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -7879,6 +7957,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -8148,6 +8229,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -8447,6 +8531,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -8705,6 +8792,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -8950,6 +9040,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -9219,6 +9312,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -9518,6 +9614,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -9823,6 +9922,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -10128,6 +10230,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -10421,6 +10526,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -10696,6 +10804,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -10997,6 +11108,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -11273,6 +11387,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -11572,6 +11689,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -11865,6 +11985,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -12158,6 +12281,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -12475,6 +12601,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -12774,6 +12903,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -13055,6 +13187,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -13324,6 +13459,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -13605,6 +13743,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -13880,6 +14021,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -14161,6 +14305,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -14472,6 +14619,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -14765,6 +14915,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -15064,6 +15217,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -15345,6 +15501,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -15644,6 +15803,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -15949,6 +16111,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -16254,6 +16419,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -16559,6 +16727,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -16864,6 +17035,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -17115,6 +17289,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -17426,6 +17603,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -17726,6 +17906,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -18031,6 +18214,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -18348,6 +18534,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -18659,6 +18848,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -18934,6 +19126,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -19191,6 +19386,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -19496,6 +19694,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -19772,6 +19973,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -20036,6 +20240,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -20323,6 +20530,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -20610,6 +20820,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -20891,6 +21104,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -21196,6 +21412,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -21483,6 +21702,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -21776,6 +21998,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -22075,6 +22300,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -22380,6 +22608,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -22686,6 +22917,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -22985,6 +23219,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -23266,6 +23503,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -23517,6 +23757,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -23768,6 +24011,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -24037,6 +24283,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -24294,6 +24543,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -24581,6 +24833,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -24850,6 +25105,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -25143,6 +25401,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -25461,6 +25722,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -25712,6 +25976,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       },
       {
@@ -26000,6 +26267,9 @@
         ]
        },
        "description": "[ENTFERNT]",
+       "titel_merkmale": {
+        "gemeinde_explizit": false
+       },
        "selfLink": "[ENTFERNT]"
       }
      ]

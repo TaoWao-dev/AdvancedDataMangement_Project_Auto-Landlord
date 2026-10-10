@@ -94,8 +94,8 @@ def ausfuehren(bereinigt: dict | None = None,
                (snapshot_id, ad_id, abruf_ts, status, plz, miete_eur,
                 flaeche_m2, wohnflaeche_m2, eur_pro_m2, zimmer, stock,
                 objekttyp, freiflaeche, privat, gewerblich, veroeffentlicht,
-                lagequalitaet)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                lagequalitaet, gemeinde_explizit)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (sid, z["ad_id"], z["abruf_ts"], z["status"], z["plz"],
              z["miete_eur"], z["flaeche_m2"], z["wohnflaeche_m2"],
              z["eur_pro_m2"], z["zimmer"], z["stock"], z["objekttyp"],
@@ -103,7 +103,9 @@ def ausfuehren(bereinigt: dict | None = None,
              int(bool(z["privat"])) if z["privat"] is not None else None,
              int(bool(z["gewerblich_anbieter"]))
              if z["gewerblich_anbieter"] is not None else None,
-             z["veroeffentlicht"], z["lagequalitaet"]))
+             z["veroeffentlicht"], z["lagequalitaet"],
+             int(z["gemeinde_explizit"])
+             if z.get("gemeinde_explizit") is not None else None))
         geschrieben += 1
     if verworfen_plz:
         con.execute("INSERT INTO zuordnungsluecke VALUES (?,?,?,?)",
@@ -147,6 +149,13 @@ def ausfuehren(bereinigt: dict | None = None,
                GROUP BY a.objekttyp ORDER BY a.objekttyp"""):
         print(f"           ausgeschlossen: {r['n']} Beobachtung(en) "
               f"'{r['objekttyp']}' (Grund in objekttyp_ausschluss)")
+    r = con.execute(
+        """SELECT COALESCE(SUM(gemeinde_explizit = 1), 0) ja,
+                  COALESCE(SUM(gemeinde_explizit IS NULL), 0) offen
+           FROM inserat_beobachtung""").fetchone()
+    print(f"           markiert: {r['ja']} Beobachtung(en) mit ausdruecklich "
+          f"genannter Gemeindewohnung (aktive fallen aus v_angebot); {r['offen']} ohne lesbaren Titel "
+          f"(Merkmal leer, nicht 'nein')")
     for r in con.execute(
             """SELECT b.plz, b.bezirk_name, b.rolle,
                       COUNT(DISTINCT s.snapshot_id) n_snap,

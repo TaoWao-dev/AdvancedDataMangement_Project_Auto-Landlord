@@ -26,7 +26,7 @@ Fünfjahresverlängerung an — oder lassen wir auslaufen und vermieten neu?
 
 ```bash
 python3 -m src.run                   # die ganze Pipeline, vier Schritte, drei Gates
-python3 tests/test_pipeline.py    # 40 Tests: Parser, Umwandlung, Gates, PII, SQL
+python3 tests/test_pipeline.py    # 45 Tests: Parser, Umwandlung, Gates, PII, SQL
 python3 tests/test_modell.py         # 26 Tests: Wertsicherung, Entscheidungsmodell
 ```
 
@@ -152,7 +152,7 @@ privaten Fällen. Deshalb weist `v_marktniveau` die Fallzahl und
   Abrufe (25.09., 09.10.) zeigen bisher nur, dass 70 % der Inserate nach 14
   Tagen noch stehen
 - die übrigen vier Bezirke; 1020 ist seit dem 09.10. vollständig (178 von 178)
-- Gemeindewohnungen im Angebot: offene Entscheidung E34
+- Gemeindewohnungen: nur die ausdrücklich genannten (3 von 178) werden ausgeschlossen, der Rest bleibt unerkannt (E38)
 - Reihennamen gegen die amtliche Klassifikation abgleichen
 
 - Referenzantworten für die Evals, wörtlich aus den Quelldokumenten mit Seitenzahl

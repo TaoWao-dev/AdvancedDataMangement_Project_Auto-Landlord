@@ -8,7 +8,7 @@ sieben Abschnitten gehört zu Deliverable 3.
 ```bash
 git clone <repo> && cd <repo>
 python3 -m src.run                 # vier Schritte, drei Gates, unter 1 s
-python3 tests/test_pipeline.py     # 40 Tests
+python3 tests/test_pipeline.py     # 45 Tests
 python3 tests/test_modell.py       # 26 Tests
 ```
 
@@ -49,7 +49,7 @@ zwischen zwei späteren Abrufen verschwindet, hat es eine gemessene Dauer.
 | **Zwei Zeitpunkte, 14 Tage Abstand** | Preisänderungen messbar, eine Inseratsdauer noch nicht — nur der Anteil, der nach 14 Tagen noch steht; die Leerstandsannahme bleibt geraten | `kennzahl_inseratsdauer.csv`, Spalte `befund` |
 | **Indexreihen nicht beschafft** | Mieten und Einkommen sind nicht fortgeschrieben | `clean` meldet „keine Datei vorhanden"; `indexreihe` hat 0 Zeilen |
 | **Tariflohnindex misst Mindestlöhne** | bei IT-Berufen (24 % des Portfolios) ist die Fortschreibung eine Untergrenze | `config/berufsgruppen.json`, Feld `unschaerfe` |
-| **Gemeindewohnungen im Angebot** | Direktvergaben zu 7,50–10 €/m² sind kein Vergleichsmarkt für Neubau, nur am Titel erkennbar | Minimum der Größenklassen; offene Entscheidung E34 |
+| **Gemeindewohnungen im Angebot** | Direktvergaben zu 7,50–10 €/m² sind kein Vergleichsmarkt für Neubau. Nur erkennbar, wenn der Titel es nennt (3 von 178) | `gemeinde_explizit` in `inserat_beobachtung`; der Rest bleibt im Angebot und im Minimum der Größenklassen (E38) |
 | **pytest hier nicht installierbar** | Tests laufen über den eingebauten Läufer am Dateiende | `python3 -m pytest` schlägt fehl, `python3 tests/test_pipeline.py` nicht |
 | **Beschaffung ist manuell** | nicht automatisierbar, solange die `robots.txt` das untersagt | bewusst so (Entscheidungslog E06) |
 

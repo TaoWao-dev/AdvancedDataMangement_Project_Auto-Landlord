@@ -46,6 +46,9 @@ SELECT * FROM (
     AND b.flaeche_m2 IS NOT NULL
     -- kein Wohnungsangebot (WG-Zimmer); Liste und Grund in objekttyp_ausschluss
     AND COALESCE(b.objekttyp, '') NOT IN (SELECT objekttyp FROM objekttyp_ausschluss)
+    -- Gemeindewohnung, vom Titel ausdruecklich genannt (E38): Vergabe ueber
+    -- Wohnticket, kein Marktpreis. NULL (Titel unbekannt) bleibt im Angebot.
+    AND COALESCE(b.gemeinde_explizit, 0) = 0
 ) WHERE _nr = 1;
 
 -- Preisniveau je PLZ, Groessenklasse und Abruf.

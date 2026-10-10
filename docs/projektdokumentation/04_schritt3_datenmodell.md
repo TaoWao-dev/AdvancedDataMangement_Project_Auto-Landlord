@@ -4,7 +4,7 @@
 Quellen über Schlüssel verknüpft — und was keinen Partner findet, wird gezählt
 statt verworfen.
 
-**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (40 Tests,
+**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (45 Tests,
 darunter zweiter Lauf identisch, keine doppelten Schlüssel, alle Tabellen
 vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
@@ -12,7 +12,7 @@ vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
 ```bash
 python3 -m src.run                 # baut data/processed/mietportfolio.sqlite neu
-python3 tests/test_pipeline.py     # 40 Tests
+python3 tests/test_pipeline.py     # 45 Tests
 sqlite3 data/processed/mietportfolio.sqlite "SELECT * FROM v_abdeckung;"
 ```
 

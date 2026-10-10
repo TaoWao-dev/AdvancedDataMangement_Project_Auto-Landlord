@@ -46,6 +46,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from src import titel as TITEL  # noqa: E402
 from src import wh_next_data as WH  # noqa: E402
 
 ENTFERNT = "[ENTFERNT]"
@@ -64,7 +65,7 @@ SUCHE_BEHALTEN = {"searchDate", "rowsFound", "rowsRequested", "rowsReturned",
 
 # Schluessel je Inserat, die erhalten bleiben.
 INSERAT_BEHALTEN = {"id", "verticalId", "advertStatus", "advertiserInfo",
-                    "attributes"}
+                    "attributes", "titel_merkmale"}
 
 
 def _attribut(a: dict) -> dict:
@@ -72,6 +73,13 @@ def _attribut(a: dict) -> dict:
     if name in ATTRIBUTE_BEHALTEN:
         return {"name": name, "values": a.get("values") or []}
     return {"name": name, "values": [ENTFERNT]}
+
+
+def _heading(ad: dict) -> str | None:
+    for a in ad.get("attributes", {}).get("attribute", []):
+        if a.get("name") == "HEADING" and a.get("values"):
+            return a["values"][0]
+    return None
 
 
 def _inserat(ad: dict) -> dict:
@@ -88,6 +96,10 @@ def _inserat(ad: dict) -> dict:
         "attributes": {"attribute": [
             _attribut(a) for a in ad.get("attributes", {}).get("attribute", [])]},
         "description": ENTFERNT,
+        # Das Merkmal wird HIER berechnet, solange der Titel noch da ist; der
+        # Titel selbst verlaesst diese Funktion nicht (src/titel.py).
+        "titel_merkmale": {"gemeinde_explizit": TITEL.gemeinde_explizit(
+            ad.get("description") or _heading(ad))},
         "selfLink": ENTFERNT,
     }
 
@@ -122,7 +134,7 @@ def redigiere(quelle: Path, ziel: Path) -> dict:
             "entfernte_attributwerte": entfernte_attribute,
         },
         "props": {"pageProps": {"searchResult": {
-            **{k: sr.get(k) for k in SUCHE_BEHALTEN if k in sr},
+            **{k: sr.get(k) for k in sorted(SUCHE_BEHALTEN) if k in sr},
             "advertSummaryList": {"advertSummary": [_inserat(a) for a in ads]},
         }}},
     }
@@ -139,7 +151,9 @@ def redigiere(quelle: Path, ziel: Path) -> dict:
               and sum(1 for i in alt.inserate if i.privat)
               == sum(1 for i in jung.inserate if i.privat)
               and sum(1 for i in alt.inserate if i.gewerblich_anbieter)
-              == sum(1 for i in jung.inserate if i.gewerblich_anbieter))
+              == sum(1 for i in jung.inserate if i.gewerblich_anbieter)
+              and [i.gemeinde_explizit for i in alt.inserate]
+              == [i.gemeinde_explizit for i in jung.inserate])
     return {
         "quelle_sha256": sha_original,
         "ziel_sha256": hashlib.sha256(ziel.read_bytes()).hexdigest(),

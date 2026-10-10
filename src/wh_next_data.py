@@ -52,6 +52,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+from . import titel as TITEL
+
 NEXT_DATA_START = '{"props":{"pageProps"'
 TAG = re.compile(r"<[^>]+>")
 
@@ -169,6 +171,9 @@ class Inserat:
     veroeffentlicht: str | None = None
     lagequalitaet: float | None = None
     seo_url: str | None = None
+    # Titel nennt Gemeindewohnung ausdruecklich (E38). None = Titel nicht
+    # lesbar, nicht 'nein'.
+    gemeinde_explizit: bool | None = None
 
 
 @dataclass
@@ -214,6 +219,14 @@ def parse(pfad: Path) -> Schnappschuss:
         st = (a.get("advertStatus") or {}).get("description") or "unbekannt"
         info = a.get("advertiserInfo") or {}
         label = info.get("label")
+        # Redigierte Datei: Merkmal wurde vor dem Entfernen des Titels
+        # berechnet. Original: hier berechnen, der Titel steht noch drin.
+        marker = a.get("titel_merkmale")
+        if marker is not None:
+            gemeinde = marker.get("gemeinde_explizit")
+        else:
+            gemeinde = TITEL.gemeinde_explizit(
+                a.get("description") or at.get("HEADING"))
         inserate.append(Inserat(
             ad_id=str(a.get("id") or at.get("ADID")),
             abruf_ts=abruf,
@@ -235,6 +248,7 @@ def parse(pfad: Path) -> Schnappschuss:
             veroeffentlicht=at.get("PUBLISHED_String"),
             lagequalitaet=_f(at.get("LOCATION_QUALITY")),
             seo_url=at.get("SEO_URL"),
+            gemeinde_explizit=gemeinde,
         ))
 
     return Schnappschuss(

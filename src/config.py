@@ -66,6 +66,7 @@ PII_ERLAUBT = frozenset({
     "miete_eur", "flaeche_m2", "wohnflaeche_m2", "eur_pro_m2",
     "zimmer", "stock", "objekttyp", "freiflaeche",
     "privat", "gewerblich_anbieter", "veroeffentlicht", "lagequalitaet",
+    "gemeinde_explizit",   # Ja/Nein aus dem Titel, nicht der Titel (E38)
 })
 
 # Was verworfen wird, mit Begruendung fuer die Dokumentation.

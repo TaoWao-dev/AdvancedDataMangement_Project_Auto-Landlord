@@ -558,6 +558,108 @@ def test_referenzen_tragen_herkunft_und_unsicherheit():
             assert {"wer", "wann"} <= set(fall["herkunft"]), fall["fall_id"]
 
 
+# ------------------------------------------- Merkmal aus dem Titel (E34, E38)
+def test_gemeinde_stichwort_trifft_nur_ausdrueckliche_nennung():
+    from src import titel
+    ja = ["(reserviert) Keine Anfragen mehr! Gemeindebau Direktvergabe",
+          "Direktvergabe Wiener Wohnen",
+          "(reserviert) Gemeindewohnung Wohnticket mit mindestens 15 Bonuspunkten"]
+    nein = ["Helle 3-Zimmer-Wohnung mit Balkon", "Provisionsfrei, Erstbezug"]
+    assert all(titel.gemeinde_explizit(x) is True for x in ja)
+    assert all(titel.gemeinde_explizit(x) is False for x in nein)
+
+
+def test_gemeinde_merkmal_unterscheidet_nicht_pruefbar_von_nicht_genannt():
+    from src import titel
+    assert titel.gemeinde_explizit(None) is None
+    assert titel.gemeinde_explizit("") is None
+    assert titel.gemeinde_explizit(titel.ENTFERNT) is None
+    assert titel.gemeinde_explizit("Schoene Wohnung") is False
+
+
+def _original_mit_titel(pfad: Path, titel_text: str) -> None:
+    """Kleinster Schnappschuss, der die Struktur der Quelle hat und einen
+    Titel traegt - so wie ein Original vor der Redaktion."""
+    ad = {"id": 1, "verticalId": 2, "advertStatus": {"id": "active",
+          "description": "aktiv"}, "advertiserInfo": {"label": "Privat"},
+          "description": titel_text, "selfLink": "https://example.invalid/x",
+          "attributes": {"attribute": [
+              {"name": "POSTCODE", "values": ["1020"]},
+              {"name": "PRICE", "values": ["1000"]},
+              {"name": "ESTATE_SIZE", "values": ["50"]},
+              {"name": "PRICE/SQUARE_METER", "values": ["20"]},
+              {"name": "HEADING", "values": [titel_text]}]}}
+    pfad.write_text(json.dumps({"props": {"pageProps": {"searchResult": {
+        "searchDate": "2026-10-09T17:45:35+0200", "rowsFound": 1,
+        "rowsRequested": 90, "rowsReturned": 1, "verticalId": 2,
+        "advertSummaryList": {"advertSummary": [ad]}}}}}), encoding="utf-8")
+
+
+def test_redaktion_schreibt_das_merkmal_aber_nicht_den_titel(tmp_path=None):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "redigiere", WURZEL / "tools" / "redigiere_schnappschuss.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    ordner = Path(tmp_path or C.PROCESSED)
+    quelle, ziel = ordner / "t_orig.json", ordner / "t_red.json"
+    titelwort = "Gemeindewohnung Geheimtitel Familie Muster"
+    _original_mit_titel(quelle, titelwort)
+    try:
+        r = mod.redigiere(quelle, ziel)
+        text = ziel.read_text(encoding="utf-8")
+        assert r["gleiche_lesung"], r
+        assert "Geheimtitel" not in text and "Familie Muster" not in text
+        assert P.parse(ziel).inserate[0].gemeinde_explizit is True
+        assert P.parse(quelle).inserate[0].gemeinde_explizit is True
+    finally:
+        quelle.unlink(missing_ok=True)
+        ziel.unlink(missing_ok=True)
+
+
+def test_kein_titel_in_den_rohdateien():
+    """Regression: data/raw darf keinen Titel tragen. Der Titel ist
+    personenbezogen verdaechtig (E11); nur das abgeleitete Merkmal bleibt."""
+    gesehen = 0
+    for datei in sorted((WURZEL / "data" / "raw").glob("*/wh_*.json")):
+        sr = json.loads(datei.read_text(encoding="utf-8"))[
+            "props"]["pageProps"]["searchResult"]
+        for ad in sr["advertSummaryList"]["advertSummary"]:
+            gesehen += 1
+            assert ad.get("description") == "[ENTFERNT]", (datei.name, ad["id"])
+            for a in ad["attributes"]["attribute"]:
+                if a["name"] in ("HEADING", "BODY_DYN"):
+                    assert a["values"] == ["[ENTFERNT]"], (datei.name, ad["id"])
+    assert gesehen >= 268, gesehen
+
+
+def test_ausdrueckliche_gemeindewohnung_ist_kein_marktangebot(tmp_path=None):
+    """Eine Gemeindewohnung wird ueber Wohnticket vergeben, nicht zum
+    Marktpreis. Sie bleibt als Beobachtung erhalten und faellt aus v_angebot.
+    Fuer den Abruf vom 25.09. ist das Merkmal NULL (Titel lag nicht mehr vor)
+    - nicht pruefbar, nicht 'nein'."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_gemeinde.sqlite"
+    con = _baue(ziel)
+    beob = con.execute("SELECT COUNT(*) FROM inserat_beobachtung"
+                       " WHERE gemeinde_explizit = 1").fetchone()[0]
+    im_angebot = con.execute("SELECT COUNT(*) FROM v_angebot"
+                             " WHERE gemeinde_explizit = 1").fetchone()[0]
+    alt_null = con.execute(
+        "SELECT COUNT(*) = SUM(gemeinde_explizit IS NULL)"
+        " FROM inserat_beobachtung WHERE substr(abruf_ts,1,10) = '2026-09-25'"
+    ).fetchone()[0]
+    neu_geprueft = con.execute(
+        "SELECT COUNT(*) = SUM(gemeinde_explizit IS NOT NULL)"
+        " FROM inserat_beobachtung WHERE substr(abruf_ts,1,10) = '2026-10-09'"
+    ).fetchone()[0]
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert beob == 3, beob
+    assert im_angebot == 0
+    assert alt_null == 1, "25.09.: Merkmal muss NULL sein, nicht 0"
+    assert neu_geprueft == 1, "09.10.: jedes Inserat ist geprueft"
+
+
 if __name__ == "__main__":
     import tempfile
     fehler = 0

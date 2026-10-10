@@ -71,6 +71,9 @@ CREATE TABLE inserat_beobachtung (
   gewerblich      INTEGER,
   veroeffentlicht TEXT,
   lagequalitaet   REAL,
+  -- 1 = Titel nennt Gemeindewohnung ausdruecklich, 0 = Titel geprueft, nicht
+  -- genannt (heisst NICHT: keine Gemeindewohnung), NULL = Titel lag nicht vor
+  gemeinde_explizit INTEGER,
   PRIMARY KEY (snapshot_id, ad_id)
 );
 CREATE INDEX ix_beob_ad  ON inserat_beobachtung(ad_id);
