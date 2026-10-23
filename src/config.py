@@ -134,7 +134,14 @@ SCHWELLEN = {
     "eval_schwelle": 0.80,
 }
 
-ZIELSEGMENT = "80-100"   # Groessenklasse des Portfolios
+ZIELSEGMENT = "80-100"
+
+# Groessenklassen des Demo-Portfolios (E44, E46): nur Klassen, deren Median in
+# JEDEM Abruf von 1020 belastbar ist (n >= 15). Stand 23.10.: 50-80 (37/71/64)
+# und 80-100 (15/32/33). "bis 50" war am 25.09. duenn (n=10); "ueber 100" ist
+# belastbar, aber fuer ein Wohnportfolio dieser Art untypisch. Gate 3 prueft,
+# dass die Bedingung bei jedem neuen Abruf weiter gilt.
+PORTFOLIO_GROESSEN = ("50-80", "80-100")   # Groessenklasse des Portfolios
 
 
 def neuester_rohordner() -> Path:

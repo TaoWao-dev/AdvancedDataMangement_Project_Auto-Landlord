@@ -137,60 +137,73 @@ CREATE TABLE qs_befund (
 );
 
 -- ─────────────────────────────────────────────── Portfolio und Modell
--- Synthetischer Vertragsbestand aus config/vertraege.json (Annahme A10).
--- Keine Personen: berufsgruppe und einkommen sind erfundene Modellgroessen.
+-- Synthetisches Mieterverzeichnis aus config/vertraege.json (E44). Keine
+-- Personen: eine Kennung, eine Wohnung, ein Haushalt aus Zahlen. Die drei
+-- Lohnzettel sind die Bruttobezuege der drei Monate vor Vertragsabschluss.
 CREATE TABLE vertrag (
   vertrag_id          TEXT PRIMARY KEY,
-  cluster_id          TEXT    NOT NULL,
+  plz                 TEXT    NOT NULL REFERENCES bezirk(plz),
+  groessenklasse      TEXT    NOT NULL,
   flaeche_m2          REAL    NOT NULL,
-  abschluss_jahr      INTEGER NOT NULL,
-  vertragsende        TEXT    NOT NULL,      -- JJJJ-MM
+  abschluss           TEXT    NOT NULL,
   wertsicherung       INTEGER NOT NULL,
+  letzte_anpassung    TEXT    NOT NULL,
   miete_aktuell_eur   REAL    NOT NULL,
-  berufsgruppe        TEXT    NOT NULL,
-  einkommen_brutto_pa REAL    NOT NULL,
+  miete_bei_abschluss_eur REAL NOT NULL,
+  branche_id          TEXT    NOT NULL,
+  lohnzettel_1_eur    REAL    NOT NULL,
+  lohnzettel_2_eur    REAL    NOT NULL,
+  lohnzettel_3_eur    REAL    NOT NULL,
   zweiteinkommen      INTEGER NOT NULL
 );
 
--- Ein Eintrag je Modelllauf und Cluster: welche Marktmiete, ob der
--- Portfolio-Fixpunkt konvergiert ist (E18). Ein Cluster ohne verwendbare
--- Marktmiete steht hier mit eignung <> 'verwendbar' und bekommt KEINE
--- Empfehlung - Luecke sichtbar statt geschaetzt.
+-- Je Groessenklasse: welche Marktmiete, ob der Fixpunkt konvergiert ist.
 CREATE TABLE modelllauf (
-  cluster_id        TEXT PRIMARY KEY,
-  datenstand        TEXT,                    -- abruf_datum der Marktmiete
+  segment           TEXT PRIMARY KEY,         -- Groessenklasse
+  datenstand        TEXT,
   marktmiete_eur_m2 REAL,
   marktmiete_fallzahl INTEGER,
-  eignung           TEXT NOT NULL,
+  eignung           TEXT NOT NULL,            -- belastbarkeit der Marktmiete
   iterationen       INTEGER,
-  konvergiert       INTEGER,                 -- NULL = nicht gerechnet
-  leerstand_monate  REAL                     -- Ergebnis des Fixpunkts
+  konvergiert       INTEGER,
+  leerstand_monate  REAL
 );
 
--- Die Empfehlung je Vertrag im Basisfall. Option ist 'verlaengern' oder
--- 'auslaufen'. Alle Barwerte in EUR ueber fuenf Jahre, diskontiert.
+-- Je Vertrag: Markt- und KV-Entwicklung seit der letzten Anpassung und die
+-- Empfehlung. markt_bezug ist der Abruf, der der letzten Anpassung am
+-- naechsten liegt; bezug_vor_beobachtung = 1, wenn die Anpassung vor dem
+-- ersten Abruf lag - dann gibt es keine aeltere Marktzahl.
 CREATE TABLE empfehlung (
-  vertrag_id        TEXT PRIMARY KEY REFERENCES vertrag(vertrag_id),
-  option            TEXT NOT NULL,
-  aufschlag_pct     REAL,                    -- NULL bei 'auslaufen'
-  angebot_eur       REAL,
-  angebot_eur_m2    REAL,
-  p_annahme         REAL,
-  belastungsquote   REAL,
-  bw_empfehlung     REAL NOT NULL,           -- Erwartungswert der Option
-  bw_nur_index      REAL NOT NULL,           -- Aufschlag 0: Bestandsmiete
-  bw_auslaufen      REAL NOT NULL
+  vertrag_id              TEXT PRIMARY KEY REFERENCES vertrag(vertrag_id),
+  markt_bezug_datum       TEXT NOT NULL,
+  markt_bezug_eur_m2      REAL NOT NULL,
+  bezug_vor_beobachtung   INTEGER NOT NULL,
+  markt_jetzt_datum       TEXT NOT NULL,
+  markt_jetzt_eur_m2      REAL NOT NULL,
+  markt_veraenderung_pct  REAL NOT NULL,
+  kv_seit_anpassung_pct   REAL NOT NULL,
+  kv_seit_abschluss_pct   REAL NOT NULL,
+  einkommen_jetzt_eur_pa  REAL NOT NULL,      -- Lohnzettel x KV x 14
+  erhoehen                INTEGER NOT NULL,   -- 0 = nicht erhoehen
+  erhoehung_pct           REAL NOT NULL,
+  neue_miete_eur          REAL NOT NULL,
+  neue_miete_eur_m2       REAL NOT NULL,
+  p_annahme               REAL NOT NULL,
+  belastungsquote_jetzt   REAL NOT NULL,
+  belastungsquote_neu     REAL NOT NULL,
+  bw_empfehlung           REAL NOT NULL,
+  bw_ohne_erhoehung       REAL NOT NULL,
+  bw_auszug               REAL NOT NULL
 );
 
--- Sensitivitaet: dieselbe Optimierung mit je einem Parameter am unteren und
--- oberen Rand seiner Spanne aus config/portfolio.json. Zeigt, ob eine
--- Empfehlung an einer Annahme haengt.
+-- Sensitivitaet: dieselbe Optimierung mit je einem Parameter am Rand seiner
+-- Spanne (config/portfolio.json; Marktmiete: Q1 und Q3).
 CREATE TABLE empfehlung_sensitivitaet (
   vertrag_id    TEXT NOT NULL REFERENCES vertrag(vertrag_id),
   parameter     TEXT NOT NULL,
-  rand          TEXT NOT NULL,               -- unten | oben
+  rand          TEXT NOT NULL,
   wert          REAL NOT NULL,
   option        TEXT NOT NULL,
-  aufschlag_pct REAL,
+  erhoehung_pct REAL,
   PRIMARY KEY (vertrag_id, parameter, rand)
 );

@@ -113,6 +113,12 @@ def laden(con: sqlite3.Connection) -> dict:
         return {"datensaetze": 0}
     daten = json.loads(pfad.read_text(encoding="utf-8"))
     ds = daten["erhoehungen"]
+    # Ohne die Quelltexte im Datenstand ist die Extraktion nicht pruefbar -
+    # dann wird sie nicht geladen, statt ungeprueft hineinzurutschen. Im
+    # vollen Lauf faengt Gate 3 ("jede Branche mit KV-Reihe") die Luecke.
+    if not con.execute("SELECT COUNT(*) FROM kv_textblock").fetchone()[0]:
+        print("kv_extrakt: keine KV-Quelltexte in diesem Datenstand - Extraktion nicht geladen")
+        return {"datensaetze": 0}
     fehler = pruefen(ds, con)
     print(f"\n  GATE 4: Extraktion gegen Wortlaut ({pfad.name}, {len(ds)} Datensaetze)")
     for f in fehler:

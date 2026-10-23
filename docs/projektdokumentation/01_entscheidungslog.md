@@ -60,6 +60,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E43](#e43) | 23.10. | Vorlage v1 von Claude in der Arbeitssitzung formuliert, nach prompts/vorlage_v1.md, gegen die Grader geprueft; Zitat bindet die Zahl an die zitierte Datei | auf den lokalen Modelllauf warten; Vorlage per Schablone ohne Modell | heute lauffaehig und pruefbar; der Grader hat dabei selbst eine Luecke gezeigt | `docs/vorlage.md, evals/graders/zahlen_herkunft.py` |
 | [E44](#e44) | 23.10. | Scope: Demo-Fall Mietanpassung je laufendem Vertrag statt Verlaengerungsentscheidung in drei Quartieren | beim bisherigen Zuschnitt bleiben | Entscheidung des Studierenden: ein lauffaehiger, sichtbarer Prototyp bis 23:59; nur Branchen und Groessen mit guter Datenlage | `config/vertraege.json, src/modell.py, docs/vorlage.md` |
 | [E45](#e45) | 23.10. | KV-Extraktion durch das Modell der Arbeitssitzung, gesichert durch Gate 4 (Wortlaut in der Quellzeile); kein lokales Modell | LM Studio mit Qwen3 8B (E42 geplant) | LM Studio brachte keinen unmittelbaren Nutzen und haette den Ablauf verkompliziert (Studierender); Gate 4 prueft jeden Datensatz unabhaengig vom Modell | `src/kv_extrakt.py, data/extrakt/, prompts/kv_zeitreihe_v1.md` |
+| [E46](#e46) | 23.10. | Demo-Portfolio: 1020, Groessen 50-80 und 80-100, fuenf Branchen mit KV-Reihe 2024-2026; Ausschluss von WG-Zimmern und ausdruecklichen Gemeindewohnungen nach eigenen Kriterien | alle Groessen und Branchen; Klassifikation mit menschlicher Referenz (E37) | nur was in jedem Abruf belastbar ist und eine lueckenlose KV-Reihe hat; die Markierung war weder fuer Mensch noch Modell eindeutig (Studierender) | `config.PORTFOLIO_GROESSEN, tools/erzeuge_vertraege.py, Gate 3` |
 
 ---
 
@@ -1598,3 +1599,47 @@ des Studierenden („großteils okay").
 **Revisionspunkt.** Bestätigt der Studierende einen Referenzfall nicht oder
 ändert ihn, und die Extraktion bleibt beim alten Wert, ist der Gleichklang
 von Referenz und Extraktion als Selbstbestätigung entlarvt.
+
+---
+
+## E46 {#e46}
+### Zuschnitt des Demo-Portfolios — und der Ausschluss bleibt bei den eigenen Kriterien
+**Datum:** 23.10.2026
+
+**Situation.** Für den Demo-Fall (E44) sind Größenklassen, Branchen und
+die Bereinigung der Marktmiete festzulegen. Der Studierende gibt vor: nur
+Branchen mit gut abrufbaren KV-Daten, nur Größen, die im Scrape häufig sind
+und gute Durchschnitte erlauben, und für den Ausschluss von WG-Zimmern und
+Gemeindewohnungen die bestehenden Kriterien — eine menschliche Markierung
+wäre nicht treffsicherer.
+
+**Alternativen.**
+1. Alle Größen und Branchen, Lücken als Lücken führen.
+2. Nur Größenklassen mit belastbarem Median in **jedem** Abruf; nur
+   Branchen mit KV-Reihe 2024–2026 in der geprüften Extraktion; Ausschluss
+   nach Objekttyp (E33) und ausdrücklicher Nennung im Titel (E38), ohne
+   weitere Klassifikation.
+
+**Entscheidung.** Variante 2: Größen 50–80 m² (n = 37/71/64) und 80–100 m²
+(15/32/33); Branchen Banken, IT, Elektroindustrie, Handelsangestellte,
+Privatkrankenanstalten. Der öffentliche Dienst fällt heraus (kein Abschluss
+2024 in der Quelle), Versicherungen und Wirtschaftstreuhänder ebenso (kein
+Satz 2026).
+
+**Begründung.** Ein Demo-Fall soll zeigen, wie die Daten wirken, nicht wo
+sie fehlen; die Lücken stehen in 07. Gate 3 prüft beide Bedingungen bei
+jedem Lauf — wird eine Portfolio-Größe in einem neuen Abruf dünn, oder fehlt
+einer Branche die Reihe, entsteht keine Vorlage. Die Klassifikation
+„möbliert / Kurzzeit" (E38) und ihre Markierliste entfallen: Ob ein
+Inserat den Markt verzerrt, ließ sich weder vom Menschen noch vom Modell
+verlässlich sagen; ein Eval darauf hätte keinen Maßstab.
+
+**Befund beim Bauen.** E18 begründete die Dämpfung des Fixpunkts mit einer
+Schwingung. Im Demo-Portfolio konvergiert er auch ungedämpft, und schneller.
+Die Schwingung war eine Eigenschaft des alten Bestands. Die Dämpfung bleibt
+als Absicherung; der Test prüft jetzt, dass beide Wege beim selben Leerstand
+landen (`test_daempfung_aendert_den_fixpunkt_nicht`).
+
+**Revisionspunkt.** Gate 3: „Portfolio-Größen in jedem Abruf belastbar",
+„jede Branche mit KV-Reihe". Fällt eine der beiden Prüfungen, ist der
+Zuschnitt nicht mehr durch die Daten gedeckt.

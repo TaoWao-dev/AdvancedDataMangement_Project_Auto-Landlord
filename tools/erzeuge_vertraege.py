@@ -1,142 +1,161 @@
-"""Erzeugt den synthetischen Vertragsbestand config/vertraege.json.
+"""Erzeugt das synthetische Mieterverzeichnis config/vertraege.json.
 
-    python3 tools/erzeuge_vertraege.py
+    python3 -m src.run && python3 tools/erzeuge_vertraege.py && python3 -m src.run
 
-Es gibt keine echten Mietvertraege in diesem Projekt und darf keine geben
-(Regel 1 in CLAUDE.md). Der Bestand ist erfunden - aber nach festen,
-benannten Annahmen und mit festem Startwert. Zwei Aufrufe liefern
-byte-identische Dateien; die Datei ist committet und wird von der Pipeline
-gelesen, nicht bei jedem Lauf neu gewuerfelt.
+Es gibt keine echten Mieter in diesem Projekt und darf keine geben (Regel 1).
+Das Verzeichnis ist erfunden, nach festen Annahmen und mit festem Startwert;
+zwei Aufrufe liefern dieselbe Datei. Der Demo-Fall (E44) bestimmt den
+Zuschnitt:
 
-Annahmen (alle in docs/annahmen.md unter A10 und A11):
+  Lage          1020 Wien - der einzige Bezirk mit Marktdaten.
+  Groesse       nur Groessenklassen mit belastbarem Median in JEDEM Abruf
+                (config.PORTFOLIO_GROESSEN). Gelesen aus
+                data/processed/kennzahl_marktniveau.csv - deshalb laeuft die
+                Pipeline einmal vor diesem Skript.
+  Branche       nur Branchen mit lueckenloser KV-Reihe 2024-2026 in der
+                gepruefte Extraktion (data/extrakt/, Gate 4).
+  Miete         heute nahe am Marktmedian des ERSTEN Abrufs (25.09.2026),
+                zwischen 86 und 102 % davon. Aeltere Marktdaten gibt es nicht.
+  Lohnzettel    drei Monatsbezuege vor Vertragsabschluss, wie sie ein
+                Vermieter verlangt; das Niveau aus berufsgruppen.json
+                (dort als PLATZHALTER gekennzeichnet), Monat = Jahr / 14.
+  Bonitaet      Bruttomiete bei Abschluss hoechstens 35 % des Haushaltsnetto
+                (E40); sonst wird neu gezogen.
+  Anpassung     85 % mit Wertsicherung: letzte Anpassung am 1. April des
+                juengsten Jahres, das mindestens 12 Monate nach Abschluss
+                liegt; ohne Klausel ist die letzte Anpassung der Abschluss.
 
-  - 50 Vertraege, Cluster und Einheiten aus config/portfolio.json
-  - Abschlussjahr 2019-2022, gleichverteilt
-  - Vertragsende Juli 2027 bis Juni 2028, Monat gleichverteilt. Entschieden
-    wird 6 Monate vor Vertragsende; die erste Tranche entscheidet im
-    1. Quartal 2027 (00_auftrag.md) und betrifft damit Vertragsenden ab
-    Juli 2027. Korrektur 23.10.: die erste Fassung liess Vertraege ab
-    Jaenner 2027 enden - deren Entscheidung waere vor dem heutigen Tag
-    faellig gewesen.
-  - Startmiete = angenommenes Marktniveau des Abschlussjahres * Streuung
-  - 85 % mit Wertsicherungsklausel; mit Klausel bis 2026 fortgeschrieben
-    mit einer pauschalen Jahresrate, weil die Indexreihen nicht beschafft
-    sind (siehe 07_offene_punkte_lessons.md). Die Rate ist eine Annahme,
-    keine Messung.
-  - Berufsgruppe nach anteil_portfolio, Einkommen lognormal um den Median
-    aus config/berufsgruppen.json (dort als PLATZHALTER gekennzeichnet)
-  - 40 % der Haushalte mit Zweiteinkommen
-  - Bonitaetspruefung bei Abschluss: ein Haushalt, dessen Bruttomiete
-    (netto + Betriebskosten) ueber 35 % seines Nettoeinkommens laege, haette
-    den Vertrag nicht bekommen. Sein Einkommen wird neu gezogen.
-
-Korrektur 23.10.2026: die erste Fassung zog das Einkommen unabhaengig von
-der Miete. Ergebnis waren Belastungsquoten bis 1,22 - Haushalte, die mehr
-Miete zahlen als sie verdienen. Das Modell rechnete damit klaglos und
-empfahl trotzdem Aufschlaege; erst der Blick auf die Spalte belastungsquote
-zeigte, dass der Bestand selbst unmoeglich war (Entscheidungslog E40).
+Was es nicht gibt: Namen, Adressen, Geburtsdaten. Ein Vertrag ist eine
+Kennung, eine Wohnung und ein Haushalt aus Zahlen.
 """
 from __future__ import annotations
 
+import csv
 import json
 import math
 import random
+from datetime import date
 from pathlib import Path
 
 WURZEL = Path(__file__).resolve().parent.parent
 ZIEL = WURZEL / "config" / "vertraege.json"
 
 STARTWERT = 20261023
+ANZAHL = 50
+STICHTAG = date(2026, 10, 23)
+ERSTER_ABRUF = "2026-09-25"
+MIETE_ZU_MARKT = (0.86, 1.02)          # ANNAHME
+ANTEIL_KLAUSEL = 0.85                  # ANNAHME
+INDEX_RATE_PA = 0.04                   # ANNAHME, Rueckrechnung auf die Miete bei Abschluss
+ANTEIL_ZWEITEINKOMMEN = 0.40           # ANNAHME, vor der Bonitaetspruefung
+QUOTE_BEI_ABSCHLUSS_MAX = 0.35         # ANNAHME
+LOHNZETTEL_STREUUNG = (0.97, 1.06)     # Ueberstunden, Zulagen je Monat
+FLAECHE = {"50-80": (55.0, 79.9), "80-100": (80.0, 99.9)}
 
-# ANNAHME: Angebotsniveau Neubau 80-100 m2 je Abschlussjahr, EUR/m2 netto.
-# Nicht gemessen - es gibt fuer diese Jahre keinen Schnappschuss.
-MARKT_JE_JAHR = {2019: 15.8, 2020: 16.4, 2021: 17.3, 2022: 18.9}
-STREUUNG = 0.06              # +-6 % um das Jahresniveau
-ANTEIL_KLAUSEL = 0.85
-INDEX_RATE_PA = 0.040        # ANNAHME, pauschal, bis 2026
-STICHJAHR = 2026
-ANTEIL_ZWEITEINKOMMEN = 0.40
-ENDE_MONATE = [f"2027-{m:02d}" for m in range(7, 13)] + [f"2028-{m:02d}" for m in range(1, 7)]
-QUOTE_BEI_ABSCHLUSS_MAX = 0.35   # ANNAHME: uebliche Bonitaetsgrenze
+
+def portfolio_groessen() -> list[str]:
+    import sys
+    sys.path.insert(0, str(WURZEL))
+    from src import config as C
+    return list(C.PORTFOLIO_GROESSEN)
 
 
-def berufsgruppen_ziehen(rng: random.Random, gruppen: list[dict], n: int) -> list[str]:
-    # Nach Anteil aufrunden und kuerzen statt frei zu wuerfeln: so entspricht
-    # die Zusammensetzung dem Portfolio und nicht dem Zufall eines Startwerts.
-    liste: list[str] = []
-    for g in gruppen:
-        liste += [g["gruppe_id"]] * round(g["anteil_portfolio"] * n)
-    while len(liste) < n:
-        liste.append(gruppen[0]["gruppe_id"])
-    liste = liste[:n]
-    rng.shuffle(liste)
-    return liste
+def marktmedian_erster_abruf() -> dict[str, float]:
+    pfad = WURZEL / "data" / "processed" / "kennzahl_marktniveau.csv"
+    with open(pfad, encoding="utf-8", newline="") as f:
+        return {r["groessenklasse"]: float(r["median_eur_m2"])
+                for r in csv.DictReader(f, delimiter=";")
+                if r["plz"] == "1020" and r["abruf_datum"] == ERSTER_ABRUF}
+
+
+def branchen_mit_reihe() -> list[str]:
+    pfad = sorted((WURZEL / "data" / "extrakt").glob("kv_erhoehungen_*.json"))[-1]
+    ds = json.loads(pfad.read_text(encoding="utf-8"))["erhoehungen"]
+    jahre: dict[str, set[int]] = {}
+    for d in ds:
+        jahre.setdefault(d["branche_id"], set()).add(d["jahr"])
+    return sorted(b for b, j in jahre.items() if {2024, 2025, 2026} <= j)
+
+
+def letzte_anpassung(abschluss: date, klausel: bool) -> date:
+    if not klausel:
+        return abschluss
+    for jahr in range(STICHTAG.year, abschluss.year, -1):
+        kandidat = date(jahr, 4, 1)
+        monate = (kandidat.year - abschluss.year) * 12 + kandidat.month - abschluss.month
+        if kandidat <= STICHTAG and monate >= 12:
+            return kandidat
+    return abschluss
 
 
 def erzeugen() -> dict:
     rng = random.Random(STARTWERT)
     port = json.loads((WURZEL / "config" / "portfolio.json").read_text(encoding="utf-8"))
     beruf = json.loads((WURZEL / "config" / "berufsgruppen.json").read_text(encoding="utf-8"))
-    niveau = beruf["einkommen_niveau"]
     annahmen = port["annahmen"]
+    bk = annahmen["betriebskosten_eur_m2"]["wert"]
+    nf = annahmen["netto_von_brutto_faktor"]["wert"]
+    niveau = beruf["einkommen_niveau"]
+    markt = marktmedian_erster_abruf()
+    groessen = portfolio_groessen()
+    branchen = branchen_mit_reihe()
+    anteile = {g["gruppe_id"]: g["anteil_portfolio"] for g in beruf["gruppen"] if g["gruppe_id"] in branchen}
+    summe = sum(anteile.values())
 
-    n = sum(c["einheiten"] for c in port["cluster"])
-    gruppen = berufsgruppen_ziehen(rng, beruf["gruppen"], n)
+    # Zusammensetzung nach Anteil, nicht nach Zufall des Startwerts
+    liste: list[str] = []
+    for b in branchen:
+        liste += [b] * round(anteile[b] / summe * ANZAHL)
+    liste = (liste + [branchen[0]] * ANZAHL)[:ANZAHL]
+    rng.shuffle(liste)
 
     vertraege = []
-    i = 0
-    for c in port["cluster"]:
-        for k in range(c["einheiten"]):
-            jahr = rng.choice(sorted(MARKT_JE_JAHR))
-            flaeche = round(rng.uniform(port["wohnung"]["flaeche_min_m2"],
-                                        port["wohnung"]["flaeche_max_m2"]), 1)
-            start_m2 = MARKT_JE_JAHR[jahr] * rng.uniform(1 - STREUUNG, 1 + STREUUNG)
-            klausel = rng.random() < ANTEIL_KLAUSEL
-            jahre = STICHJAHR - jahr
-            heute_m2 = start_m2 * ((1 + INDEX_RATE_PA) ** jahre if klausel else 1.0)
-            g = gruppen[i]
-            brutto_miete_start = (start_m2 + annahmen["betriebskosten_eur_m2"]["wert"]) * flaeche
-            # Neu ziehen statt anheben: angehoben laegen alle Abgewiesenen
-            # genau auf der Grenze, und die Verteilung haette einen Knick.
-            # Zweiteinkommen wird mitgezogen - wer im Handel 90 m2 Neubau
-            # mietet, hat meist eines. Das ist die Auslese des Vermieters,
-            # nicht eine Verzerrung des Generators.
-            for _ in range(5000):
-                zweit = rng.random() < ANTEIL_ZWEITEINKOMMEN
-                einkommen = niveau[g]["median"] * math.exp(rng.gauss(0, niveau[g]["sigma_log"]))
-                haushalt_netto = (einkommen * (1.55 if zweit else 1.0)
-                                  * annahmen["netto_von_brutto_faktor"]["wert"])
-                if brutto_miete_start * 12 / haushalt_netto <= QUOTE_BEI_ABSCHLUSS_MAX:
-                    break
-            else:
-                raise RuntimeError(f"Kein tragfaehiges Einkommen fuer {g} gefunden")
-            vertraege.append({
-                "vertrag_id": f"{c['cluster_id'][:2]}-{k + 1:02d}",
-                "cluster_id": c["cluster_id"],
-                "flaeche_m2": flaeche,
-                "abschluss_jahr": jahr,
-                "vertragsende": ENDE_MONATE[rng.randrange(len(ENDE_MONATE))],
-                "wertsicherung": klausel,
-                "miete_start_eur": round(start_m2 * flaeche, 2),
-                "miete_aktuell_eur": round(heute_m2 * flaeche, 2),
-                "berufsgruppe": g,
-                "einkommen_brutto_pa": round(einkommen, -2),
-                "zweiteinkommen": zweit,
-            })
-            i += 1
-
+    for i in range(ANZAHL):
+        klasse = groessen[i % len(groessen)]
+        flaeche = round(rng.uniform(*FLAECHE[klasse]), 1)
+        abschluss = date(rng.choice([2024, 2025]), rng.randint(1, 12), 1)
+        if abschluss.year == 2024 and abschluss.month == 1:
+            abschluss = date(2024, 2, 1)   # KV-Reihe beginnt mit den Abschluessen 2024
+        klausel = rng.random() < ANTEIL_KLAUSEL
+        anpassung = letzte_anpassung(abschluss, klausel)
+        miete_m2 = markt[klasse] * rng.uniform(*MIETE_ZU_MARKT)
+        miete = round(miete_m2 * flaeche, 2)
+        jahre_index = (anpassung.year - abschluss.year) if klausel else 0
+        miete_abschluss = round(miete / ((1 + INDEX_RATE_PA) ** jahre_index), 2)
+        b = liste[i]
+        for _ in range(5000):
+            zweit = rng.random() < ANTEIL_ZWEITEINKOMMEN
+            monat = niveau[b]["median"] / 14 * math.exp(rng.gauss(0, niveau[b]["sigma_log"]))
+            zettel = [round(monat * rng.uniform(*LOHNZETTEL_STREUUNG), 2) for _ in range(3)]
+            gehalt = sum(zettel) / 3
+            netto_haushalt = gehalt * 14 * (1.55 if zweit else 1.0) * nf
+            if (miete_abschluss + bk * flaeche) * 12 / netto_haushalt <= QUOTE_BEI_ABSCHLUSS_MAX:
+                break
+        else:
+            raise RuntimeError(f"Kein tragfaehiger Haushalt fuer {b}")
+        vertraege.append({
+            "vertrag_id": f"LS-{i + 1:02d}",
+            "plz": "1020",
+            "groessenklasse": klasse,
+            "flaeche_m2": flaeche,
+            "abschluss": abschluss.isoformat(),
+            "wertsicherung": klausel,
+            "letzte_anpassung": anpassung.isoformat(),
+            "miete_aktuell_eur": miete,
+            "miete_bei_abschluss_eur": miete_abschluss,
+            "branche_id": b,
+            "lohnzettel_brutto_eur": zettel,
+            "zweiteinkommen": zweit,
+        })
     return {
-        "_zweck": "Synthetischer Vertragsbestand. Keine echten Personen, keine echten Vertraege.",
+        "_zweck": "Synthetisches Mieterverzeichnis fuer den Demo-Fall (E44). Keine echten Personen.",
         "_erzeugt_von": "tools/erzeuge_vertraege.py",
         "_startwert": STARTWERT,
-        "_annahmen": {
-            "markt_je_abschlussjahr_eur_m2": {str(k): v for k, v in MARKT_JE_JAHR.items()},
-            "streuung": STREUUNG,
-            "anteil_wertsicherung": ANTEIL_KLAUSEL,
-            "indexrate_pa_bis_2026": INDEX_RATE_PA,
-            "anteil_zweiteinkommen": ANTEIL_ZWEITEINKOMMEN,
-            "quote_bei_abschluss_max": QUOTE_BEI_ABSCHLUSS_MAX,
-        },
+        "_annahmen": {"miete_zu_markt_erster_abruf": MIETE_ZU_MARKT, "anteil_wertsicherung": ANTEIL_KLAUSEL,
+                      "indexrate_rueckrechnung_pa": INDEX_RATE_PA, "anteil_zweiteinkommen": ANTEIL_ZWEITEINKOMMEN,
+                      "quote_bei_abschluss_max": QUOTE_BEI_ABSCHLUSS_MAX,
+                      "lohnzettel_streuung": LOHNZETTEL_STREUUNG, "gehaelter_je_jahr": 14,
+                      "groessenklassen": groessen, "branchen": branchen},
         "vertraege": vertraege,
     }
 

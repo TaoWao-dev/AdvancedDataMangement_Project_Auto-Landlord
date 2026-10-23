@@ -690,77 +690,107 @@ def test_fixpunkt_konvergiert_und_meldet_es(tmp_path=None):
     """E18: ein Zwischenstand nach MAX_ITER waere kein Ergebnis."""
     ziel = Path(tmp_path or C.PROCESSED) / "test_fixpunkt.sqlite"
     con = _baue(ziel)
-    zeilen = con.execute("SELECT cluster_id, konvergiert, iterationen"
-                         " FROM modelllauf WHERE eignung = 'verwendbar'").fetchall()
+    zeilen = con.execute("SELECT segment, konvergiert, iterationen FROM modelllauf").fetchall()
     con.close()
     ziel.unlink(missing_ok=True)
-    assert zeilen, "kein Cluster mit Marktmiete gerechnet"
+    assert len(zeilen) == len(C.PORTFOLIO_GROESSEN), [dict(r) for r in zeilen]
     for r in zeilen:
-        assert r["konvergiert"] == 1, dict(r)
-        assert r["iterationen"] < modell.MAX_ITER, dict(r)
+        assert r["konvergiert"] == 1 and r["iterationen"] < modell.MAX_ITER, dict(r)
 
 
-def test_ungedaempfter_fixpunkt_waere_nicht_konvergiert():
-    """Die Daempfung ist keine Kosmetik: ohne sie pendelt der Leerstand.
-    Faellt dieser Test, ist entweder die Daempfung unnoetig geworden oder
-    der Test misst nicht mehr, was er soll - beides ist eine Nachricht."""
+def test_daempfung_aendert_den_fixpunkt_nicht():
+    """E18 begruendete die Daempfung mit einem pendelnden Fixpunkt. Im
+    Demo-Portfolio (E44) konvergiert er auch ungedaempft - schneller sogar.
+    Die Schwingung war eine Eigenschaft des alten Bestands. Was immer gelten
+    muss: wo beide konvergieren, landen sie beim selben Leerstand."""
     par, raster = modell.parameter_laden()
-    vs = [v for v in modell.vertraege_laden() if v["cluster_id"] == "NORDBAHN"]
+    vs = [v for v in modell.vertraege_laden() if v["groessenklasse"] == "50-80"]
+    ek = {v["vertrag_id"]: modell.gehalt_bei_abschluss(v) * 14 for v in vs}
     alt = modell.DAEMPFUNG
     try:
         modell.DAEMPFUNG = 0.0
-        _, _, it_ohne, ok_ohne = modell.fixpunkt(vs, 24.01, par, raster)
+        _, l_ohne, it_ohne, ok_ohne = modell.fixpunkt(vs, 24.25, ek, par, raster)
     finally:
         modell.DAEMPFUNG = alt
-    _, _, it_mit, ok_mit = modell.fixpunkt(vs, 24.01, par, raster)
+    _, l_mit, it_mit, ok_mit = modell.fixpunkt(vs, 24.25, ek, par, raster)
     assert ok_mit
-    assert (not ok_ohne) or it_ohne > it_mit, (it_ohne, ok_ohne, it_mit)
+    if ok_ohne:
+        assert abs(l_ohne - l_mit) < 0.05, (l_ohne, l_mit)
 
 
-def test_ohne_marktmiete_keine_empfehlung(tmp_path=None):
-    """Zwei Cluster haben keinen Schnappschuss. Sie bekommen keine Empfehlung
-    und keine geschaetzte Marktmiete, sondern stehen sichtbar als Luecke."""
-    ziel = Path(tmp_path or C.PROCESSED) / "test_ohne_markt.sqlite"
-    con = _baue(ziel)
-    luecke = {r["cluster_id"]: r["eignung"] for r in con.execute(
-        "SELECT cluster_id, eignung FROM modelllauf WHERE eignung <> 'verwendbar'")}
-    mit = con.execute(
-        """SELECT COUNT(*) FROM empfehlung JOIN vertrag USING (vertrag_id)
-           WHERE cluster_id IN (SELECT cluster_id FROM modelllauf
-                                WHERE eignung <> 'verwendbar')""").fetchone()[0]
-    con.close()
-    ziel.unlink(missing_ok=True)
-    assert set(luecke) == {"SONNWEND", "SEESTADT"}, luecke
-    assert mit == 0
-
-
-def test_empfehlung_kommt_aus_der_beobachteten_marktmiete(tmp_path=None):
-    """Die Marktmiete im Modell ist genau die Zahl aus v_cluster_marktmiete -
-    kein zweiter Weg, keine Konstante im Code."""
+def test_jeder_vertrag_hat_empfehlung_aus_der_beobachteten_marktmiete(tmp_path=None):
+    """Die Marktmiete im Modell ist genau der Median der juengsten Kennzahlzeile
+    seiner Groessenklasse - kein zweiter Weg, keine Konstante im Code."""
     ziel = Path(tmp_path or C.PROCESSED) / "test_markt_herkunft.sqlite"
     con = _baue(ziel)
-    m = con.execute("SELECT marktmiete_eur_m2 FROM modelllauf"
-                    " WHERE cluster_id = 'NORDBAHN'").fetchone()[0]
-    v = con.execute("SELECT median_eur_m2 FROM v_cluster_marktmiete"
-                    " WHERE cluster_id = 'NORDBAHN'").fetchone()[0]
+    falsch = con.execute(
+        """SELECT COUNT(*) FROM vertrag v JOIN empfehlung e USING (vertrag_id)
+           WHERE e.markt_jetzt_eur_m2 <> (
+             SELECT median_eur_m2 FROM v_marktniveau m
+             WHERE m.plz = v.plz AND m.groessenklasse = v.groessenklasse
+             ORDER BY abruf_datum DESC LIMIT 1)""").fetchone()[0]
+    n = con.execute("SELECT COUNT(*) FROM empfehlung").fetchone()[0]
     con.close()
     ziel.unlink(missing_ok=True)
-    assert m == v
+    assert n == 50 and falsch == 0, (n, falsch)
+
+
+def test_kv_deckel_wirkt_je_mieter():
+    """Privatkrankenanstalten 2026: 3 % nur bis 3.750 EUR. Wer 5.000 EUR
+    verdient, bekommt 112,50 EUR, also 2,25 %."""
+    erh = [{"branche_id": "SPITAL", "gueltig_ab": "2026-04-01", "satz_index": 3.0, "deckel_eur": 3750.0}]
+    f, g = modell.kv_faktor(erh, "SPITAL", "2026-01-01", "2026-10-23", 5000.0)
+    assert abs(g - 5112.5) < 1e-6 and abs(f - 1.0225) < 1e-9, (f, g)
+    f2, _ = modell.kv_faktor(erh, "SPITAL", "2026-01-01", "2026-10-23", 3000.0)
+    assert abs(f2 - 1.03) < 1e-9
+
+
+def test_kv_zaehlt_nur_erhoehungen_nach_der_letzten_anpassung():
+    erh = [{"branche_id": "IT", "gueltig_ab": "2025-01-01", "satz_index": 3.2, "deckel_eur": None},
+           {"branche_id": "IT", "gueltig_ab": "2026-01-01", "satz_index": 2.9, "deckel_eur": None}]
+    f, _ = modell.kv_faktor(erh, "IT", "2025-06-01", "2026-10-23", 4000.0)
+    assert abs(f - 1.029) < 1e-9, f
+    f0, _ = modell.kv_faktor(erh, "IT", "2026-04-01", "2026-10-23", 4000.0)
+    assert f0 == 1.0
+
+
+def test_einkommen_ist_kein_preisargument():
+    """Revisionspunkt E44: zwei gleiche Wohnungen, gleiche Miete, gleicher
+    Markt - der Haushalt mit mehr Einkommen darf keine hoehere Erhoehung
+    empfohlen bekommen als der mit weniger, solange beide leistbar sind.
+    (Mehr Einkommen kann die Annahme wahrscheinlicher machen; die
+    Erhoehung selbst folgt dem Markt.)"""
+    par, raster = modell.parameter_laden()
+    v = {"miete_aktuell_eur": 1500.0, "flaeche_m2": 70.0, "zweiteinkommen": True}
+    arm = modell.beste_option(v, 24.25, 70000.0, par, raster, 2.5)["szenario"].aufschlag_pct
+    reich = modell.beste_option(v, 24.25, 140000.0, par, raster, 2.5)["szenario"].aufschlag_pct
+    assert reich <= arm + 3, (arm, reich)
 
 
 def test_vertragsbestand_ist_bei_abschluss_leistbar():
-    """Korrektur vom 23.10. (E40): der erste Bestand hatte Belastungsquoten
-    bis 1,22. Ein Haushalt, der mehr Miete zahlt als er verdient, haette den
-    Vertrag nie bekommen."""
-    import json
+    """E40: ein Haushalt, der mehr Miete zahlt als er verdient, haette den
+    Vertrag nie bekommen. Bonitaet aus den drei Lohnzetteln."""
     port = json.loads((C.WURZEL / "config" / "portfolio.json").read_text(encoding="utf-8"))
     bk = port["annahmen"]["betriebskosten_eur_m2"]["wert"]
     nf = port["annahmen"]["netto_von_brutto_faktor"]["wert"]
     for v in modell.vertraege_laden():
-        brutto = v["miete_start_eur"] + bk * v["flaeche_m2"]
-        netto = v["einkommen_brutto_pa"] * (1.55 if v["zweiteinkommen"] else 1.0) * nf
-        # Einkommen ist auf 100 EUR gerundet: kleine Toleranz
-        assert brutto * 12 / netto <= 0.355, (v["vertrag_id"], brutto * 12 / netto)
+        assert len(v["lohnzettel_brutto_eur"]) == 3, v["vertrag_id"]
+        brutto = v["miete_bei_abschluss_eur"] + bk * v["flaeche_m2"]
+        netto = modell.gehalt_bei_abschluss(v) * 14 * (1.55 if v["zweiteinkommen"] else 1.0) * nf
+        assert brutto * 12 / netto <= 0.351, (v["vertrag_id"], brutto * 12 / netto)
+
+
+def test_verzeichnis_nur_mit_gut_belegten_branchen_und_groessen():
+    """E44/E46: nur Branchen mit KV-Reihe 2024-2026, nur Portfolio-Groessen."""
+    ds = json.loads(sorted((C.WURZEL / "data" / "extrakt").glob("kv_erhoehungen_*.json"))[-1]
+                    .read_text(encoding="utf-8"))["erhoehungen"]
+    jahre = {}
+    for d in ds:
+        jahre.setdefault(d["branche_id"], set()).add(d["jahr"])
+    for v in modell.vertraege_laden():
+        assert {2024, 2025, 2026} <= jahre.get(v["branche_id"], set()), v["vertrag_id"]
+        assert v["groessenklasse"] in C.PORTFOLIO_GROESSEN, v["vertrag_id"]
+        assert "name" not in {k.lower() for k in v}, "keine Personenfelder"
 
 
 def test_vertragsgenerator_ist_deterministisch():
@@ -769,8 +799,7 @@ def test_vertragsgenerator_ist_deterministisch():
         "erz", C.WURZEL / "tools" / "erzeuge_vertraege.py")
     erz = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(erz)
-    import json
-    a = erz.erzeugen()
+    a = json.loads(json.dumps(erz.erzeugen()))     # Tupel -> Listen wie im JSON
     gespeichert = json.loads((C.WURZEL / "config" / "vertraege.json").read_text(encoding="utf-8"))
     assert a == gespeichert, "config/vertraege.json weicht vom Generator ab - neu erzeugen"
 

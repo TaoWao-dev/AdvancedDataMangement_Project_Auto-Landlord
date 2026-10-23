@@ -111,21 +111,36 @@ def hauptlauf() -> int:
     nicht_konv = con.execute(
         "SELECT COUNT(*) FROM modelllauf WHERE konvergiert = 0").fetchone()[0]
     pruef.append(("Portfolio-Fixpunkt konvergiert", nicht_konv == 0,
-                  f"{nicht_konv} Cluster ohne Konvergenz"))
+                  f"{nicht_konv} Segment(e) ohne Konvergenz"))
 
     ausser = con.execute(
         """SELECT COUNT(*) FROM empfehlung
-           WHERE p_annahme < 0 OR p_annahme > 1
-              OR (option = 'verlaengern' AND aufschlag_pct IS NULL)"""
+           WHERE p_annahme < 0 OR p_annahme > 1 OR erhoehung_pct < 0
+              OR neue_miete_eur_m2 > markt_jetzt_eur_m2 * 1.5"""
     ).fetchone()[0]
     pruef.append(("Empfehlungen im gueltigen Bereich", ausser == 0, f"{ausser}"))
 
-    # Eine Empfehlung ohne beobachtete Marktmiete waere eine geschaetzte.
+    # Jeder Vertrag hat eine Empfehlung, und jede beruht auf einer
+    # belastbaren Marktmiete seiner Groessenklasse (E44).
     ohne = con.execute(
-        """SELECT COUNT(*) FROM empfehlung e JOIN vertrag v USING (vertrag_id)
-           JOIN modelllauf m ON m.cluster_id = v.cluster_id
-           WHERE m.eignung <> 'verwendbar'""").fetchone()[0]
-    pruef.append(("Empfehlung nur mit Marktmiete", ohne == 0, f"{ohne}"))
+        """SELECT COUNT(*) FROM vertrag v LEFT JOIN empfehlung e USING (vertrag_id)
+           LEFT JOIN modelllauf m ON m.segment = v.groessenklasse
+           WHERE e.vertrag_id IS NULL OR m.eignung <> 'belastbar'""").fetchone()[0]
+    pruef.append(("jeder Vertrag mit Empfehlung auf belastbarem Markt", ohne == 0, f"{ohne}"))
+
+    # Die Portfolio-Groessenklassen muessen in JEDEM Abruf belastbar sein -
+    # sonst traegt die Marktentwicklung je Vertrag nicht (E46).
+    duenn = con.execute(
+        """SELECT COUNT(*) FROM v_marktniveau WHERE plz = '1020'
+           AND groessenklasse IN ({}) AND belastbarkeit <> 'belastbar'""".format(
+            ",".join("?" * len(C.PORTFOLIO_GROESSEN))), C.PORTFOLIO_GROESSEN).fetchone()[0]
+    pruef.append(("Portfolio-Groessen in jedem Abruf belastbar", duenn == 0, f"{duenn}"))
+
+    # Jede Branche im Verzeichnis braucht ihre KV-Reihe.
+    ohne_kv = con.execute(
+        """SELECT COUNT(DISTINCT branche_id) FROM vertrag
+           WHERE branche_id NOT IN (SELECT branche_id FROM kv_erhoehung)""").fetchone()[0]
+    pruef.append(("jede Branche mit KV-Reihe", ohne_kv == 0, f"{ohne_kv}"))
 
     for name, ok, detail in pruef:
         print(f"  {'ok    ' if ok else 'FEHLER'} {name} {detail}")
@@ -139,8 +154,7 @@ def hauptlauf() -> int:
     print(f"  Beobachtungen   : {res['zahlen']['inserat_beobachtung']}")
     print(f"  Zuordnungslücken: {res['luecken']}")
     print(f"  Empfehlungen    : {mz['empfehlungen']} Vertraege in "
-          f"{mz['cluster_gerechnet']} Cluster(n), {mz['cluster_ohne_markt']} "
-          f"Cluster ohne Marktmiete")
+          f"{mz['segmente']} Groessenklasse(n)")
     print(f"  Kennzahl-CSV    : {sum(1 for k in kennzahlen if 'fehler' not in k)}")
     print(f"  Datenbank       : data/processed/{C.DB.name}")
 
