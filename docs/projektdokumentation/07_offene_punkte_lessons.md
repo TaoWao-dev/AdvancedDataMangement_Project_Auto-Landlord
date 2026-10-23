@@ -16,8 +16,12 @@ gespeichert. Zweimal entstand dabei die falsche Seite (E09, Vorfall 2 in
 `02_schritt1_datenzugriff.md`), und erst Gate 1 hat es gemerkt. Das
 Labelling für die Evals scheiterte zweimal: Gemeindewohnungen ließen sich
 am Titel nicht erkennen (E38), und die erste Markierliste stammte von einem
-Modell statt vom Menschen (E37). Am Ende entfiel die Klassifikation ganz
-(E46).
+Modell statt vom Menschen (E37). Am Ende wurde die Bereinigung vereinfacht
+(E46): Weil sich aus den Daten nicht zu 100 % feststellen lässt, worum es
+sich bei einer Anzeige handelt, und die Sortierung durch das LLM nicht
+wesentlich schlechter ist als die eines Menschen, gelten die Regeln des
+Modells (Objekttyp, ausdrückliche Nennung im Titel) ohne weiteren
+Labelling-Aufwand.
 
 ### 2. Auch die KV-Seiten müssen von Hand gespeichert werden — die Pipeline braucht immer einen Menschen als Auslöser
 

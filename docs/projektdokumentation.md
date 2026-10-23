@@ -23,7 +23,7 @@ für Datei. Die Inhalte stehen in den verlinkten Dateien, nicht hier.
 | Entscheidungsvorlage | [`docs/vorlage.md`](vorlage.md), Demo [`docs/demo/mieterverzeichnis.html`](demo/mieterverzeichnis.html) | v2 (Prototyp, E44); jede Zahl mit Herkunft, vom Grader geprüft |
 | Prompts | `prompts/*_v<n>.md`, `prompts/CHANGELOG.md` | vier Aufgaben, je Version eine Zeile im Changelog |
 | Eval-Suite | `evals/suite_*.yaml`, `evals/graders/` | 4 Suiten, Modell gepinnt; Grader mit Selbsttest und Gegenprobe |
-| Ergebnisse | `06_schritt5_analyse_vorlage.md` | sql 9/9, Gate 4 15/15, Extraktion 5/5 (Konsistenz), vorlage 2/2; Klassifikation entfallen |
+| Ergebnisse | `06_schritt5_analyse_vorlage.md` | sql 9/9, Gate 4 15/15, Extraktion 5/5 (Konsistenz), vorlage 2/2; Bereinigung der Inserate vereinfacht (E46) |
 | Projektdokumentation | 06 und 07 neu, 00–05 aktualisiert | fertig |
 | Betriebshandbuch | [`docs/betrieb.md`](betrieb.md) | sieben Abschnitte |
 | Agent-Anweisung | [`CLAUDE.md`](../CLAUDE.md) | Was, wo, Datenmodell, Regeln, Starten |

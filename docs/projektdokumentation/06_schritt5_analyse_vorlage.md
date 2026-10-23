@@ -29,7 +29,7 @@ python3 -m src.demo LS-27   # ein Vertrag Schritt für Schritt
 | `kv_extraktion_gespeichert` | 4 KV-Erhöhungen je Branche | Prompt `kv_zeitreihe_v1`, Ausgabe gespeichert | 8 (5 gewertet), alle bestätigt | Wortlaut der KV-Seiten, Lesung, vom Studierenden bestätigt (E41, E48) | `extraktion` |
 | Gate 4 | 4, vor der Datenbank | Programm | 15 Datensätze | Wortlaut der Quellzeile | `src/kv_extrakt.py` |
 | `vorlage` | 5 Entscheidungsvorlage | Prompt `vorlage_v2` | 2 | Kennzahl-CSV und Gliederung | `zahlen_herkunft`, `vorlage_pflichten` |
-| ~~`moebliert`~~ | Bereinigung der Marktmiete | — | — | entfallen (E46): kein Maßstab, weder Mensch noch Modell entscheiden es sicher | — |
+| Bereinigung der Inserate | Marktmiete ohne Gemeindewohnungen und WG-Zimmer | Regeln, vom Modell aufgestellt, im Code ausgeführt (E33, E38) | — | vereinfacht (E46): keine Klassifikation je Inserat und keine Referenz — aus den Daten nicht zu 100 % feststellbar, die Sortierung durch das LLM nicht wesentlich schlechter als die eines Menschen | `test_wg_zimmer_sind_kein_wohnungsangebot`, `test_ausdrueckliche_gemeindewohnung_ist_kein_marktangebot` |
 
 Konfiguration: `evals/suite_*.yaml` (promptfoo); Testfälle `evals/tests/*.json`
 aus `evals/references/`; derselbe Ablauf ohne Node: `evals/lauf.py` (E42).

@@ -60,7 +60,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E43](#e43) | 23.10. | Vorlage v1 von Claude in der Arbeitssitzung formuliert, nach prompts/vorlage_v1.md, gegen die Grader geprueft; Zitat bindet die Zahl an die zitierte Datei | auf den lokalen Modelllauf warten; Vorlage per Schablone ohne Modell | heute lauffaehig und pruefbar; der Grader hat dabei selbst eine Luecke gezeigt | `docs/vorlage.md, evals/graders/zahlen_herkunft.py` |
 | [E44](#e44) | 23.10. | Konkretisierung zum lauffaehigen Prototyp: Mietanpassung je laufendem Vertrag, nur Bezirk, Groessen und Branchen mit guter Datenlage | am Vollausbau festhalten (drei Quartiere, alle Berufsgruppen) | Revisionspunkt E29 eingetreten; Erweiterung jederzeit moeglich, bringt fuer die Abgabe keinen Mehrwert | `config/vertraege.json, src/modell.py, docs/vorlage.md` |
 | [E45](#e45) | 23.10. | KV-Extraktion durch das Modell der Arbeitssitzung, gesichert durch Gate 4 (Wortlaut in der Quellzeile); kein lokales Modell | LM Studio mit Qwen3 8B (E42 geplant) | LM Studio brachte keinen unmittelbaren Nutzen und haette den Ablauf verkompliziert (Studierender); Gate 4 prueft jeden Datensatz unabhaengig vom Modell | `src/kv_extrakt.py, data/extrakt/, prompts/kv_zeitreihe_v1.md` |
-| [E46](#e46) | 23.10. | Demo-Portfolio: 1020, Groessen 50-80 und 80-100, fuenf Branchen mit KV-Reihe 2024-2026; Ausschluss von WG-Zimmern und ausdruecklichen Gemeindewohnungen nach eigenen Kriterien | alle Groessen und Branchen; Klassifikation mit menschlicher Referenz (E37) | nur was in jedem Abruf belastbar ist und eine lueckenlose KV-Reihe hat; die Markierung war weder fuer Mensch noch Modell eindeutig (Studierender) | `config.PORTFOLIO_GROESSEN, tools/erzeuge_vertraege.py, Gate 3` |
+| [E46](#e46) | 23.10. | Demo-Portfolio: 1020, Groessen 50-80 und 80-100, fuenf Branchen mit KV-Reihe 2024-2026; Bereinigung der Inserate vereinfacht: Regeln des Modells (Objekttyp, ausdrueckliche Nennung) statt Klassifikation mit menschlicher Referenz | alle Groessen und Branchen; Klassifikation je Inserat mit menschlicher Referenz (E37) | nur was in jedem Abruf belastbar ist und eine lueckenlose KV-Reihe hat; die Sortierung durch das LLM ist nicht wesentlich schlechter als die eines Menschen (Studierender) | `config.PORTFOLIO_GROESSEN, tools/erzeuge_vertraege.py, Gate 3` |
 | [E47](#e47) | 23.10. | Befund offen in die Vorlage: das Einkommen wirkt ueber die Annahmewahrscheinlichkeit doch auf die Hoehe; Empfehlung als Obergrenze, beim Markt gedeckelt | Modell so lassen und schweigen; Einkommen ganz aus dem Modell nehmen | der Revisionspunkt von E44 ist eingetreten; ihn zu verschweigen waere genau die glatte Zahl, die CLAUDE.md verbietet | `docs/vorlage.md, tests/test_pipeline.py` |
 | [E48](#e48) | 23.10. | KV-Referenzen bestaetigt, Fall Wirtschaftstreuhaender entfernt | Fall behalten; durch einen anderen ersetzen | Entscheidung des Studierenden nach Durchsicht; die Reihe gehoert nicht zum Demo-Portfolio und hat in den Quellen keinen Satz | `evals/erfasse_kv_referenz.py, evals/references/kv_extraktion.json` |
 
@@ -1613,7 +1613,7 @@ von Referenz und Extraktion als Selbstbestätigung entlarvt.
 ---
 
 ## E46 {#e46}
-### Zuschnitt des Demo-Portfolios — und der Ausschluss bleibt bei den eigenen Kriterien
+### Umfang des Prototyps — und die Bereinigung der Inserate wird vereinfacht
 **Datum:** 23.10.2026
 
 **Situation.** Für den Demo-Fall (E44) sind Größenklassen, Branchen und
@@ -1639,10 +1639,21 @@ Satz 2026).
 **Begründung.** Ein Demo-Fall soll zeigen, wie die Daten wirken, nicht wo
 sie fehlen; die Lücken stehen in 07. Gate 3 prüft beide Bedingungen bei
 jedem Lauf — wird eine Portfolio-Größe in einem neuen Abruf dünn, oder fehlt
-einer Branche die Reihe, entsteht keine Vorlage. Die Klassifikation
-„möbliert / Kurzzeit" (E38) und ihre Markierliste entfallen: Ob ein
-Inserat den Markt verzerrt, ließ sich weder vom Menschen noch vom Modell
-verlässlich sagen; ein Eval darauf hätte keinen Maßstab.
+einer Branche die Reihe, entsteht keine Vorlage.
+
+Die Bereinigung der Inserate wird **vereinfacht, nicht verworfen**. Ob es
+sich bei einer Anzeige um eine Gemeindewohnung, ein WG-Zimmer oder ein
+möbliertes Kurzzeitangebot handelt, ist aus den Daten nicht zu 100 %
+feststellbar — weder für einen Menschen noch für ein Modell. Weil die
+Sortierung durch das Sprachmodell nicht wesentlich schlechter ist als die
+eines Menschen (Einschätzung des Studierenden nach eigener Markierung, E37,
+E38), wurde kein weiterer Aufwand in eine eigene Klassifikation je Inserat
+und in eine menschliche Referenz dafür investiert. Es gelten die Regeln,
+die das Modell aufgestellt hat und die Code ausführt: Ausschluss nach
+Objekttyp (WG-Zimmer, E33) und nach ausdrücklicher Nennung im Titel
+(Gemeindewohnung, E38). Möblierte Kurzzeitangebote werden nicht eigens
+erkannt; sie bleiben im Markt und heben den Median eher an — das steht in
+der Vorlage als Grenze.
 
 **Befund beim Bauen.** E18 begründete die Dämpfung des Fixpunkts mit einer
 Schwingung. Im Demo-Portfolio konvergiert er auch ungedämpft, und schneller.

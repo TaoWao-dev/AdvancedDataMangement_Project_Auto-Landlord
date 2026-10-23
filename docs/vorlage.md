@@ -153,6 +153,10 @@ mittlere Erhöhung in einer Klasse auf 27,6 %, am unteren fällt sie auf 0,0 %
 - **Kurze Marktreihe.** Drei Abrufe, der erste eine Teilseite. Eine
   Mieterhöhung vor dem 25.09.2026 hat keinen gemessenen Marktbezug.
 - **Angebot ist nicht Abschluss.** Inserate zeigen, was verlangt wird.
+- **Bereinigung vereinfacht.** WG-Zimmer und ausdrücklich genannte
+  Gemeindewohnungen sind aus dem Markt genommen; was eine Anzeige sonst ist,
+  lässt sich aus den Daten nicht sicher sagen. Möblierte Kurzzeitangebote
+  bleiben im Markt und heben den Median eher an.
 - **Rechtsrahmen.** Während eines laufenden Vertrags ist eine Erhöhung nur
   über die vereinbarte, seit 01.01.2026 gedeckelte Wertsicherung möglich;
   darüber hinaus nur bei Verlängerung oder Neuvereinbarung. Die Empfehlung
