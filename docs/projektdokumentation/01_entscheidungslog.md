@@ -57,6 +57,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E40](#e40) | 23.10. | Vertragsbestand mit Bonitaetspruefung bei Abschluss erzeugt | Einkommen unabhaengig von der Miete ziehen (erste Fassung) | Belastungsquoten bis 1,22 beschreiben Vertraege, die nie zustande gekommen waeren | `tools/erzeuge_vertraege.py, config/vertraege.json` |
 | [E41](#e41) | 23.10. | KV-Seiten als Quelle aufgenommen, Referenzen mit woertlichem Rohtext per Skript, erwartete Felder bis zur Bestaetigung offen | Referenz frei von Hand schreiben; Referenz aus Modellrecherche (E28) | der Rohtext ist maschinell geprueft woertlich; die Lesung braucht trotzdem einen Menschen | `tools/kv_quellen_aufbereiten.py, evals/erfasse_kv_referenz.py, kv_textblock` |
 | [E42](#e42) | 23.10. | Zahlenpruefung der Vorlage deterministisch statt LLM-Judge; Suite als promptfoo und als Stdlib-Laeufer mit denselben Gradern | Judge-Modell (E27 geplant); nur promptfoo | pruefbare Frage gehoert in Code; npm/PyPI waren in der Sitzung nicht erreichbar, und die Pipeline kommt ohne Installation aus | `evals/graders/, evals/lauf.py, evals/suite_*.yaml` |
+| [E43](#e43) | 23.10. | Vorlage v1 von Claude in der Arbeitssitzung formuliert, nach prompts/vorlage_v1.md, gegen die Grader geprueft; Zitat bindet die Zahl an die zitierte Datei | auf den lokalen Modelllauf warten; Vorlage per Schablone ohne Modell | heute lauffaehig und pruefbar; der Grader hat dabei selbst eine Luecke gezeigt | `docs/vorlage.md, evals/graders/zahlen_herkunft.py` |
 
 ---
 
@@ -1465,3 +1466,54 @@ Vorlage eine Zahl als unbelegt, die tatsächlich in einer CSV steht, ist der
 Parser zu eng; findet ein Mensch in einer bestandenen Vorlage eine Zahl ohne
 Herkunft, ist er zu weit. Beides gehört dann als Testfall nach
 `tests/test_graders.py`.
+
+---
+
+## E43 {#e43}
+### Die Vorlage v1 schreibt das Modell der Arbeitssitzung — geprüft wird sie wie jede andere Modellausgabe
+**Datum:** 23.10.2026
+
+**Situation.** Die Vorlage soll „das LLM" schreiben, mit Zahlen aus SQL. Ein
+lokales Modell (Qwen3 8B) ist heute nicht erreichbar; das Modell der
+Arbeitssitzung (Claude Opus 5.5) ist es.
+
+**Alternativen.**
+1. Auf den lokalen Lauf warten und heute keine Vorlage abgeben.
+2. Die Vorlage aus einer Schablone füllen, ohne Sprachmodell.
+3. Claude formuliert die Vorlage nach `prompts/vorlage_v1.md` aus den
+   Kennzahltabellen; die Suite prüft die Datei wie jede Modellausgabe.
+
+**Entscheidung.** Variante 3, offen gekennzeichnet (Kopf der Vorlage,
+`prompts/CHANGELOG.md`).
+
+**Begründung.** (1) liefert nichts, (2) liefert keinen Text, den man einem
+Entscheider gibt. (3) ist eine Modellausgabe mit bekanntem Modell und
+bekanntem Prompt, und die Prüfung hängt nicht davon ab, wer geschrieben hat.
+Der Preis: das Modell, das die Vorlage schreibt, hat auch die Pipeline
+gebaut. Es kennt die Zahlen besser, als ein frisches Modell sie aus der
+Tabelle kennen würde — das macht die Aufgabe leichter, nicht die Prüfung
+schwächer.
+
+**Was beim Schreiben schiefging und was es zeigte.** Drei Fehler im ersten
+Entwurf, alle vor dem Commit gefunden, keiner davon vom Grader:
+„40 der 50 Wohnungen" (gerechnet, und falsch — richtig 30), „liegt 23 %
+unter dem Markt" (die Spalte misst den Abstand des Markts zur Miete, nicht
+umgekehrt) und „fast doppelt so viel" (es ist mehr als doppelt). Der erste
+Fehler ist der lehrreiche: Die Regel „du rechnest nicht" stand im Prompt,
+und das Modell hat trotzdem gerechnet. Der Grader hielt die 40 für belegt,
+weil sie zufällig im Angebotsraster steht. Daraufhin wurde er verschärft:
+steht ein Zitat `[kennzahl_x]` im Absatz, muss die Zahl in genau dieser
+Datei stehen. Der Fehler steht als Testfall in `tests/test_graders.py`, und
+die Gegenprobe hat eine siebte Mutation dafür.
+
+**Was der Grader weiterhin nicht kann.** Eine Zahl ohne Zitat wird gegen
+alle Quellen geprüft; kleine ganze Zahlen passen dann fast immer irgendwo.
+In der Vorlage v1 stehen 54 Zahlen mit Zitat im selben Absatz und 64 ohne.
+Für die zweite Gruppe ist „belegt" ein schwacher Beleg. Und eine Aussage wie
+„mehr als doppelt" enthält keine Zahl — Richtungsfehler in Worten sieht nur
+ein Mensch.
+
+**Revisionspunkt.** Läuft der lokale Modelllauf (Qwen3 8B) mit demselben
+Prompt, kommt dessen Vorlage durch dieselben Grader. Besteht sie und ist sie
+für die Leitung brauchbar, ersetzt sie v1; besteht sie nicht, ist das ein
+Befund über das kleinere Modell und gehört nach 06.

@@ -9,7 +9,7 @@ Fehler in einen Grader ein; mindestens ein Test muss dann rot werden.
 
 Lauf vom 23.10.2026: in der ersten Fassung ueberlebten 2 von 6 Mutationen
 (Teilwort-Treffer in der Klassifikation, Toleranz auf der Fallzahl). Die
-Tests wurden nachgeschaerft; seither werden alle 6 gefangen. Der Quelltext
+Tests wurden nachgeschaerft; seither werden alle gefangen. Der Quelltext
 wird nach jeder Mutation wiederhergestellt, auch bei Abbruch.
 """
 from __future__ import annotations
@@ -21,10 +21,12 @@ from pathlib import Path
 WURZEL = Path(__file__).resolve().parent.parent
 
 MUTATIONEN = [
-    ("evals/graders/zahlen_herkunft.py", "    return None\n\n\ndef pruefen",
-     "    return 'immer'\n\n\ndef pruefen", "jede Zahl gilt als belegt"),
+    ("evals/graders/zahlen_herkunft.py", "    return None\n\n\ndef bloecke",
+     "    return 'immer'\n\n\ndef bloecke", "jede Zahl gilt als belegt"),
     ("evals/graders/zahlen_herkunft.py", "if abs(c - v) <= p / 2 + 1e-9:",
      "if abs(c - v) <= 1:", "Rundung auf +-1 statt auf die Stellenzahl"),
+    ("evals/graders/zahlen_herkunft.py", "                                 if wo.split(\".csv\")[0] in zitate]),",
+     "                                 ]),", "Zitat wird ignoriert"),
     ("evals/graders/extraktion.py", "        return soll is None and ist is None",
      "        return True", "null stimmt mit jedem Wert"),
     ("evals/graders/extraktion.py", '          "fundstelle_zeile"]', "          ]",

@@ -150,8 +150,8 @@ Q = {"kennzahl": [(24.01, "kennzahl_bezirksvergleich.csv:median_eur_m2"),
 
 def test_belegte_zahlen_bestehen():
     t = ("Die Marktmiete liegt bei 24,01 €/m² (n = 32) [kennzahl_bezirksvergleich]. "
-         "Annahme 2,5 Monate Leerstand. Datenstand 09.10.2026, 50 Wohnungen. "
-         "Barwert 2.251.247 €, Mehrwert rund 147.000 €, Annahmequote 48 %.")
+         "Annahme 2,5 Monate Leerstand. Datenstand 09.10.2026, 50 Wohnungen.\n\n"
+         "Barwert 2.251.247 €, Mehrwert rund 147.000 €, Annahmequote 48 % [kennzahl_empfehlung].")
     r = zahlen_herkunft.pruefen(t, Q)
     assert r["pass"], r["reason"]
 
@@ -175,6 +175,21 @@ def test_bezeichner_sind_keine_zahlen():
     t = "Siehe E39, Annahme A10, Q1 und `kennzahl_empfehlung_vertrag.csv`, Vertrag NO-07."
     r = zahlen_herkunft.pruefen(t, Q)
     assert r["pass"] and not r["belegt"], r
+
+
+def test_zitat_bindet_an_die_zitierte_datei():
+    """Der echte Fehler aus der ersten Vorlage: 20 + 10 Vertraege, geschrieben
+    als 40. Die 40 stand zufaellig in einer anderen Quelle und galt als belegt."""
+    q = {"kennzahl": [(20.0, "kennzahl_empfehlung.csv:vertraege"),
+                      (10.0, "kennzahl_empfehlung.csv:vertraege"),
+                      (40.0, "kennzahl_sensitivitaet.csv:wert")],
+         "annahme": [], "konstante": [(50.0, "konstante: Portfolio")], "daten": {}}
+    falsch = "Für 40 der 50 Wohnungen gibt es keine Marktmiete [kennzahl_empfehlung]."
+    richtig = "Sonnwendviertel (20 Verträge) und Seestadt (10 Verträge) [kennzahl_empfehlung]."
+    assert not zahlen_herkunft.pruefen(falsch, q)["pass"]
+    assert zahlen_herkunft.pruefen(richtig, q)["pass"]
+    # ohne Zitat greift die Bindung nicht - dann ist es nur ein schwacher Beleg
+    assert zahlen_herkunft.pruefen("Für 40 der 50 Wohnungen.", q)["pass"]
 
 
 def test_falsches_datum_faellt_durch():

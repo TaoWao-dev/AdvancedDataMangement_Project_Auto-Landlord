@@ -15,6 +15,13 @@ Jede Zahl im Text bekommt eine Herkunft:
   konstante ein Eintrag in vorlage_konstanten.json, jeder mit Begruendung
   UNBEKANNT alles andere. Ein einziger Treffer laesst den Test scheitern.
 
+Zitat bindet (seit 23.10., Gegenprobe an der Vorlage v1): steht im selben
+Absatz oder in derselben Tabellenzeile ein Zitat [kennzahl_x], muss die Zahl
+in genau dieser Datei vorkommen (oder eine benannte Annahme/Konstante sein).
+Ohne diese Bindung passt fast jede kleine Zahl irgendwo: "40 der 50
+Wohnungen" - verrechnet, richtig waere 30 - fand sich im Angebotsraster
+und galt als belegt.
+
 Nicht als Zahl gelesen werden Bezeichner (E39, A10, Q1, kennzahl_5),
 Inhalte in `Backticks` mit Buchstaben darin, Markdown-Listennummern und
 Jahreszahlen 2000-2035. Die Jahreszahl-Ausnahme ist eine bekannte Luecke:
@@ -107,12 +114,23 @@ def quellen_laden(csv_muster: str = "data/processed/kennzahl_*.csv") -> dict:
     return {"kennzahl": werte, "annahme": annahmen, "konstante": konstanten, "daten": daten}
 
 
-def herkunft(z: dict, q: dict) -> str | None:
+def herkunft(z: dict, q: dict, zitate: set[str] | None = None) -> str | None:
     if z["art"] == "datum":
         return q["daten"].get(z["wert"])
     v, p = z["wert"], z["praezision"]
-    for art in ("kennzahl", "annahme", "konstante"):
-        for c, wo in q[art]:
+    if zitate:
+        # Zitierte Datei zuerst und ausschliesslich unter den Kennzahlen;
+        # Annahmen und Konstanten bleiben erlaubt.
+        quellen = [("kennzahl", [(c, wo) for c, wo in q["kennzahl"]
+                                 if wo.split(".csv")[0] in zitate]),
+                   ("annahme", q["annahme"]), ("konstante", q["konstante"])]
+    else:
+        # Ohne Zitat: benannte Konstanten und Annahmen vor dem Zufallstreffer
+        # in irgendeiner Spalte.
+        quellen = [("konstante", q["konstante"]), ("annahme", q["annahme"]),
+                   ("kennzahl", q["kennzahl"])]
+    for art, liste in quellen:
+        for c, wo in liste:
             if abs(c - v) <= p / 2 + 1e-9:
                 return f"{art} {wo}"
             # Anteile: 0,482 in der CSV darf als 48 % im Text stehen.
@@ -122,13 +140,33 @@ def herkunft(z: dict, q: dict) -> str | None:
     return None
 
 
+def bloecke(text: str) -> list[str]:
+    """Absaetze; Tabellenzeilen und Listenpunkte je fuer sich."""
+    out, puffer = [], []
+    for zeile in text.splitlines():
+        if zeile.lstrip().startswith(("|", "- ", "* ")) or re.match(r"^\s*\d+\.\s", zeile):
+            if puffer:
+                out.append("\n".join(puffer)); puffer = []
+            out.append(zeile)
+        elif not zeile.strip():
+            if puffer:
+                out.append("\n".join(puffer)); puffer = []
+        else:
+            puffer.append(zeile)
+    if puffer:
+        out.append("\n".join(puffer))
+    return out
+
+
 def pruefen(text: str, quellen: dict | None = None) -> dict:
     q = quellen or quellen_laden()
-    zahlen = zahlen_im_text(text)
-    unbekannt, belegt = [], []
-    for z in zahlen:
-        h = herkunft(z, q)
-        (belegt if h else unbekannt).append({**z, "herkunft": h})
+    zahlen, unbekannt, belegt = [], [], []
+    for b in bloecke(text):
+        zitate = set(re.findall(r"\[(kennzahl_[a-z_]+)\]", b))
+        for z in zahlen_im_text(b):
+            zahlen.append(z)
+            h = herkunft(z, q, zitate)
+            (belegt if h else unbekannt).append({**z, "herkunft": h, "zitiert": bool(zitate)})
     ok = not unbekannt
     grund = (f"{len(belegt)} Zahlen, alle belegt" if ok else
              f"{len(unbekannt)} von {len(zahlen)} Zahlen ohne Herkunft: "
