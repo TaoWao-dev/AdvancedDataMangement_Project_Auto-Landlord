@@ -1717,8 +1717,9 @@ Fall ergänzt — der Arbeiter-KV Handel (Zeile 1911). Er hat denselben Satz
 wie der Angestellten-KV (2,55 %), aber keinen Geltungsbeginn in der Quelle;
 der 19. Jänner 2026 ist der Tag der Einigung. Ein Modell, das den falschen
 KV liest oder das Einigungsdatum übernimmt, fällt an Datum und Fundstelle
-durch (`test_angestellten_kv_statt_arbeiter_kv_faellt_durch`). Der Fall ist
-eine Lesung durch Claude und steht auf `von_hand_bestaetigt: false`.
+durch (`test_angestellten_kv_statt_arbeiter_kv_faellt_durch`). Der Fall war
+eine Lesung durch Claude; der Studierende hat ihn mit „Ist ok" bestätigt.
+Damit sind alle 8 Fälle von Hand bestätigt.
 
 **Revisionspunkt.** Bestätigt der Studierende den Fall Handelsarbeiter
 nicht oder korrigiert ihn, gilt die Korrektur; die Trefferquote wird für

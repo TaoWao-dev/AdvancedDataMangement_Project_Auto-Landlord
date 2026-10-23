@@ -31,7 +31,10 @@ ZIEL = WURZEL / "evals" / "references" / "kv_extraktion.json"
 # sieben gelten als bestaetigt, ohne Korrektur an den erwarteten Feldern.
 BESTAETIGT: dict[str, str] = {f: "2026-10-23" for f in (
     "kv_banken", "kv_versicherung_innendienst", "kv_it", "kv_elektroindustrie",
-    "kv_handel_angestellte", "kv_privatkrankenanstalten", "kv_oeffentlicher_dienst")}
+    "kv_handel_angestellte", "kv_privatkrankenanstalten", "kv_oeffentlicher_dienst",
+    # Ergaenzter achter Fall, vom Studierenden am selben Abend mit "Ist ok"
+    # bestaetigt (E48, Nachtrag).
+    "kv_handel_arbeiter")}
 
 FRAGE = ("Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die "
          "Reihe '{reihe}'? Antworte nur aus den beigefuegten Dokumenten.")

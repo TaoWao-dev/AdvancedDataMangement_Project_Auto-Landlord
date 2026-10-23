@@ -99,8 +99,8 @@ Landesspitäler — letztere ersetzt durch Privatkrankenanstalten); fünf haben
 Ablenker. Die erwarteten Felder waren eine Lesung durch Claude; am 23.10.
 hat der Studierende sie durchgesehen und bestätigt, den Fall
 Wirtschaftstreuhänder aber herausgenommen (E48). Als Ersatz ist der
-Arbeiter-KV Handel ergänzt: **8 Fälle, davon 7 bestätigt**; der neue Fall
-ist eine Lesung und steht auf `von_hand_bestaetigt: false`. Der Text unten ist der
+Arbeiter-KV Handel ergänzt und ebenfalls bestätigt: **8 Fälle, alle von
+Hand bestätigt**. Der Text unten ist der
 Stand vom 09.10.
 
 Für die Extraktion verlangt die Vorgabe mindestens acht Fälle. Die Fälle sind

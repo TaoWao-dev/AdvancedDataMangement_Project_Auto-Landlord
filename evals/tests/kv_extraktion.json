@@ -204,7 +204,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {

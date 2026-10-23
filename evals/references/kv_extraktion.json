@@ -357,8 +357,8 @@
    "nicht_bewertet": [
     "bezugsgroesse"
    ],
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_oeffentlicher_dienst",

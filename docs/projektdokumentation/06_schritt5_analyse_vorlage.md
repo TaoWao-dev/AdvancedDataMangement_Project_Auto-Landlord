@@ -25,7 +25,7 @@ python3 -m src.demo LS-27   # ein Vertrag Schritt für Schritt
 | Task | Analyse | Werkzeug | Fälle | Referenz entstanden durch | Grader |
 |---|---|---|---:|---|---|
 | `sql` | 1–3 Preisniveau, Anbietertyp, Abdeckung, Inseratsdauer | SQL | 9 | Zweitimplementierungen ohne `src/` und SQL | `sql_referenz` |
-| `kv_extraktion_gespeichert` | 4 KV-Erhöhungen je Branche | Prompt `kv_zeitreihe_v1`, Ausgabe gespeichert | 8 (5 gewertet), 7 bestätigt | Wortlaut der KV-Seiten, Lesung, vom Studierenden bestätigt (E41, E48) | `extraktion` |
+| `kv_extraktion_gespeichert` | 4 KV-Erhöhungen je Branche | Prompt `kv_zeitreihe_v1`, Ausgabe gespeichert | 8 (5 gewertet), alle bestätigt | Wortlaut der KV-Seiten, Lesung, vom Studierenden bestätigt (E41, E48) | `extraktion` |
 | Gate 4 | 4, vor der Datenbank | Programm | 15 Datensätze | Wortlaut der Quellzeile | `src/kv_extrakt.py` |
 | `vorlage` | 5 Entscheidungsvorlage | Prompt `vorlage_v2` | 2 | Kennzahl-CSV und Gliederung | `zahlen_herkunft`, `vorlage_pflichten` |
 | ~~`moebliert`~~ | Bereinigung der Marktmiete | — | — | entfallen (E46): kein Maßstab, weder Mensch noch Modell entscheiden es sicher | — |

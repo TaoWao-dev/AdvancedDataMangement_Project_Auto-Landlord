@@ -169,7 +169,6 @@ Daten `tools/erzeuge_vertraege.py` nur, wenn sich das Verzeichnis ändern soll.
 
 ## Was noch fehlt
 
-Die Bestätigung des achten Extraktionsfalls (Handelsarbeiter, E48), eine
-längere Marktreihe, echte Einkommensniveaus, ein zweites Modell für die
+Eine längere Marktreihe, echte Einkommensniveaus, ein zweites Modell für die
 Extraktion. Vollständig, mit
 den fünf Schwächen des Projekts, in `07_offene_punkte_lessons.md`.
