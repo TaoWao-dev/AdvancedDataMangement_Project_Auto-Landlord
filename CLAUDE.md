@@ -113,6 +113,7 @@ Abgabemarkierungen: `termin3` (Schritte 1–4, 9.10.), `termin4` (Schritt 5,
 | synthetisches Mieterverzeichnis | `config/vertraege.json`, erzeugt von `tools/erzeuge_vertraege.py` |
 | KV-Extraktion (LLM-Ausgabe) und Gate 4 | `data/extrakt/`, `src/kv_extrakt.py` |
 | Demo | `src/demo.py`, `docs/demo/mieterverzeichnis.html` |
+| Endpräsentation (11 Folien, ca. 10 min) | `docs/vortrag/auto-landlord.pdf` |
 | eine Frage je Datei, mit Fallstrick im Kopf | `src/sql/kennzahl_*.sql` |
 | Referenzen, Testfälle, Grader, Suiten | `evals/` (siehe `evals/README.md`) |
 | Prompts, versioniert | `prompts/<aufgabe>_v<n>.md`, `prompts/CHANGELOG.md` |

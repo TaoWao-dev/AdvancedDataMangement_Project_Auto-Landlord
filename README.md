@@ -57,7 +57,8 @@ Quellzeile) in die Datenbank.
 
 **[`docs/vorlage.md`](docs/vorlage.md)** — die Entscheidungsvorlage, und
 **[`docs/demo/mieterverzeichnis.html`](docs/demo/mieterverzeichnis.html)** —
-das Verzeichnis mit Empfehlung je Vertrag. Kurz: erhöhen, wo die Miete unter
+das Verzeichnis mit Empfehlung je Vertrag. Die Endpräsentation liegt unter
+[`docs/vortrag/auto-landlord.pdf`](docs/vortrag/auto-landlord.pdf). Kurz: erhöhen, wo die Miete unter
 dem Markt liegt (50–80 m²: 18 von 25 Verträgen, Median 6 %; 80–100 m²: 11
 von 25, Median 0 %). Zwei Befunde sind wichtiger als die Zahlen: Die
 Empfehlung hängt fast vollständig an einer ungemessenen Annahme über das
