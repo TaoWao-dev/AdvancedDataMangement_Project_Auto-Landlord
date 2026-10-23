@@ -1,6 +1,6 @@
-# Mietportfolio Wien — Verlängerungsentscheidung
+# ADDM Projekt "Auto-Landlord" - fhb251452@fh-vie.ac.at
+## Mietportfolio Wien — Mieterhöhungsentscheidungen automatisiert vorbereiten.
 
-> Die Projektbeschreibung des Repositoryinhabers, wörtlich:
 >
 > **AdvancedDataManagement_Project_Auto-Landlord**
 > My github repo for a dystopian data-management project that scrapes
