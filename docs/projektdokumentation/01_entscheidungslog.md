@@ -55,6 +55,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E36](#e36) | 09.10. | Ungemessene Abgaenge nicht als null Tage; Anteil noch online als Kennzahl | Mittelwert mit 0 fuer Einmal-Gesehene; nur Mittelwert der Wiedergesehenen | eine unbekannte Dauer ist nicht null; mit zwei Abrufen ist der Anteil die einzige ehrliche Aussage | `src/sql/kennzahl_inseratsdauer.sql, Commit 8e7565a` |
 | [E39](#e39) | 23.10. | Modell an die Daten angeschlossen: Marktmiete aus SQL, Ergebnis als Tabelle zurueck, Kennzahlen wieder SQL | Empfehlung direkt in Python ausgeben; Barwertrechnung in SQL | jede Zahl der Vorlage nennt eine Abfrage; die Iteration ist in SQL nicht pruefbar | `src/modell.py, kennzahl_empfehlung*.sql, kennzahl_sensitivitaet.sql` |
 | [E40](#e40) | 23.10. | Vertragsbestand mit Bonitaetspruefung bei Abschluss erzeugt | Einkommen unabhaengig von der Miete ziehen (erste Fassung) | Belastungsquoten bis 1,22 beschreiben Vertraege, die nie zustande gekommen waeren | `tools/erzeuge_vertraege.py, config/vertraege.json` |
+| [E41](#e41) | 23.10. | KV-Seiten als Quelle aufgenommen, Referenzen mit woertlichem Rohtext per Skript, erwartete Felder bis zur Bestaetigung offen | Referenz frei von Hand schreiben; Referenz aus Modellrecherche (E28) | der Rohtext ist maschinell geprueft woertlich; die Lesung braucht trotzdem einen Menschen | `tools/kv_quellen_aufbereiten.py, evals/erfasse_kv_referenz.py, kv_textblock` |
 
 ---
 
@@ -1364,3 +1365,52 @@ Segment. Beides ist offen und steht in `07_offene_punkte_lessons.md`.
 Sobald echte Einkommensniveaus aus der Lohnsteuerstatistik vorliegen, muss der
 Anteil mit Zweiteinkommen von selbst sinken — tut er das nicht, ist die
 Berufsgruppenmischung falsch.
+
+---
+
+## E41 {#e41}
+### Die KV-Seiten sind Quelle, die Extraktionsreferenz entsteht aus ihrem Wortlaut
+**Datum:** 23.10.2026 · schließt E28
+
+**Situation.** Der Studierende hat am 23.10. die ÖGB-Übersicht der
+KV-Abschlüsse und sechs WKO-Seiten über `view-source:` gespeichert. Damit
+liegt erstmals der Wortlaut vor, den E28 verlangt hat.
+
+**Alternativen.**
+1. Die acht Fälle von Hand in eine JSON-Datei schreiben.
+2. Ein Skript, das jeden `rohtext` aus der Rohdatei über seine
+   Originalzeile liest und abbricht, wenn der Wortlaut dort nicht steht; die
+   erwarteten Felder als Lesung eintragen und bis zur Bestätigung durch den
+   Studierenden als unbestätigt führen.
+3. Nur die Fälle aufnehmen, die eindeutig sind (fünf), und die übrigen
+   weglassen.
+
+**Entscheidung.** Variante 2.
+
+**Begründung.** (1) ist genau der Weg, auf dem in E02 Nachschriften ins
+Goldset kamen. (3) würde die schwierigen Fälle wegwerfen, die das Eval
+überhaupt erst aussagekräftig machen: drei der acht Reihen haben in den
+Quellen **keinen** Satz für 2026 (Versicherungen, Wirtschaftstreuhänder; der
+Landes-KV der Spitäler ist durch die Privatkrankenanstalten ersetzt), und
+fünf haben Ablenker — denselben Prozentsatz aus dem Vorjahr, eine laufende
+Forderung oder den Arbeiter-KV derselben Branche. Ein Modell, das dort
+nichts erfindet, hat etwas gezeigt; eines, das 2,9 % für die Versicherungen
+nennt, hat den Vorjahresabschluss übernommen.
+
+**Die Grenze dieser Lösung, offen.** Die erwarteten Felder sind meine
+Lesung, nicht die des Studierenden. Sie stammen nicht vom Modell, das später
+geprüft wird, und sie sind direkte Lesungen ausdrücklicher Sätze — aber sie
+sind eine Lesung durch ein Sprachmodell. Deshalb steht in jedem Fall
+`von_hand_bestaetigt: false`, und das Eval weist die Trefferquote getrennt
+für bestätigte und unbestätigte Fälle aus. Erst bestätigte Fälle sind ein
+Maßstab.
+
+**Nebenbefund.** `config/berufsgruppen.json` führt für die Spitäler die
+Reihe „Bundesländer – Krankenanstalten". Dazu steht in keiner Quelle etwas.
+Ersatzweise ist der Fall auf die Privatkrankenanstalten gestellt; das passt
+nur, wenn das Portfolio dort Mieter hat — es ist eine Annahme mehr (07).
+
+**Revisionspunkt.** `test_kv_rohtext_steht_woertlich_in_der_rohdatei`.
+Ändert der Studierende beim Bestätigen eine erwartete Antwort, ist das kein
+Fehler, sondern der Zweck des Schritts — die Änderung gehört dann in diesen
+Eintrag.

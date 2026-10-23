@@ -1,0 +1,10 @@
+# quelle_url: https://www.wko.at/kollektivvertrag/kollektivvertrag-banken-und-bankiers-2026
+# abruf: 2026-10-23, manuell im Browser (view-source:) gespeichert
+# sha256_original: 31f6f5b09244ceaf246b18d134b161f2e68f204bb971c4d814f7bd7771696cc6
+# Format: <Zeile im Originalquelltext>\t<sichtbarer Text>
+# beschnitten: nur Liste der KV-Fassungen und Geltungsdauer
+# redigiert: 0 Kontaktmuster ersetzt
+312	Kollektivvertrag Banken und Bankiers, Angestellte, gültig ab 1.4.2026
+414	Geltungsdauer:
+415	ab 1.4.2026
+488	Gehaltsordnung Banken und Bankiers, Angestellte, gültig ab 1.4.2026

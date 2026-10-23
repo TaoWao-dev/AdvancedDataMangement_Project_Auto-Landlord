@@ -1,0 +1,15 @@
+# quelle_url: https://www.wko.at/wien/kollektivvertraege/volksbanken-kreditgenossenschaften
+# abruf: 2026-10-23, manuell im Browser (view-source:) gespeichert
+# sha256_original: 4d9700b5fa0f51d3593594becac9eddc4196e88b7d0375a25d16a4cc9cbfd15a
+# Format: <Zeile im Originalquelltext>\t<sichtbarer Text>
+# beschnitten: nur Liste der KV-Fassungen und Geltungsdauer
+# redigiert: 0 Kontaktmuster ersetzt
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2018
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften,&nbsp;Angestellte, gültig ab 1.4.2019
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2020
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2021
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2022
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2023
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2024
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2025
+400	Kollektivvertrag gewerbliche Kreditgenossenschaften, Angestellte, gültig ab 1.4.2026

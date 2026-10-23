@@ -320,12 +320,58 @@ def vpi(interim: Path | None = None) -> dict:
     return _index_csv(interim or C.INTERIM, "vpi", "reihe")
 
 
+# ──────────────────────────────────────────── Quelle: Kollektivvertraege
+
+def kollektivvertrag(interim: Path | None = None) -> dict:
+    """Textbloecke der KV-Seiten, unveraendert bis auf die Redaktion.
+
+    Hier wird NICHT extrahiert - das ist die Aufgabe des Modells (E27). Der
+    Leser liefert nur Bloecke mit Fundstelle (Datei, Originalzeile), damit
+    jede Modellantwort und jede Referenz auf eine Zeile zeigen kann.
+    redigiere_text laeuft ein zweites Mal: die Datei kommt zwar schon
+    redigiert aus tools/kv_quellen_aufbereiten.py, aber ein Gate, das sich
+    auf die Vorarbeit verlaesst, ist keines.
+    """
+    interim = interim or C.INTERIM
+    prov_pfad = interim / "provenienz.json"
+    if not prov_pfad.exists():
+        return {"zeilen": [], "zahlen": {"status": "keine Provenienz"}}
+    prov = json.loads(prov_pfad.read_text(encoding="utf-8"))
+    dateien = [d for d in prov["dateien"] if d["quelle"] == "kollektivvertrag"]
+    if not dateien:
+        print("clean kollektivvertrag: keine Datei vorhanden - uebersprungen")
+        return {"zeilen": [], "zahlen": {"status": "nicht beschafft"}}
+    zeilen, nachredigiert = [], 0
+    for eintrag in dateien:
+        pfad = C.WURZEL / eintrag["pfad_interim"]
+        url = None
+        for nr, roh in enumerate(pfad.read_text(encoding="utf-8").splitlines()):
+            if roh.startswith("# quelle_url:"):
+                url = roh.split(":", 1)[1].strip()
+                continue
+            if roh.startswith("#") or "\t" not in roh:
+                continue
+            zeile, text = roh.split("\t", 1)
+            text2, treffer = redigiere_text(text)
+            nachredigiert += len(treffer)
+            zeilen.append({"datei": eintrag["datei"], "abrufdatum": eintrag["abrufdatum"],
+                           "quelle_url": url, "block_nr": len(zeilen) + 1,
+                           "zeile_original": int(zeile), "text": text2})
+    if nachredigiert:
+        # Die Vorarbeit haette das schon erledigen muessen.
+        raise SystemExit(f"GATE 2: {nachredigiert} Kontaktmuster in kv_*.txt - "
+                         "tools/kv_quellen_aufbereiten.py erneut laufen lassen")
+    print(f"clean kollektivvertrag: {len(dateien)} Datei(en), {len(zeilen)} Textbloecke")
+    return {"zeilen": zeilen, "zahlen": {"dateien": len(dateien), "bloecke": len(zeilen)}}
+
+
 # ───────────────────────────────────────────────────────────── Sammler
 
 LESER = {
     "willhaben": willhaben,
     "tariflohnindex": tariflohnindex,
     "vpi": vpi,
+    "kollektivvertrag": kollektivvertrag,
 }
 
 

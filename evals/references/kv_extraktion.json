@@ -1,0 +1,387 @@
+{
+ "_zweck": "Referenzantworten fuer die Extraktion aus KV-Texten (Analyse 4). Existieren vor dem Modell.",
+ "_quelle": "data/raw/2026-10-23/kv_*.txt",
+ "_erzeugt_von": "evals/erfasse_kv_referenz.py",
+ "_warnung": "Nicht von Hand bearbeiten. Bestaetigungen in BESTAETIGT im Skript eintragen.",
+ "faelle": [
+  {
+   "fall_id": "kv_banken",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "BANK",
+   "eingabe": {
+    "reihe": "Banken und Bankiers",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Banken und Bankiers'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.0,
+    "prozent_max": 3.0,
+    "fixbetrag_eur": 5.0,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-04-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 1258
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 1258,
+     "rohtext": "Die kollektivvertraglichen Mindestgehälter der rund 68.000 Beschäftigten des Finanzsektors steigen um drei Prozent sowie einen Fixbetrag von fünf Euro."
+    },
+    {
+     "datei": "data/raw/2026-10-23/kv_wko_banken-und-bankiers_2026-10-23.txt",
+     "zeile_original": 415,
+     "rohtext": "ab 1.4.2026"
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 3488,
+     "rohtext": "Anhebung der Mindestgehälter um drei Prozent geeinigt"
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Die OeGB-Seite spricht vom 'Finanzsektor', nicht woertlich vom KV Banken und Bankiers, und nennt kein Datum. Das Datum stammt aus der WKO-Liste der KV-Fassungen (gueltig ab 1.4.2026). Der Ablenker 2025 hat denselben Prozentsatz - ein Modell kann ihn treffen und trotzdem den falschen Abschnitt gelesen haben; deshalb zaehlt die Fundstelle.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_versicherung_innendienst",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "VERS",
+   "eingabe": {
+    "reihe": "Versicherungsunternehmungen/Innendienst",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Versicherungsunternehmungen/Innendienst'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": false,
+    "prozent_min": null,
+    "prozent_max": null,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-03-01",
+    "bezugsgroesse": null,
+    "deckelung": null,
+    "fundstelle_zeile": null
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_wko_versicherungsunternehmen_2026-10-23.txt",
+     "zeile_original": 400,
+     "rohtext": "Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2026"
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 3623,
+     "rohtext": "im Innendienst um 2,9 % plus 19,50 Euro"
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Fuer 2026 nennt keine Quelle einen Prozentsatz; die WKO-Liste belegt nur, dass eine Fassung ab 1.3.2026 existiert. Richtig ist: Geltungsbeginn ja, Prozentsatz nein. Wer 2,9 % nennt, hat den Abschluss 2025 uebernommen.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_it",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "IT",
+   "eingabe": {
+    "reihe": "Fachverband Unternehmensberatung, Buchhaltung und Informationstechnologie (IT-KV)",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Fachverband Unternehmensberatung, Buchhaltung und Informationstechnologie (IT-KV)'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": true,
+    "prozent_min": 2.7,
+    "prozent_max": 3.1,
+    "fixbetrag_eur": null,
+    "ist_prozent": 2.75,
+    "geltungsbeginn": "2026-01-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 1806
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 1806,
+     "rohtext": "Die Mindestgehälter steigen rückwirkend mit 1. 1. 2026 sozial gestaffelt zwischen 3,1 und 2,7 Prozent. Die IST-Gehaltssumme sowie Zulagen werden um 2,75 Prozent erhöht."
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 680,
+     "rohtext": "um 3,9 Prozent"
+    },
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 4796,
+     "rohtext": "Die Mindestgehälter aller Tätigkeitsfamilien steigen um 3,2 Prozent"
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Gestaffelt: ein einzelner Prozentsatz ist falsch, die Spanne richtig. 3,9 % ist eine laufende Forderung fuer die naechste Runde, kein Abschluss. Die Reihe in config/berufsgruppen.json ist die Fachverbandsebene UBIT (A3); der OeGB-Text nennt die 'IT-Branche'.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_elektroindustrie",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "INDUSTRIE",
+   "eingabe": {
+    "reihe": "Elektro- u. Elektronikindustrie",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Elektro- u. Elektronikindustrie'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.0,
+    "prozent_max": 3.0,
+    "fixbetrag_eur": null,
+    "ist_prozent": 2.7,
+    "geltungsbeginn": "2026-05-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 1069
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 1054,
+     "rohtext": "Mehr Geld für 60.000 Beschäftigte der Elektro- und Elektronikindustrie"
+    },
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 1069,
+     "rohtext": "Die Mindestlöhne und Mindestgehälter sowie die Lehrlingseinkommen werden rückwirkend mit 1. Mai 2026 um 3 Prozent erhöht. Die Ist-Einkommen steigen um bis zu 2,7 Prozent."
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 3022,
+     "rohtext": "Die Mindestlöhne sowie Lehrlingseinkommen steigen um 3 Prozent."
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Die Zuordnung von Zeile 1069 zur Elektroindustrie ergibt sich nur aus der Ueberschrift in Zeile 1054. 'bis zu 2,7 Prozent' bei den Ist-Einkommen ist eine Obergrenze, kein fester Satz.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_handel_angestellte",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "HANDEL",
+   "eingabe": {
+    "reihe": "Handelsangestellte Allgemeiner Gross- und Kleinhandel",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Handelsangestellte Allgemeiner Gross- und Kleinhandel'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": true,
+    "prozent_min": 2.55,
+    "prozent_max": 2.55,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-01-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 2377
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 2377,
+     "rohtext": "Die Mindestgehälter der 430.000 Angestellten und 20.000 Lehrlinge im Handel steigen mit 1. Jänner 2026 um 2,55 Prozent, wobei die betragsmäßige Überzahlung aufrecht bleibt."
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 1911,
+     "rohtext": "Lohnerhöhungen von 2,55 Prozent"
+    },
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 683,
+     "rohtext": "verlangt 3,8 Prozent mehr Gehalt"
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Die Handelsarbeiter haben denselben Satz, aber einen anderen KV (Zeile 1911) - nur die Fundstelle unterscheidet. 'Ueberzahlung bleibt betragsmaessig aufrecht' heisst: Ist-Gehaelter steigen nicht automatisch, deshalb ist_prozent = null.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_privatkrankenanstalten",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "SPITAL",
+   "eingabe": {
+    "reihe": "Privatkrankenanstalten",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Privatkrankenanstalten'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.0,
+    "prozent_max": 3.0,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-04-01",
+    "bezugsgroesse": null,
+    "deckelung": true,
+    "fundstelle_zeile": 1851
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 1851,
+     "rohtext": "Ab 1. April 2026 werden die Gehälter bis zu einer Höhe von 3.750 Euro um drei Prozent erhöht"
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 5156,
+     "rohtext": "Für 2025 ist eine Erhöhung um den Verbraucherpreisindex plus 0,45 Prozent vorgesehen."
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Die Reihe in config/berufsgruppen.json heisst 'Bundeslaender - Krankenanstalten' (oeffentliche Landesspitaeler). Dazu steht in den Quellen nichts; die Privatkrankenanstalten sind die naechstliegende Reihe und hier bewusst als Ersatz gewaehlt (07_offene_punkte_lessons.md). 'Gehaelter' ohne Zusatz: ob KV- oder Ist-Gehalt gemeint ist, sagt der Text nicht - bezugsgroesse wird nicht bewertet. Ob 'bis zu 3.750 Euro' eine Deckelung oder eine Staffelung ist, ist Auslegung.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_wirtschaftstreuhaender",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": null,
+   "eingabe": {
+    "reihe": "Wirtschaftstreuhaender",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Wirtschaftstreuhaender'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": false,
+    "prozent_min": null,
+    "prozent_max": null,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": null,
+    "bezugsgroesse": null,
+    "deckelung": null,
+    "fundstelle_zeile": null
+   },
+   "fundstellen": [],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 4584,
+     "rohtext": "Unternehmensberatung und Bilanzbuchhalter"
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Keine der gespeicherten Seiten nennt den KV der Wirtschaftstreuhaender. Bestanden ist der Fall nur, wenn nichts behauptet wird. Der KV Information & Consulting (Bilanzbuchhalter) ist ein anderer KV.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  },
+  {
+   "fall_id": "kv_oeffentlicher_dienst",
+   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
+   "gruppe_id": "BUND",
+   "eingabe": {
+    "reihe": "Oeffentlicher Dienst (Bund, Vergleichsreihe)",
+    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Oeffentlicher Dienst (Bund, Vergleichsreihe)'? Antworte nur aus den beigefuegten Dokumenten.",
+    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
+   },
+   "erwartete_antwort": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.3,
+    "prozent_max": 3.3,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": null,
+    "bezugsgroesse": "gehaltsschema",
+    "deckelung": false,
+    "fundstelle_zeile": 2782
+   },
+   "fundstellen": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 2767,
+     "rohtext": "Dreijahresabschluss für den Öffentlichen Dienst"
+    },
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 2782,
+     "rohtext": "Die Höhe des Abschlusses für 2026 bleibt unverändert bei 3,3 %, es gibt keine Nulllohnrunden 2027 und 2028."
+    }
+   ],
+   "ablenker": [
+    {
+     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
+     "zeile_original": 4464,
+     "rohtext": "Im Jahr 2026 steigen die Gehälter, Zulange und Vergütungen um die rollierende Inflation plus 0,3 Prozent."
+    }
+   ],
+   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
+   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
+   "herkunft": {
+    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
+    "wann": "2026-10-23",
+    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
+   },
+   "unsicherheit": "Der Text nennt das Jahr, nicht den Tag: geltungsbeginn ist null, ein Datum waere erfunden. Der Ablenker aus dem Abschluss 2025 kuendigte fuer 2026 'rollierende Inflation plus 0,3' an; der spaetere Dreijahresabschluss ersetzt das.",
+   "von_hand_bestaetigt": false,
+   "bestaetigt_am": null
+  }
+ ]
+}

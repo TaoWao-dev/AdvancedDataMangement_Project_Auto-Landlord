@@ -123,6 +123,15 @@ def ausfuehren(bereinigt: dict | None = None,
         " VALUES (?,?,?,?)",
         [(r["reihe"], r["jahr"], r["indexwert"], r["quelle"]) for r in idx])
 
+    # KV-Textbloecke, soweit beschafft. block_nr zaehlt je Datei neu.
+    kv = bereinigt.get("kollektivvertrag", {}).get("zeilen", [])
+    je_datei: dict[str, int] = {}
+    for b in kv:
+        je_datei[b["datei"]] = je_datei.get(b["datei"], 0) + 1
+        con.execute("INSERT INTO kv_textblock VALUES (?,?,?,?,?,?)",
+                    (b["datei"], je_datei[b["datei"]], b["abrufdatum"],
+                     b["quelle_url"], b["zeile_original"], b["text"]))
+
     # abgelehnte Dateien in den Qualitaetsbericht
     for a in wh["abgelehnt"]:
         for g in a["gruende"]:
@@ -133,7 +142,7 @@ def ausfuehren(bereinigt: dict | None = None,
 
     zahlen = {t: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
               for t in ("snapshot", "bezirk", "inserat_beobachtung",
-                        "indexreihe", "zuordnungsluecke")}
+                        "indexreihe", "kv_textblock", "zuordnungsluecke")}
     luecken = con.execute(
         "SELECT SUM(anzahl) FROM zuordnungsluecke").fetchone()[0] or 0
 

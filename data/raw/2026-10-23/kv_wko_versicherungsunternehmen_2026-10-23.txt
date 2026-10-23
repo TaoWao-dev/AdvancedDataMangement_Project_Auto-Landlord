@@ -1,0 +1,32 @@
+# quelle_url: https://www.wko.at/wien/kollektivvertraege/versicherungsunternehmen
+# abruf: 2026-10-23, manuell im Browser (view-source:) gespeichert
+# sha256_original: fd8bcfe4b596e51d46768625b00ec7426454b934d0fe1bbc7139be2bc02de336
+# Format: <Zeile im Originalquelltext>\t<sichtbarer Text>
+# beschnitten: nur Liste der KV-Fassungen und Geltungsdauer
+# redigiert: 0 Kontaktmuster ersetzt
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2018
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2018
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2018
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2019
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2019
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2019
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2020
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2020
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2020
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2021
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2021
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2021
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2022
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2022
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2022
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2023
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2023
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2023
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2024
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2024
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2024
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2025
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2025
+400	Kollektivvertrag Versicherungsunternehmen Reinigungspersonal, Arbeiter/innen, gültig ab 1.1.2025
+400	Kollektivvertrag Versicherungsunternehmen Innendienst, Angestellte, gültig ab 1.3.2026
+400	Kollektivvertrag Versicherungsunternehmen Außendienst, Angestellte, gültig ab 1.3.2026

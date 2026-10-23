@@ -774,3 +774,29 @@ def test_vertragsgenerator_ist_deterministisch():
     a = erz.erzeugen()
     gespeichert = json.loads((C.WURZEL / "config" / "vertraege.json").read_text(encoding="utf-8"))
     assert a == gespeichert, "config/vertraege.json weicht vom Generator ab - neu erzeugen"
+
+
+# ───────────────────────────────── Extraktionsreferenzen (Analyse 4, E28)
+def test_kv_rohtext_steht_woertlich_in_der_rohdatei():
+    """E02: ein Goldset aus Nachschriften misst die eigene Formulierung.
+    Jeder rohtext muss zeichengenau in der Zeile der Rohdatei stehen."""
+    ref = json.loads((REFERENZEN / "kv_extraktion.json").read_text(encoding="utf-8"))
+    assert len(ref["faelle"]) >= 8
+    for fall in ref["faelle"]:
+        for f in fall["fundstellen"] + fall["ablenker"]:
+            pfad = C.WURZEL / f["datei"]
+            bloecke = [l.split("\t", 1)[1] for l in pfad.read_text(encoding="utf-8").splitlines()
+                       if not l.startswith("#") and l.split("\t", 1)[0] == str(f["zeile_original"])]
+            assert any(f["rohtext"] in b for b in bloecke), (fall["fall_id"], f["zeile_original"])
+
+
+def test_kv_textbloecke_landen_in_der_datenbank(tmp_path=None):
+    ziel = Path(tmp_path or C.PROCESSED) / "test_kv.sqlite"
+    con = _baue(ziel)
+    n = con.execute("SELECT COUNT(*) FROM kv_textblock").fetchone()[0]
+    z = con.execute("SELECT text FROM kv_textblock WHERE zeile_original = 2377"
+                    " AND datei LIKE 'kv_oegb_%'").fetchone()
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert n > 400, n
+    assert z and "2,55 Prozent" in z[0]

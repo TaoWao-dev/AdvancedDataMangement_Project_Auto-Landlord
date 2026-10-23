@@ -44,6 +44,14 @@ QUELLEN = {
         "lizenz": "CC-BY 4.0",
         "pflicht": False,
     },
+    "kollektivvertrag": {
+        "muster": "kv_*.txt",
+        "leser": "kollektivvertrag",
+        "form": "Text aus gespeicherter Quelltextansicht (OeGB, WKO), je Block mit Originalzeile",
+        "beschaffung": "manuell im Browser gespeichert, tools/kv_quellen_aufbereiten.py",
+        "lizenz": "oeffentliche Seiten; nur als Eingabe fuer die Extraktion und die Referenzen",
+        "pflicht": False,
+    },
     "vpi": {
         "muster": "vpi_*.csv",
         "leser": "vpi",

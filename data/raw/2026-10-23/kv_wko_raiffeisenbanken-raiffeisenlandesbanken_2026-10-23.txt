@@ -1,0 +1,15 @@
+# quelle_url: https://www.wko.at/wien/kollektivvertraege/raiffeisenbanken-raiffeisenlandesbanken
+# abruf: 2026-10-23, manuell im Browser (view-source:) gespeichert
+# sha256_original: 8384fc6e337d8a68049aecce961b43cc81fa3495e762aa16bb6455cb6c2df1d3
+# Format: <Zeile im Originalquelltext>\t<sichtbarer Text>
+# beschnitten: nur Liste der KV-Fassungen und Geltungsdauer
+# redigiert: 0 Kontaktmuster ersetzt
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2018
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2019
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2020
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2021
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2022
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2023
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2024
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2025
+405	Kollektivvertrag Raiffeisenbanken, Angestellte, gültig ab 1.4.2026

@@ -52,6 +52,20 @@ CREATE TABLE indexreihe (
   PRIMARY KEY (reihe, jahr)
 );
 
+-- Textbloecke der KV-Seiten (Quelle fuer die Extraktion, E28). Kein Feld
+-- daraus wird hier interpretiert; das macht das Modell, geprueft gegen
+-- evals/references/kv_extraktion.json. zeile_original ist die Fundstelle
+-- im gespeicherten Quelltext - dieselbe Zahl steht in der Referenz.
+CREATE TABLE kv_textblock (
+  datei          TEXT    NOT NULL,
+  block_nr       INTEGER NOT NULL,
+  abrufdatum     TEXT    NOT NULL,
+  quelle_url     TEXT,
+  zeile_original INTEGER NOT NULL,
+  text           TEXT    NOT NULL,
+  PRIMARY KEY (datei, block_nr)
+);
+
 -- ───────────────────────────────────────────────────────────── Fakten
 CREATE TABLE inserat_beobachtung (
   snapshot_id     INTEGER NOT NULL REFERENCES snapshot(snapshot_id),

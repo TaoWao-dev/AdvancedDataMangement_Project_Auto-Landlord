@@ -1,0 +1,15 @@
+# quelle_url: https://www.wko.at/wien/kollektivvertraege/sparkassen
+# abruf: 2026-10-23, manuell im Browser (view-source:) gespeichert
+# sha256_original: d8a870dd5576920b50c5e80a9bb0ad028b02f567ce9ee9b227c07b7a4308fc01
+# Format: <Zeile im Originalquelltext>\t<sichtbarer Text>
+# beschnitten: nur Liste der KV-Fassungen und Geltungsdauer
+# redigiert: 0 Kontaktmuster ersetzt
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2018
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2019
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2020
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2021
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2022
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2023
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2024
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2025
+405	Kollektivvertrag Sparkassen, Angestellte, gültig ab 1.4.2026
