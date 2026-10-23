@@ -13,14 +13,14 @@ für Datei. Die Inhalte stehen in den verlinkten Dateien, nicht hier.
 | [`03_schritt2_normalisieren.md`](projektdokumentation/03_schritt2_normalisieren.md) | Zahlen aus dem Lauf, Qualitätsbericht mit sechs Fragen je Quelle | termin3, ergänzt | **fertig** |
 | [`04_schritt3_datenmodell.md`](projektdokumentation/04_schritt3_datenmodell.md) | Tabellen, Schlüssel, Beziehungen, Zuordnungslücken | termin3, ergänzt | **fertig**, Modelltabellen ergänzt |
 | [`05_schritt4_abfragen_referenzen.md`](projektdokumentation/05_schritt4_abfragen_referenzen.md) | je Analyse Werkzeug, Referenz, Herkunft, Prüfregel, Toleranz | termin3, ergänzt | **fertig**, Extraktionsfälle angelegt |
-| [`06_schritt5_analyse_vorlage.md`](projektdokumentation/06_schritt5_analyse_vorlage.md) | Eval-Suite, Modellwahl, Ergebnisse, Herkunft jeder Zahl, Selbsttest | termin4 | **fertig**, Demo-Fall (E44) |
+| [`06_schritt5_analyse_vorlage.md`](projektdokumentation/06_schritt5_analyse_vorlage.md) | Eval-Suite, Modellwahl, Ergebnisse, Herkunft jeder Zahl, Selbsttest | termin4 | **fertig**, Prototyp (E44) |
 | [`07_offene_punkte_lessons.md`](projektdokumentation/07_offene_punkte_lessons.md) | die fünf Schwächen, Datenlücken, Risiken, drei Lessons | termin4 | **fertig** |
 
 ## Deliverable 3 · Evaluierung und Vorlage (Tag `termin4`, 23.10.)
 
 | Verlangt | Wo | Stand |
 |---|---|---|
-| Entscheidungsvorlage | [`docs/vorlage.md`](vorlage.md), Demo [`docs/demo/mieterverzeichnis.html`](demo/mieterverzeichnis.html) | v2 (Demo-Fall); jede Zahl mit Herkunft, vom Grader geprüft |
+| Entscheidungsvorlage | [`docs/vorlage.md`](vorlage.md), Demo [`docs/demo/mieterverzeichnis.html`](demo/mieterverzeichnis.html) | v2 (Prototyp, E44); jede Zahl mit Herkunft, vom Grader geprüft |
 | Prompts | `prompts/*_v<n>.md`, `prompts/CHANGELOG.md` | vier Aufgaben, je Version eine Zeile im Changelog |
 | Eval-Suite | `evals/suite_*.yaml`, `evals/graders/` | 4 Suiten, Modell gepinnt; Grader mit Selbsttest und Gegenprobe |
 | Ergebnisse | `06_schritt5_analyse_vorlage.md` | sql 9/9, Gate 4 15/15, Extraktion 5/5 (Konsistenz), vorlage 2/2; Klassifikation entfallen |

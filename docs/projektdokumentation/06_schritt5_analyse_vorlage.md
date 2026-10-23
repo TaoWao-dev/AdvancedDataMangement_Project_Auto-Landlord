@@ -8,8 +8,9 @@ Vorlage, deren Zahlen aus SQL kommen?
 läuft gegen seine Referenz, und jede Zahl der Vorlage hat eine Herkunft, die
 ein Programm prüft. Wo ein Task nicht gelaufen ist, steht das da.
 
-**Stand 23.10.2026, abends:** Der Zuschnitt ist auf den Demo-Fall umgestellt
-— Empfehlung zur Mietanpassung je laufendem Vertrag (E44). Die Vorlage ist
+**Stand 23.10.2026, abends:** Das Projekt ist zu einem lauffähigen Prototyp
+konkretisiert — Empfehlung zur Mietanpassung je laufendem Vertrag, auf den
+Bezirk, die Größen und die Branchen, die die Daten tragen (E44). Die Vorlage ist
 v2; v1 (Verlängerungsentscheidung) liegt in der Git-Historie.
 
 ## Der Demo-Fall in einem Durchlauf

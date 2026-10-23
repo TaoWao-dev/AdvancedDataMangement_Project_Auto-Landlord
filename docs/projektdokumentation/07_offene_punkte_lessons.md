@@ -1,6 +1,6 @@
 # Offene Punkte, Schwächen, Lessons
 
-Stand 23.10.2026, nach dem Wechsel auf den Demo-Fall (E44). Was das Projekt
+Stand 23.10.2026, nach der Konkretisierung zum Prototyp (E44). Was das Projekt
 nicht kann, steht hier vollständig — nicht verteilt auf Fußnoten.
 
 ## Die fünf Schwächen des Projekts

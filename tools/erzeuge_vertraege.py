@@ -4,8 +4,8 @@
 
 Es gibt keine echten Mieter in diesem Projekt und darf keine geben (Regel 1).
 Das Verzeichnis ist erfunden, nach festen Annahmen und mit festem Startwert;
-zwei Aufrufe liefern dieselbe Datei. Der Demo-Fall (E44) bestimmt den
-Zuschnitt:
+zwei Aufrufe liefern dieselbe Datei. Die Konkretisierung zum Prototyp
+(E44) bestimmt den Umfang:
 
   Lage          1020 Wien - der einzige Bezirk mit Marktdaten.
   Groesse       nur Groessenklassen mit belastbarem Median in JEDEM Abruf

@@ -16,11 +16,14 @@ siehe `docs/projektdokumentation/02_schritt1_datenzugriff.md` und
 Entscheidungslog E06. Einkommensdaten fließen nicht in die Preisbildung ein,
 sondern nur in Annahme- und Ausfallwahrscheinlichkeit (E05).
 
-**Demo-Fall (23.10.2026):** Für jeden laufenden Mietvertrag eines
-fiktiven Portfolios in der Leopoldstadt — soll die Miete erhöht werden, und
-um wie viel? Grundlage: wie sich der Markt für Wohnungen vergleichbarer
-Größe und der KV-Lohn der Branche des Mieters seit der letzten Erhöhung
-entwickelt haben.
+**Lauffähiger Prototyp (23.10.2026, E44):** Für jeden laufenden
+Mietvertrag eines fiktiven Portfolios in der Leopoldstadt — soll die Miete
+erhöht werden, und um wie viel? Grundlage: wie sich der Markt für Wohnungen
+vergleichbarer Größe und der KV-Lohn der Branche des Mieters seit der
+letzten Erhöhung entwickelt haben. Der Prototyp ist auf den Bezirk, die
+Größen und die Berufsgruppen konkretisiert, für die belastbare Daten
+vorliegen; weitere Bezirke oder Berufsgruppen sind eine Datei bzw. ein
+geprüfter Extraktionsdatensatz mehr.
 
 **Entscheidungsträger:** Leitung Asset Management Wohnen.
 **Portfolio:** 50 Wohnungen in 1020 Wien, 50–80 und 80–100 m², Mieter

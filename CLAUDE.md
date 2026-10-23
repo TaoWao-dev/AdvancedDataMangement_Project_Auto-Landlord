@@ -12,8 +12,9 @@ die Marktentwicklung für vergleichbare Größen (willhaben, von Hand
 gespeichert) und die KV-Lohnentwicklung der Branche des Mieters (ÖGB/WKO,
 von einem Sprachmodell extrahiert, von Gate 4 geprüft). Die Mieter sind
 synthetisch. Entscheidungsträgerin ist die Leitung Asset Management Wohnen.
-Das ist der Demo-Fall vom 23.10.2026 (E44); der ursprüngliche Zuschnitt
-(Verlängerungsentscheidung in drei Quartieren) steht in `00_auftrag.md`.
+Das ist die Konkretisierung zum lauffähigen Prototyp vom 23.10.2026 (E44);
+der Auftrag im Vollausbau (drei Quartiere, Verlängerungsentscheidung) steht
+in `00_auftrag.md` und ist durch weitere Daten jederzeit erweiterbar.
 
 Bewertet wird nicht das Modellergebnis, sondern **der Arbeitsprozess und das
 Urteil darüber, ob das Modellergebnis Sinn ergibt.** Das ändert die Reihenfolge

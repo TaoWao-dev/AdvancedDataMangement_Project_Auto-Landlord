@@ -58,7 +58,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E41](#e41) | 23.10. | KV-Seiten als Quelle aufgenommen, Referenzen mit woertlichem Rohtext per Skript, erwartete Felder bis zur Bestaetigung offen | Referenz frei von Hand schreiben; Referenz aus Modellrecherche (E28) | der Rohtext ist maschinell geprueft woertlich; die Lesung braucht trotzdem einen Menschen | `tools/kv_quellen_aufbereiten.py, evals/erfasse_kv_referenz.py, kv_textblock` |
 | [E42](#e42) | 23.10. | Zahlenpruefung der Vorlage deterministisch statt LLM-Judge; Suite als promptfoo und als Stdlib-Laeufer mit denselben Gradern | Judge-Modell (E27 geplant); nur promptfoo | pruefbare Frage gehoert in Code; npm/PyPI waren in der Sitzung nicht erreichbar, und die Pipeline kommt ohne Installation aus | `evals/graders/, evals/lauf.py, evals/suite_*.yaml` |
 | [E43](#e43) | 23.10. | Vorlage v1 von Claude in der Arbeitssitzung formuliert, nach prompts/vorlage_v1.md, gegen die Grader geprueft; Zitat bindet die Zahl an die zitierte Datei | auf den lokalen Modelllauf warten; Vorlage per Schablone ohne Modell | heute lauffaehig und pruefbar; der Grader hat dabei selbst eine Luecke gezeigt | `docs/vorlage.md, evals/graders/zahlen_herkunft.py` |
-| [E44](#e44) | 23.10. | Scope: Demo-Fall Mietanpassung je laufendem Vertrag statt Verlaengerungsentscheidung in drei Quartieren | beim bisherigen Zuschnitt bleiben | Entscheidung des Studierenden: ein lauffaehiger, sichtbarer Prototyp bis 23:59; nur Branchen und Groessen mit guter Datenlage | `config/vertraege.json, src/modell.py, docs/vorlage.md` |
+| [E44](#e44) | 23.10. | Konkretisierung zum lauffaehigen Prototyp: Mietanpassung je laufendem Vertrag, nur Bezirk, Groessen und Branchen mit guter Datenlage | am Vollausbau festhalten (drei Quartiere, alle Berufsgruppen) | Revisionspunkt E29 eingetreten; Erweiterung jederzeit moeglich, bringt fuer die Abgabe keinen Mehrwert | `config/vertraege.json, src/modell.py, docs/vorlage.md` |
 | [E45](#e45) | 23.10. | KV-Extraktion durch das Modell der Arbeitssitzung, gesichert durch Gate 4 (Wortlaut in der Quellzeile); kein lokales Modell | LM Studio mit Qwen3 8B (E42 geplant) | LM Studio brachte keinen unmittelbaren Nutzen und haette den Ablauf verkompliziert (Studierender); Gate 4 prueft jeden Datensatz unabhaengig vom Modell | `src/kv_extrakt.py, data/extrakt/, prompts/kv_zeitreihe_v1.md` |
 | [E46](#e46) | 23.10. | Demo-Portfolio: 1020, Groessen 50-80 und 80-100, fuenf Branchen mit KV-Reihe 2024-2026; Ausschluss von WG-Zimmern und ausdruecklichen Gemeindewohnungen nach eigenen Kriterien | alle Groessen und Branchen; Klassifikation mit menschlicher Referenz (E37) | nur was in jedem Abruf belastbar ist und eine lueckenlose KV-Reihe hat; die Markierung war weder fuer Mensch noch Modell eindeutig (Studierender) | `config.PORTFOLIO_GROESSEN, tools/erzeuge_vertraege.py, Gate 3` |
 | [E47](#e47) | 23.10. | Befund offen in die Vorlage: das Einkommen wirkt ueber die Annahmewahrscheinlichkeit doch auf die Hoehe; Empfehlung als Obergrenze, beim Markt gedeckelt | Modell so lassen und schweigen; Einkommen ganz aus dem Modell nehmen | der Revisionspunkt von E44 ist eingetreten; ihn zu verschweigen waere genau die glatte Zahl, die CLAUDE.md verbietet | `docs/vorlage.md, tests/test_pipeline.py` |
@@ -1526,40 +1526,48 @@ Befund über das kleinere Modell und gehört nach 06.
 ---
 
 ## E44 {#e44}
-### Der Demo-Fall: Mietanpassung je laufendem Vertrag
-**Datum:** 23.10.2026 · ändert E04 und den Zuschnitt aus 00_auftrag.md
+### Konkretisierung zum lauffähigen Prototyp: Mietanpassung je laufendem Vertrag
+**Datum:** 23.10.2026 · konkretisiert E04 und den Auftrag aus 00_auftrag.md; erfüllt den Revisionspunkt von E29
 
-**Situation.** Am Abgabetag entscheidet der Studierende, den Zuschnitt zu
-ändern: Statt einer Verlängerungsentscheidung für 50 Verträge in drei
-Quartieren — von denen zwei keine Marktdaten haben — soll ein lauffähiger
-Prototyp zeigen, wie gescrapte Mietpreise und extrahierte KV-Erhöhungen in
-eine Empfehlung je laufendem Mietvertrag eingehen: ob und um wie viel die
-Miete zu erhöhen ist.
+**Situation.** E29 hatte festgehalten: Lässt sich bis Termin 4 ein Bezirk
+nicht beschaffen, muss Analyse 1 auf die vorhandenen Bezirke eingeschränkt
+werden — mit eigenem Eintrag. Dieser Fall ist eingetreten: Marktdaten gibt
+es nur für 1020, KV-Daten nur für einen Teil der Berufsgruppen. Der
+Studierende konkretisiert das Projekt deshalb auf einen lauffähigen
+Prototyp, der zeigt, wie die gescrapten Mietpreise und die extrahierten
+KV-Erhöhungen in eine Empfehlung je Mietvertrag eingehen.
 
 **Alternativen.**
-1. Beim bisherigen Zuschnitt bleiben; zwei Drittel des Portfolios ohne
-   Empfehlung.
-2. Den Demo-Fall auf das zuschneiden, was die Daten tragen: nur 1020, nur
+1. Am Vollausbau festhalten (drei Quartiere, alle Berufsgruppen); zwei
+   Drittel des Portfolios bleiben ohne Empfehlung.
+2. Den Prototyp auf das konkretisieren, was die Daten tragen: nur 1020, nur
    Größenklassen mit belastbarem Median in allen drei Abrufen, nur Branchen
    mit lückenloser KV-Reihe 2024–2026.
 
 **Entscheidung.** Variante 2, auf Wunsch des Studierenden.
 
 **Begründung.** (1) zeigt vor allem Lücken. (2) zeigt den Mechanismus von
-Anfang bis Ende — Abruf, Kennzahl, Extraktion, Gate, Empfehlung — und
-benennt die Lücken trotzdem: Der Zuschnitt auf die gut belegten Fälle ist
-selbst eine Aussage darüber, wofür die Daten reichen.
+Anfang bis Ende — Abruf, Kennzahl, Extraktion, Gate, Empfehlung — an den
+Fällen, die die Daten tragen. Es ist eine Konkretisierung, kein anderer
+Auftrag: Adressat, Datenquellen, Pipeline, Gates und Analysen bleiben
+gleich. Die Konkretisierung ist umkehrbar und das Projekt beliebig
+erweiterbar — ein weiterer Bezirk ist eine Rohdatei mehr und ein Eintrag in
+`config.BEZIRKE`, eine weitere Berufsgruppe ein geprüfter Extraktionsdatensatz
+mehr (Gate 4) und ein Eintrag im Mieterverzeichnis. Für die Abgabe bringt
+die Erweiterung keinen Mehrwert: Sie würde denselben Mechanismus an mehr
+Fällen zeigen, aber nichts Neues über ihn.
 
-**Was sich inhaltlich ändert.** Die KV-Lohnentwicklung der Branche geht
-jetzt sichtbar in die Empfehlung ein. Sie bleibt, wie in E05 entschieden,
-eine Größe für Leistbarkeit und Annahmewahrscheinlichkeit — kein
-Preisargument. Das Einkommen bestimmt, wie viel Erhöhung ein Mieter
-voraussichtlich trägt, nicht, was die Wohnung wert ist.
+**Was dabei konkreter wird.** Die Entscheidungsfrage bleibt die nach dem
+richtigen Mietzins; sie wird für den laufenden Vertrag gestellt („ob und um
+wie viel anpassen") statt nur zum Vertragsende („zu welchem Mietzins
+verlängern"). Die KV-Lohnentwicklung der Branche geht sichtbar in die
+Empfehlung ein — wie in E05 entschieden als Größe für Leistbarkeit und
+Annahmewahrscheinlichkeit, nicht als Preisargument.
 
 **Revisionspunkt.** Wenn die Empfehlung für einen Mieter mit stärker
 gestiegenem KV-Lohn höher ausfällt, obwohl Wohnung, Miete und Markt gleich
 sind, ist das Einkommen doch zum Preisargument geworden — dann hat E05
-verloren, und das gehört offen in die Vorlage.
+verloren, und das gehört offen in die Vorlage. (Eingetreten, siehe E47.)
 
 ---
 
