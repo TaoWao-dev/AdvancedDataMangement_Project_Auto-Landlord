@@ -25,19 +25,47 @@ Fünfjahresverlängerung an — oder lassen wir auslaufen und vermieten neu?
 ## Sofort ausprobieren
 
 ```bash
-python3 -m src.run                   # die ganze Pipeline, vier Schritte, drei Gates
-python3 tests/test_pipeline.py    # 45 Tests: Parser, Umwandlung, Gates, PII, SQL
-python3 tests/test_modell.py         # 26 Tests: Wertsicherung, Entscheidungsmodell
+git clone https://github.com/TaoWao-dev/AdvancedDataMangement_Project_Auto-Landlord.git
+cd AdvancedDataMangement_Project_Auto-Landlord
+python3 -m src.run                  # Pipeline: 4 Schritte, 3 Gates, Modell, 8 Kennzahlen
+python3 tests/test_pipeline.py      # 53 Tests: Parser, Gates, PII, SQL, Modell an den Daten
+python3 tests/test_modell.py        # 26 Tests: Wertsicherung, Entscheidungsmodell
+python3 tests/test_graders.py       # 26 Tests: die Grader der Eval-Suite
+python3 evals/baue_tests.py         # Testfälle und Modellkontext aus den Referenzen
+python3 evals/lauf.py sql vorlage   # Eval-Suite ohne Modell
 ```
 
-Kein Netzzugang, keine Zugangsdaten, keine Installation: die Pipeline läuft mit
-der Standardbibliothek. `python3 -m src.run` löscht die Datenbank und baut sie
-aus `data/raw/` neu — zwei Läufe melden deshalb dieselben Zahlen
-(`test_zweiter_lauf_liefert_dieselben_zahlen`).
+Python 3.10 oder neuer, nur Standardbibliothek: kein Netz, keine
+Zugangsdaten, keine Installation. `python3 -m src.run` löscht die Datenbank
+und baut sie aus `data/raw/` neu — zwei Läufe ergeben dieselbe Datei
+(`test_datenbank_ist_byteweise_reproduzierbar`).
 
-Der Lauf arbeitet gegen einen echten, eingecheckten Schnappschuss —
-90 Mietwohnungsinserate aus 1020 Wien, abgerufen am 25.09.2026 um 15:55.
-Kein Netzzugang nötig.
+Die Modell-Tasks der Suite (Extraktion aus KV-Texten, Titelklassifikation)
+brauchen ein lokales Modell — LM Studio mit `qwen/qwen3-8b`, kostenlos:
+
+```bash
+EVAL_MODELL=qwen/qwen3-8b python3 evals/lauf.py kv_extraktion moebliert
+# oder mit promptfoo:  cd evals && npx promptfoo@latest eval -c suite_kv_extraktion.yaml
+```
+
+## Das Ergebnis
+
+**[`docs/vorlage.md`](docs/vorlage.md)** — die Entscheidungsvorlage für die
+Leitung Asset Management Wohnen. Kurz: im Nordbahnviertel (1020) allen 20
+Mietern die Verlängerung nahe der beobachteten Marktmiete von 24,01 €/m²
+anbieten (n = 32, belastbar); für Sonnwendviertel und Seestadt keine
+Empfehlung, weil dort keine Marktdaten vorliegen. Die Sensitivität zeigt,
+dass die Empfehlung fast vollständig an der Marktmiete hängt.
+
+Jede Zahl der Vorlage kommt aus `data/processed/kennzahl_*.csv` und nennt
+ihre Abfrage; ein Grader prüft das (`evals/graders/zahlen_herkunft.py`).
+
+| Wo | Was |
+|---|---|
+| [`docs/projektdokumentation/`](docs/projektdokumentation.md) | Auftrag, Entscheidungslog (43 Einträge), Schritte 1–5, offene Punkte und Lessons |
+| [`docs/betrieb.md`](docs/betrieb.md) | Betriebshandbuch: starten, neue Daten, Evals, Störungen |
+| [`evals/README.md`](evals/README.md) | Referenzen, Grader, Suiten |
+| [`CLAUDE.md`](CLAUDE.md) | Arbeitsanweisung für jede KI-Sitzung in diesem Repository |
 
 ## Die Datenbeschaffung ist eine bewusste Entscheidung
 
@@ -74,89 +102,48 @@ Testsuite. Das Gate lehnt sie mit vier Begründungen ab.
 ## Aufbau
 
 ```
-src/     run.py               die Pipeline: vier Schritte, drei Gates
-         extract.py           Schritt 1  data/raw/ -> data/interim/ + Provenienz
-         clean.py             Schritt 2  Umwandlung, PII-Allowlist, Kontrolle
-         integrate.py         Schritt 3  Datenbank neu bauen und laden
-         derive.py            Schritt 4  alle kennzahl_*.sql -> CSV
-         wh_next_data.py      __NEXT_DATA__ -> Inserate, drei Speicherwege
-         validierung.py       Gate 1: ist das die richtige Seite?
-         config.py            Quellen, Allowlist, Bezirke, Schwellen
-         wertsicherung.py     gedeckelte Indexierung nach MieWeG
-         entscheidung.py      Annahmemodell und Barwertvergleich
-         sql/  schema.sql · views.sql · kennzahl_*.sql (eine Frage je Datei)
-config/  berufsgruppen.json   7 KV-Reihen mit Unschärfegrad
-         portfolio.json       Rechtsrahmen, 11 Annahmen mit Sensitivitätsspanne
-data/    raw/<datum>/         Quelle der Wahrheit, unverändert
-         interim/             Arbeitskopie mit provenienz.json (SHA256 je Datei)
-         processed/           mietportfolio.sqlite + kennzahl_*.csv
-         sample/              Negativ-Fixture für die Gates
-docs/    projektdokumentation/01_entscheidungslog.md   24 Entscheidungen
-         projektdokumentation/02_schritt1_datenzugriff.md
-         annahmen.md · willhaben_robots_2026-09-25.txt
-CLAUDE.md  Dauerauftrag fuer jede KI-Sitzung in diesem Repository
-tests/   test_pipeline.py (32) · test_modell.py (26)
-tools/   snapshot.js          selbstprüfendes Beschaffungsskript für die Konsole
+src/       run.py            die Pipeline
+           extract.py        Schritt 1  data/raw/ -> data/interim/ + Provenienz
+           clean.py          Schritt 2  Umwandlung, PII-Allowlist, Kontrolle
+           integrate.py      Schritt 3  Datenbank neu bauen und laden
+           modell.py         Schritt 4  Marktmiete aus SQL -> Empfehlung je Vertrag
+           derive.py         Schritt 4  alle kennzahl_*.sql -> CSV
+           entscheidung.py   Annahmemodell und Barwertvergleich
+           wertsicherung.py  gedeckelte Indexierung
+           validierung.py    Gate 1: ist das die richtige Seite?
+           config.py         Quellen, Allowlist, Bezirke, Schwellen
+           sql/              schema.sql · views.sql · kennzahl_*.sql (eine Frage je Datei)
+config/    portfolio.json    Rechtsrahmen, Annahmen mit Sensitivitätsspanne
+           berufsgruppen.json, vertraege.json (synthetisch, erzeugt)
+data/      raw/<datum>/      redigierte Rohdaten + HERKUNFT.md (Quelle der Wahrheit)
+           processed/        mietportfolio.sqlite + kennzahl_*.csv
+           sample/           Negativ-Fixture für Gate 1
+evals/     references/ tests/ graders/ providers/ suite_*.yaml lauf.py
+prompts/   kv_extraktion_v1.md · moebliert_v1.md · vorlage_v1.md · CHANGELOG.md
+tools/     snapshot.js · redigiere_schnappschuss.py · kv_quellen_aufbereiten.py
+           quelltext_zu_text.py · erzeuge_vertraege.py
+tests/     test_pipeline.py · test_modell.py · test_graders.py
 ```
-
-Noch nicht in diesem Stand: Indexreihen-Loader, Evals, Prompts,
-Vorlagengenerator, Dashboard. Von fünf Bezirken ist einer beschafft —
-`v_abdeckung` weist die vier anderen als „noch nicht beschafft" aus, statt zu
-schweigen.
-
-
-Noch nicht in diesem Stand: Vertragsgenerator, Indexreihen-Loader,
-Vorlagengenerator und das Dashboard. Die Marktseite der Pipeline steht,
-die Portfolioseite ist als Modell getestet, aber noch nicht verdrahtet.
 
 ## Pipeline und Kontrollpunkte
 
 ```
-Quellen ─► extract ─► clean ─► GATE 1+2 ─► integrate ─► derive ─► GATE 3 ─► Modell ─► Vorlage
+Quellen ─► extract ─► clean ─► GATE 1+2 ─► integrate ─► modell ─► derive ─► GATE 3 ─► Vorlage ─► Suite
 ```
 
 | Gate | Prüft | Bei Fehler |
 |---|---|---|
-| 1 | richtige Seite: Trefferzahl, PLZ-Einheitlichkeit, Feldabdeckung, Fallzahl | Datei wird nicht geschrieben |
-| 2 | keine personenbezogenen Daten nach der Allowlist | Datei wird nicht geschrieben |
-| 3 | Plausibilität der Kennzahlen: Portal-€/m² gegen eigene Rechnung, Median zwischen Min und Max, jede Beobachtung mit Bezirk | keine Vorlage |
-| 4 | *geplant:* LLM-Extraktion gegen Referenzantworten | keine Vorlage |
+| 1 | richtige Seite: Rubrik, Trefferzahl, PLZ, Feldabdeckung | Datei wird nicht aufgenommen |
+| 2 | keine personenbezogenen Daten (Allowlist, Kontrollsuche, auch in KV-Texten) | Abbruch |
+| 3 | Kennzahlen plausibel; Modell konvergiert; keine Empfehlung ohne Marktmiete | keine Vorlage |
+| Suite | SQL gegen Zweitimplementierung; Vorlage: jede Zahl mit Herkunft; Modell gegen Referenzen | Befund in `06_schritt5` |
 
-Die Faktentabelle ist **append-only**: derselbe Inseratsschlüssel erscheint je
-Schnappschuss erneut, nichts wird aktualisiert. Preisänderungen und
-Inseratsdauer fallen daraus heraus, ohne eigens erhoben zu werden. Die
-Inseratsdauer ist zugleich der Schätzer für die Leerstandsannahme im
-Entscheidungsmodell — bisher eine Annahme, künftig eine Messung.
+## Stand und Lücken
 
-## Erste Ergebnisse (1020 Wien, 25.09.2026, aktive Inserate)
-
-| Größenklasse | n | Median €/m² | Q1 | Q3 | Belastbarkeit |
-|---|---:|---:|---:|---:|---|
-| bis 50 m² | 10 | 33,49 | 25,16 | 41,94 | dünn |
-| 50–80 m² | 37 | 24,98 | 21,05 | 33,91 | belastbar |
-| **80–100 m²** | **15** | **26,67** | 20,77 | 30,79 | belastbar |
-| über 100 m² | 24 | 19,02 | 17,75 | 21,57 | belastbar |
-
-Der Größengradient — kleiner heißt teurer pro m² — ist aus der Literatur
-bekannt und spricht dafür, dass wir das richtige Feld lesen.
-
-**Vorbehalt, der ins Ergebnis gehört:** im Zielsegment sind 80 % der Inserate
-gewerblich, ein einzelner Anbieter möblierter Kurzzeitwohnungen stellt 17 der
-90. Der gewerbliche Median liegt 16 % über dem privaten — bei nur drei
-privaten Fällen. Deshalb weist `v_marktniveau` die Fallzahl und
-`v_anbieterstruktur` den gewerblichen Anteil je Zeile mit aus.
-
-## Offen
-
-- weitere Abrufe von 1020, damit eine Inseratsdauer messbar wird — zwei
-  Abrufe (25.09., 09.10.) zeigen bisher nur, dass 70 % der Inserate nach 14
-  Tagen noch stehen
-- die übrigen vier Bezirke; 1020 ist seit dem 09.10. vollständig (178 von 178)
-- Gemeindewohnungen: nur die ausdrücklich genannten (3 von 178) werden ausgeschlossen, der Rest bleibt unerkannt (E38)
-- Reihennamen gegen die amtliche Klassifikation abgleichen
-
-- Referenzantworten für die Evals, wörtlich aus den Quelldokumenten mit Seitenzahl
-- Dashboard
+Ein Bezirk von fünf beschafft, zwei Abrufe, Verträge synthetisch,
+Indexreihen nicht geladen, Modelllauf der Extraktion ausstehend. Die
+vollständige Liste mit Wirkung und Abhilfe steht in
+[`07_offene_punkte_lessons.md`](docs/projektdokumentation/07_offene_punkte_lessons.md).
 
 ## Hinweise
 

@@ -1,3 +1,14 @@
-# Die Pipeline laeuft mit der Standardbibliothek (sqlite3, json, hashlib, re).
-# Optional fuer eigene Auswertungen:
-pandas>=2.0
+# Pipeline, Tests und evals/lauf.py laufen mit der Standardbibliothek.
+# Gebraucht wird nur der Interpreter:
+#
+#   Python >= 3.10        (Typannotationen mit "|"; geprueft mit 3.13.x)
+#   SQLite >= 3.25        (Fensterfunktionen; im Python-Interpreter enthalten)
+#
+# Optional, fuer die promptfoo-Suite (evals/suite_*.yaml). Kein Python-Paket,
+# deshalb hier nur als Hinweis:
+#
+#   Node.js >= 20, promptfoo 0.x ueber `npx promptfoo@latest` (Open Source)
+#   LM Studio >= 0.3 mit dem Modell qwen/qwen3-8b, Server auf Port 1234
+#
+# Optional, nur fuer eigene Auswertungen, nicht fuer den Lauf:
+pandas>=2.0,<3

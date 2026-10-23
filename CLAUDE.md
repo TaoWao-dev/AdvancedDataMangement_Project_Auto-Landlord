@@ -3,7 +3,7 @@
 Diese Datei ist der Dauerauftrag an jede KI-Sitzung, die in diesem Repository
 arbeitet. Sie ist bewusst kurz und verbietet mehr, als sie vorschreibt.
 
-## Worum es geht
+## Was das ist
 
 Ein institutioneller Vermieter mit 50 Eigentumswohnungen (80–100 m², drei
 Wiener Neubauquartiere) muss je auslaufendem Mietvertrag entscheiden: **zu
@@ -37,16 +37,20 @@ der Prioritäten: eine belegte Unsicherheit ist wertvoller als eine glatte Zahl.
    gehört nicht hinein. Jeder Eintrag nennt einen **Revisionspunkt**: woran man
    erkennen würde, dass die Entscheidung falsch war.
 
-## Wie man hier arbeitet
+## Starten
 
 ```bash
-python3 -m src.run                  # die ganze Pipeline: 4 Schritte, 3 Gates
-python3 tests/test_pipeline.py      # 45 Tests (pytest-kompatibel, läuft auch ohne)
+python3 -m src.run                  # Pipeline: 4 Schritte, 3 Gates, Modell, Kennzahlen
+python3 tests/test_pipeline.py      # 53 Tests (pytest-kompatibel, läuft auch ohne)
 python3 tests/test_modell.py        # 26 Tests
+python3 tests/test_graders.py       # 26 Tests der Eval-Grader
+python3 evals/baue_tests.py && python3 evals/lauf.py sql vorlage
 ```
 
 Kein Netz, keine Zugangsdaten, keine Installation — Standardbibliothek. Nach
-jeder Änderung an `src/` laufen beide Testdateien, **bevor** committet wird.
+jeder Änderung an `src/` oder `evals/graders/` laufen alle drei Testdateien,
+**bevor** committet wird; nach einer Änderung an einem Grader zusätzlich
+`python3 evals/gegenprobe_grader.py`.
 
 `data/raw/` ist die Quelle der Wahrheit. Die Datenbank wird bei jedem Lauf
 gelöscht und daraus neu gebaut; sie ist ein Ergebnis und jederzeit verwerfbar.
@@ -88,15 +92,44 @@ der Autorenzeile.
 Abgabemarkierungen: `termin3` (Schritte 1–4, 9.10.), `termin4` (Schritt 5,
 23.10.).
 
-## Wo was steht
+## Wo was liegt
 
 | | |
 |---|---|
 | Entscheidungen mit Alternativen | `docs/projektdokumentation/01_entscheidungslog.md` |
 | Datenzugriff, Rechtslage, Vorfälle | `docs/projektdokumentation/02_schritt1_datenzugriff.md` |
+| Evals, Ergebnisse, Selbsttest | `docs/projektdokumentation/06_schritt5_analyse_vorlage.md` |
+| Lücken, Risiken, Lessons | `docs/projektdokumentation/07_offene_punkte_lessons.md` |
+| die Entscheidungsvorlage | `docs/vorlage.md` |
 | Modellannahmen mit Sensitivitätsspanne | `docs/annahmen.md`, `config/portfolio.json` |
 | Quellen, Allowlist, Bezirke, Schwellen | `src/config.py` — und nur dort |
+| synthetischer Vertragsbestand | `config/vertraege.json`, erzeugt von `tools/erzeuge_vertraege.py` |
 | eine Frage je Datei, mit Fallstrick im Kopf | `src/sql/kennzahl_*.sql` |
+| Referenzen, Testfälle, Grader, Suiten | `evals/` (siehe `evals/README.md`) |
+| Prompts, versioniert | `prompts/<aufgabe>_v<n>.md`, `prompts/CHANGELOG.md` |
+| Rohdaten (redigiert) und Herkunft | `data/raw/<datum>/`, je Ordner `HERKUNFT.md` |
+
+## Datenmodell
+
+SQLite, `data/processed/mietportfolio.sqlite`, bei jedem Lauf neu gebaut
+und byteweise reproduzierbar (E15, E26). Schema in `src/sql/schema.sql`.
+
+| Tabelle | Schlüssel | Inhalt |
+|---|---|---|
+| `bezirk` | `plz` | Bezirke und Cluster aus `config.BEZIRKE` |
+| `snapshot` | `snapshot_id`, `sha256` unique | eine gespeicherte Seite |
+| `inserat_beobachtung` | `(snapshot_id, ad_id)` | Fakten, append-only (E13) |
+| `kv_textblock` | `(datei, block_nr)` | KV-Seiten, je Block mit Originalzeile |
+| `vertrag` | `vertrag_id` | synthetischer Bestand (A10) |
+| `modelllauf` | `cluster_id` | Marktmiete, Eignung, Konvergenz je Cluster |
+| `empfehlung` | `vertrag_id` | Option, Aufschlag, Barwerte je Vertrag |
+| `empfehlung_sensitivitaet` | `(vertrag_id, parameter, rand)` | Empfehlung am Rand jeder Annahme |
+| `indexreihe` | `(reihe, jahr)` | VPI, Tariflohnindex — noch leer |
+| `qs_befund`, `zuordnungsluecke`, `objekttyp_ausschluss` | — | Protokoll: was auffiel, was keinen Partner fand, was mit Grund ausgeschlossen ist |
+
+Views (`src/sql/views.sql`) gruppieren nach PLZ; ein Abruf ist alle Seiten
+einer PLZ an einem Tag (`v_abruf`, E32). Die Kennzahl-Abfragen lesen nur
+Views und Ergebnistabellen.
 
 ## Arbeitsteilung Programm gegen Prompt
 
@@ -105,9 +138,21 @@ ins Modell.** Die Tabelle je Aufgabe steht im Entscheidungslog unter E27.
 Prompts dürfen formulieren und aus Fließtext extrahieren. Sie dürfen nicht
 rechnen, nicht filtern, was ein Gate prüfen muss, und keine Zahl erzeugen.
 
+## Regeln für Evals und Prompts
+
+- Eine Referenz entsteht vor dem Modell, aus dem Dokument oder einer
+  Zweitimplementierung — nie aus einer Modellantwort. Was eine Lesung
+  braucht, steht auf `von_hand_bestaetigt: false`, bis ein Mensch es
+  bestätigt (E28, E37, E41).
+- Neue Prompt-Version = neue Datei (`_v2.md`), alte bleibt; eine Zeile im
+  Changelog mit Suite vorher → nachher.
+- Ein nicht gelaufener Task heißt „nicht gelaufen", nicht 0 %.
+- Ein Grader ist erst geprüft, wenn ein eingebauter Fehler ihn rot macht
+  (`evals/gegenprobe_grader.py`).
+
 ## Was noch fehlt
 
-Indexreihen-Loader, die acht Extraktionsreferenzen samt Quelldokument (E28),
-Prompts, Eval-Suite, Vorlagengenerator. Vier von fünf Bezirken sind nicht
-beschafft — `v_abdeckung` weist das aus. Das ist der Stand, nicht ein
-Versehen.
+Modelllauf der Extraktion und Klassifikation (lokal, Qwen3 8B), Bestätigung
+der KV-Referenzen, die Markierliste „möbliert / Kurzzeit", Indexreihen,
+vier Bezirke. Vollständig in `07_offene_punkte_lessons.md`. Das ist der
+Stand, nicht ein Versehen.

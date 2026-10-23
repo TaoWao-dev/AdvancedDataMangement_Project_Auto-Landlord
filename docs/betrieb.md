@@ -1,68 +1,77 @@
-# Betriebshandbuch (Entwurf)
+# Betriebshandbuch
 
-Stand 9.10.2026. Entwurf für Deliverable 2; die vollständige Fassung mit allen
-sieben Abschnitten gehört zu Deliverable 3.
+Stand 23.10.2026. Für wen: wer die Pipeline laufen lässt, neue Daten
+einspielt oder die Vorlage erneuert.
 
-## 1 Starten
+## 1 Zweck
+
+Die Pipeline liefert der Leitung Asset Management Wohnen je auslaufendem
+Mietvertrag ein Verlängerungsangebot, gestützt auf beobachtete Marktmieten.
+Ergebnis: `docs/vorlage.md`, jede Zahl aus `data/processed/kennzahl_*.csv`.
+
+## 2 Starten
 
 ```bash
-git clone <repo> && cd <repo>
-python3 -m src.run                 # vier Schritte, drei Gates, unter 1 s
-python3 tests/test_pipeline.py     # 45 Tests
+git clone https://github.com/TaoWao-dev/AdvancedDataMangement_Project_Auto-Landlord.git
+cd AdvancedDataMangement_Project_Auto-Landlord
+python3 -m src.run                 # 4 Schritte, 3 Gates, unter 1 s
+python3 tests/test_pipeline.py     # 53 Tests
 python3 tests/test_modell.py       # 26 Tests
+python3 tests/test_graders.py      # 26 Tests
 ```
 
-Keine Installation, kein Netz, keine Zugangsdaten: die Pipeline läuft mit der
-Standardbibliothek. `requirements.txt` nennt nur `pandas` — und das nur für
-eigene Auswertungen, nicht für den Lauf. Erfolg erkennt man an `GATE 3:
-bestanden` und fünf Zeilen `derive:`.
+Python ≥ 3.10, nur Standardbibliothek, kein Netz, keine Zugangsdaten.
+Erfolg: `GATE 3: bestanden`, acht Zeilen `derive:`.
 
-Ergebnis: `data/processed/mietportfolio.sqlite` (committet, mit *DB Browser for
-SQLite* öffenbar) und `data/processed/kennzahl_*.csv`.
+## 3 Neue Daten einspielen
 
-## 2 Neue Daten einspielen
+| Was | Schritte |
+|---|---|
+| Inserate (neuer Abruf oder Bezirk) | Suchseite mit `view-source:` öffnen, speichern → `data/raw_original/<datum>/` → `python3 tools/redigiere_schnappschuss.py <original> data/raw/<datum>/<name>` → neuer Bezirk zusätzlich in `config.BEZIRKE` |
+| KV-Seiten | mit `view-source:` speichern → `python3 tools/kv_quellen_aufbereiten.py <datum> <dateien>` |
+| Vertragsbestand | `tools/erzeuge_vertraege.py` ändern und laufen lassen; nie von Hand in `config/vertraege.json` |
 
-1. Schnappschuss beschaffen, am sichersten im privaten Fenster über die
-   Quelltextansicht: `view-source:` + Bezirks-URL mit `?rows=90` eintippen,
-   Strg+S. Bei mehr als 90 Treffern dasselbe mit `&page=2`. Prüfen: die Datei
-   enthält `"searchResult"`. Alternative: Seite neu laden (Strg+Shift+R),
-   dann `tools/snapshot.js` in der Konsole — das Skript prüft sich selbst.
-2. Datei nach `data/raw_original/` legen (wird nicht committet), Name
-   `wh_<plz>_mietwohnungen_<JJJJ-MM-TT>T<hhmm>[_s<seite>].json`.
-3. Redigieren: `python3 tools/redigiere_schnappschuss.py data/raw_original/<datei> data/raw/<datum>/<datei>`,
-   dann SHA256 beider Fassungen in `data/raw/<datum>/HERKUNFT.md`.
-4. `python3 -m src.run`. Seiten desselben Tages zählen als ein Abruf. Neuer
-   Bezirk? Zusätzlich einen Eintrag in `config.BEZIRKE` — die Views gruppieren
-   nach PLZ.
-5. `python3 tests/test_pipeline.py`, dann committen. Die Kennzahl-CSV und die
-   Datenbank gehören mit in den Commit.
+Danach `python3 -m src.run`, alle Tests, dann committen — Datenbank und
+Kennzahl-CSV gehören in den Commit. Originale bleiben in
+`data/raw_original/` (gitignored).
 
-Jeder weitere Abruf derselben PLZ verbessert Analyse 3: Erst wenn ein Inserat
-zwischen zwei späteren Abrufen verschwindet, hat es eine gemessene Dauer.
+## 4 Evals laufen lassen
 
-## 3 Bekannte Schwächen
+```bash
+python3 evals/baue_tests.py                      # nach jeder Referenzänderung
+python3 evals/lauf.py sql vorlage                # ohne Modell
+EVAL_MODELL=qwen/qwen3-8b python3 evals/lauf.py kv_extraktion moebliert
+# oder: cd evals && npx promptfoo@latest eval -c suite_kv_extraktion.yaml
+```
 
-| Schwäche | Wirkung | Woran man es merkt |
-|---|---|---|
-| **Ein Bezirk von fünf beschafft** | zwei der drei Portfolio-Cluster haben keine Marktmiete | `v_cluster_marktmiete` zeigt `kein Schnappschuss`; `v_abdeckung` nennt die Bezirke |
-| **25.09. nur Teilseite (90 von 154)** | der Vergleich mit dem vollständigen Abruf vom 09.10. ist verzerrt | Warnung im Qualitätsbericht bei jedem Lauf |
-| **Zwei Zeitpunkte, 14 Tage Abstand** | Preisänderungen messbar, eine Inseratsdauer noch nicht — nur der Anteil, der nach 14 Tagen noch steht; die Leerstandsannahme bleibt geraten | `kennzahl_inseratsdauer.csv`, Spalte `befund` |
-| **Indexreihen nicht beschafft** | Mieten und Einkommen sind nicht fortgeschrieben | `clean` meldet „keine Datei vorhanden"; `indexreihe` hat 0 Zeilen |
-| **Tariflohnindex misst Mindestlöhne** | bei IT-Berufen (24 % des Portfolios) ist die Fortschreibung eine Untergrenze | `config/berufsgruppen.json`, Feld `unschaerfe` |
-| **Gemeindewohnungen im Angebot** | Direktvergaben zu 7,50–10 €/m² sind kein Vergleichsmarkt für Neubau. Nur erkennbar, wenn der Titel es nennt (3 von 178) | `gemeinde_explizit` in `inserat_beobachtung`; der Rest bleibt im Angebot und im Minimum der Größenklassen (E38) |
-| **pytest hier nicht installierbar** | Tests laufen über den eingebauten Läufer am Dateiende | `python3 -m pytest` schlägt fehl, `python3 tests/test_pipeline.py` nicht |
-| **Beschaffung ist manuell** | nicht automatisierbar, solange die `robots.txt` das untersagt | bewusst so (Entscheidungslog E06) |
+LM Studio mit geladenem `qwen/qwen3-8b` auf Port 1234. Ergebnisse in
+`evals/results/` (lokal); Trefferquote je Task nach
+`docs/projektdokumentation/06_schritt5_analyse_vorlage.md`, neue
+Prompt-Version nach `prompts/CHANGELOG.md` mit „vorher → nachher".
 
-## 4 Wenn etwas hängt
+## 5 Ergebnis lesen
+
+Zuerst `belastbarkeit` und `fallzahl`, dann die Zahl. Eine Zeile mit
+„kein Schnappschuss" ist eine Lücke, kein Wert null. `kennzahl_sensitivitaet`
+zeigt, an welcher Annahme eine Empfehlung hängt — heute an der Marktmiete.
+
+## 6 Bekannte Schwächen
+
+Ein Bezirk von fünf beschafft; Verträge synthetisch; Indexreihen fehlen;
+Inseratsdauer nicht messbar; Marktmiete aus Angeboten, nicht Abschlüssen;
+Zahlenprüfung der Vorlage für kleine Zahlen ohne Zitat schwach. Vollständig:
+`docs/projektdokumentation/07_offene_punkte_lessons.md`.
+
+## 7 Wenn etwas hängt
 
 | Meldung | Ursache | Behebung |
 |---|---|---|
-| `kein Datumsordner unter data/raw` | Rohdaten fehlen | Ordner `data/raw/<JJJJ-MM-TT>/` anlegen und redigierte Datei hineinlegen |
-| `GATE 1 NICHT BESTANDEN … verticalId = 5` | falsche Seite gespeichert (Marktplatz statt Immobilien) | Bezirks-URL vollständig neu laden, `tools/snapshot.js` erneut |
-| `PLZ wie erwartet: Dateiname sagt 1100, Daten sagen 1020` | `__NEXT_DATA__` hält die zuvor geladene Seite | dito — der häufigste Fehler, dreimal passiert |
-| `sha256 schon aufgenommen` | dieselbe Datei unter neuem Namen | nicht erneut speichern, sondern neu laden |
-| `snapshot.js` meldet „keine Suchergebnisseite“, `page: /iad` | Startseite geöffnet und zur Suche geklickt (09.10.) | `view-source:` + URL verwenden |
-| `GATE 2` bricht ab | ein Feld trägt Kontaktmuster | nicht das Muster lockern, sondern die Allowlist in `config.py` prüfen |
+| `GATE 1 … verticalId = 5` | Marktplatz statt Immobilien gespeichert | Seite mit `view-source:` neu laden |
+| `PLZ wie erwartet: Dateiname sagt …` | veraltetes `__NEXT_DATA__` | dito, nicht durchklicken |
+| `GATE 2` bricht ab | Kontaktmuster in einem Feld | Allowlist prüfen — **nicht** das Muster lockern |
+| `GATE 3 … Fixpunkt konvergiert` rot | Modellparameter erzeugen Schwingung | Parameter prüfen; keine Vorlage erzeugen |
+| `test_vertragsgenerator_ist_deterministisch` rot | `config/vertraege.json` von Hand geändert | `python3 tools/erzeuge_vertraege.py` |
+| Suite: „nicht gelaufen: kein Modell erreichbar" | LM Studio aus | Server starten, Modell laden |
+| Suite: „2 passende Zeilen" | Referenz ohne Datenstand | `datenstand` im Testfall setzen |
 
-Mehr Fälle, sobald sie auftreten — `docs/troubleshooting.md` ist dafür
-vorgesehen und bislang leer, weil es noch keine weiteren gibt.
+Weitere Fälle: `docs/troubleshooting.md`.

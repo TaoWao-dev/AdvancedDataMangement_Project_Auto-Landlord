@@ -12,3 +12,6 @@ Vorfällen; sie wird nicht mit Hypothesen gefüllt.
 | `python3 -m pytest` findet pytest nicht | in dieser Umgebung nicht installierbar | `python3 tests/test_pipeline.py` — die Tests sind pytest-kompatibel geschrieben und haben einen eigenen Läufer am Dateiende | laufend |
 | `kein Datumsordner unter data/raw` | Rohdaten fehlen (frischer Klon ohne Daten) | `data/raw/<JJJJ-MM-TT>/` anlegen und eine redigierte Datei hineinlegen | 1× |
 | `git push` endet mit 403, „not in this session's authorized repository set" | das Repository ist der Arbeitssitzung nicht freigegeben | Repository in den Quellen der Sitzung eintragen; Sichtbarkeit auf „public" genügt **nicht** | laufend |
+| `npm install promptfoo` endet mit `ENOTFOUND registry.npmjs.org` | Paketquellen in der Arbeitssitzung gesperrt | `python3 evals/lauf.py` — dieselben Testfälle und Grader ohne Node (E42) | 1× am 23.10.2026 |
+| Grader-Gegenprobe meldet `VERALTET` | eine Mutation findet ihre Stelle im Grader nicht mehr, weil der Grader umgebaut wurde | Anker in `evals/gegenprobe_grader.py` anpassen; `VERALTET` zählt als nicht gefangen | 1× am 23.10.2026 |
+| Suite: `2 passende Zeilen - Filter oder Datenstand mehrdeutig` | Referenz ohne Abruftag läuft gegen mehrere Abrufe | `datenstand` im Testfall setzen (`evals/baue_tests.py`) | beim Bau der Suite |
