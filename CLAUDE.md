@@ -5,10 +5,15 @@ arbeitet. Sie ist bewusst kurz und verbietet mehr, als sie vorschreibt.
 
 ## Was das ist
 
-Ein institutioneller Vermieter mit 50 Eigentumswohnungen (80–100 m², drei
-Wiener Neubauquartiere) muss je auslaufendem Mietvertrag entscheiden: **zu
-welchem Mietzins die Fünfjahresverlängerung anbieten — oder auslaufen lassen und
-neu vermieten?** Entscheidungsträgerin ist die Leitung Asset Management Wohnen.
+Ein institutioneller Vermieter mit 50 vermieteten Wohnungen in der
+Leopoldstadt (50–80 und 80–100 m²) will für jeden **laufenden** Mietvertrag
+wissen: **die Miete erhöhen oder nicht, und um wie viel?** Grundlage sind
+die Marktentwicklung für vergleichbare Größen (willhaben, von Hand
+gespeichert) und die KV-Lohnentwicklung der Branche des Mieters (ÖGB/WKO,
+von einem Sprachmodell extrahiert, von Gate 4 geprüft). Die Mieter sind
+synthetisch. Entscheidungsträgerin ist die Leitung Asset Management Wohnen.
+Das ist der Demo-Fall vom 23.10.2026 (E44); der ursprüngliche Zuschnitt
+(Verlängerungsentscheidung in drei Quartieren) steht in `00_auftrag.md`.
 
 Bewertet wird nicht das Modellergebnis, sondern **der Arbeitsprozess und das
 Urteil darüber, ob das Modellergebnis Sinn ergibt.** Das ändert die Reihenfolge
@@ -40,11 +45,12 @@ der Prioritäten: eine belegte Unsicherheit ist wertvoller als eine glatte Zahl.
 ## Starten
 
 ```bash
-python3 -m src.run                  # Pipeline: 4 Schritte, 3 Gates, Modell, Kennzahlen
-python3 tests/test_pipeline.py      # 53 Tests (pytest-kompatibel, läuft auch ohne)
+python3 -m src.run                  # Pipeline: 4 Schritte, 4 Gates, Modell, 10 Kennzahlen
+python3 -m src.demo                 # Mieterverzeichnis mit Empfehlung (+ LS-27 für einen Vertrag)
+python3 tests/test_pipeline.py      # 61 Tests (pytest-kompatibel, läuft auch ohne)
 python3 tests/test_modell.py        # 26 Tests
-python3 tests/test_graders.py       # 26 Tests der Eval-Grader
-python3 evals/baue_tests.py && python3 evals/lauf.py sql vorlage
+python3 tests/test_graders.py       # 27 Tests der Eval-Grader
+python3 evals/baue_tests.py && python3 evals/lauf.py sql kv_extraktion_gespeichert vorlage
 ```
 
 Kein Netz, keine Zugangsdaten, keine Installation — Standardbibliothek. Nach
@@ -103,7 +109,9 @@ Abgabemarkierungen: `termin3` (Schritte 1–4, 9.10.), `termin4` (Schritt 5,
 | die Entscheidungsvorlage | `docs/vorlage.md` |
 | Modellannahmen mit Sensitivitätsspanne | `docs/annahmen.md`, `config/portfolio.json` |
 | Quellen, Allowlist, Bezirke, Schwellen | `src/config.py` — und nur dort |
-| synthetischer Vertragsbestand | `config/vertraege.json`, erzeugt von `tools/erzeuge_vertraege.py` |
+| synthetisches Mieterverzeichnis | `config/vertraege.json`, erzeugt von `tools/erzeuge_vertraege.py` |
+| KV-Extraktion (LLM-Ausgabe) und Gate 4 | `data/extrakt/`, `src/kv_extrakt.py` |
+| Demo | `src/demo.py`, `docs/demo/mieterverzeichnis.html` |
 | eine Frage je Datei, mit Fallstrick im Kopf | `src/sql/kennzahl_*.sql` |
 | Referenzen, Testfälle, Grader, Suiten | `evals/` (siehe `evals/README.md`) |
 | Prompts, versioniert | `prompts/<aufgabe>_v<n>.md`, `prompts/CHANGELOG.md` |
@@ -120,9 +128,10 @@ und byteweise reproduzierbar (E15, E26). Schema in `src/sql/schema.sql`.
 | `snapshot` | `snapshot_id`, `sha256` unique | eine gespeicherte Seite |
 | `inserat_beobachtung` | `(snapshot_id, ad_id)` | Fakten, append-only (E13) |
 | `kv_textblock` | `(datei, block_nr)` | KV-Seiten, je Block mit Originalzeile |
-| `vertrag` | `vertrag_id` | synthetischer Bestand (A10) |
-| `modelllauf` | `cluster_id` | Marktmiete, Eignung, Konvergenz je Cluster |
-| `empfehlung` | `vertrag_id` | Option, Aufschlag, Barwerte je Vertrag |
+| `kv_erhoehung` | `(branche_id, jahr)` | KV-Abschlüsse aus der LLM-Extraktion, nur nach Gate 4 |
+| `vertrag` | `vertrag_id` | Mieterverzeichnis: Größe, Branche, drei Lohnzettel, letzte Anpassung (A10) |
+| `modelllauf` | `segment` | Marktmiete, Belastbarkeit, Konvergenz je Größenklasse |
+| `empfehlung` | `vertrag_id` | Markt- und KV-Entwicklung seit letzter Anpassung, Empfehlung, Barwerte |
 | `empfehlung_sensitivitaet` | `(vertrag_id, parameter, rand)` | Empfehlung am Rand jeder Annahme |
 | `indexreihe` | `(reihe, jahr)` | VPI, Tariflohnindex — noch leer |
 | `qs_befund`, `zuordnungsluecke`, `objekttyp_ausschluss` | — | Protokoll: was auffiel, was keinen Partner fand, was mit Grund ausgeschlossen ist |
@@ -150,9 +159,16 @@ rechnen, nicht filtern, was ein Gate prüfen muss, und keine Zahl erzeugen.
 - Ein Grader ist erst geprüft, wenn ein eingebauter Fehler ihn rot macht
   (`evals/gegenprobe_grader.py`).
 
+## Neue Daten — immer mit einem Menschen
+
+Willhaben- und KV-Seiten speichert ein Mensch über `view-source:`. Danach:
+Inserate durch `tools/redigiere_schnappschuss.py`, KV-Seiten durch
+`tools/kv_quellen_aufbereiten.py`; eine neue KV-Extraktion als neue Datei
+in `data/extrakt/` — sie geht nur durch Gate 4 in die Datenbank. Nach neuen
+Daten `tools/erzeuge_vertraege.py` nur, wenn sich das Verzeichnis ändern soll.
+
 ## Was noch fehlt
 
-Modelllauf der Extraktion und Klassifikation (lokal, Qwen3 8B), Bestätigung
-der KV-Referenzen, die Markierliste „möbliert / Kurzzeit", Indexreihen,
-vier Bezirke. Vollständig in `07_offene_punkte_lessons.md`. Das ist der
-Stand, nicht ein Versehen.
+Unabhängige Bestätigung der KV-Referenzen, eine längere Marktreihe, echte
+Einkommensniveaus, ein zweites Modell für die Extraktion. Vollständig, mit
+den fünf Schwächen des Projekts, in `07_offene_punkte_lessons.md`.

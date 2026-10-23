@@ -16,23 +16,29 @@ siehe `docs/projektdokumentation/02_schritt1_datenzugriff.md` und
 Entscheidungslog E06. Einkommensdaten fließen nicht in die Preisbildung ein,
 sondern nur in Annahme- und Ausfallwahrscheinlichkeit (E05).
 
-Für jeden auslaufenden Mietvertrag: zu welchem Mietzins bieten wir die
-Fünfjahresverlängerung an — oder lassen wir auslaufen und vermieten neu?
+**Demo-Fall (23.10.2026):** Für jeden laufenden Mietvertrag eines
+fiktiven Portfolios in der Leopoldstadt — soll die Miete erhöht werden, und
+um wie viel? Grundlage: wie sich der Markt für Wohnungen vergleichbarer
+Größe und der KV-Lohn der Branche des Mieters seit der letzten Erhöhung
+entwickelt haben.
 
 **Entscheidungsträger:** Leitung Asset Management Wohnen.
-**Portfolio:** 50 Eigentumswohnungen, 80–100 m², drei Wiener Neubauquartiere.
+**Portfolio:** 50 Wohnungen in 1020 Wien, 50–80 und 80–100 m², Mieter
+synthetisch, mit Branche und drei Lohnzetteln.
 
 ## Sofort ausprobieren
 
 ```bash
 git clone https://github.com/TaoWao-dev/AdvancedDataMangement_Project_Auto-Landlord.git
 cd AdvancedDataMangement_Project_Auto-Landlord
-python3 -m src.run                  # Pipeline: 4 Schritte, 3 Gates, Modell, 8 Kennzahlen
-python3 tests/test_pipeline.py      # 53 Tests: Parser, Gates, PII, SQL, Modell an den Daten
+python3 -m src.run                  # Pipeline: 4 Schritte, 4 Gates, Modell, 10 Kennzahlen
+python3 -m src.demo                 # Mieterverzeichnis mit Empfehlung je Vertrag
+python3 -m src.demo LS-27           # ein Vertrag Schritt für Schritt
+python3 tests/test_pipeline.py      # 61 Tests: Parser, Gates, PII, SQL, Gate 4, Modell
 python3 tests/test_modell.py        # 26 Tests: Wertsicherung, Entscheidungsmodell
-python3 tests/test_graders.py       # 26 Tests: die Grader der Eval-Suite
+python3 tests/test_graders.py       # 27 Tests: die Grader der Eval-Suite
 python3 evals/baue_tests.py         # Testfälle und Modellkontext aus den Referenzen
-python3 evals/lauf.py sql vorlage   # Eval-Suite ohne Modell
+python3 evals/lauf.py sql kv_extraktion_gespeichert vorlage   # Eval-Suite
 ```
 
 Python 3.10 oder neuer, nur Standardbibliothek: kein Netz, keine
@@ -40,29 +46,27 @@ Zugangsdaten, keine Installation. `python3 -m src.run` löscht die Datenbank
 und baut sie aus `data/raw/` neu — zwei Läufe ergeben dieselbe Datei
 (`test_datenbank_ist_byteweise_reproduzierbar`).
 
-Die Modell-Tasks der Suite (Extraktion aus KV-Texten, Titelklassifikation)
-brauchen ein lokales Modell — LM Studio mit `qwen/qwen3-8b`, kostenlos:
-
-```bash
-EVAL_MODELL=qwen/qwen3-8b python3 evals/lauf.py kv_extraktion moebliert
-# oder mit promptfoo:  cd evals && npx promptfoo@latest eval -c suite_kv_extraktion.yaml
-```
+Kein Modell nötig: die KV-Extraktion liegt als geprüfte Modellausgabe in
+`data/extrakt/` und geht nur durch Gate 4 (Wortlaut steht in der
+Quellzeile) in die Datenbank.
 
 ## Das Ergebnis
 
-**[`docs/vorlage.md`](docs/vorlage.md)** — die Entscheidungsvorlage für die
-Leitung Asset Management Wohnen. Kurz: im Nordbahnviertel (1020) allen 20
-Mietern die Verlängerung nahe der beobachteten Marktmiete von 24,01 €/m²
-anbieten (n = 32, belastbar); für Sonnwendviertel und Seestadt keine
-Empfehlung, weil dort keine Marktdaten vorliegen. Die Sensitivität zeigt,
-dass die Empfehlung fast vollständig an der Marktmiete hängt.
+**[`docs/vorlage.md`](docs/vorlage.md)** — die Entscheidungsvorlage, und
+**[`docs/demo/mieterverzeichnis.html`](docs/demo/mieterverzeichnis.html)** —
+das Verzeichnis mit Empfehlung je Vertrag. Kurz: erhöhen, wo die Miete unter
+dem Markt liegt (50–80 m²: 18 von 25 Verträgen, Median 6 %; 80–100 m²: 11
+von 25, Median 0 %). Zwei Befunde sind wichtiger als die Zahlen: Die
+Empfehlung hängt fast vollständig an einer ungemessenen Annahme über das
+Wechselverhalten der Mieter, und bei gleicher Wohnung bekommt der Haushalt
+mit höherem Einkommen eine Stufe mehr empfohlen (E47).
 
 Jede Zahl der Vorlage kommt aus `data/processed/kennzahl_*.csv` und nennt
 ihre Abfrage; ein Grader prüft das (`evals/graders/zahlen_herkunft.py`).
 
 | Wo | Was |
 |---|---|
-| [`docs/projektdokumentation/`](docs/projektdokumentation.md) | Auftrag, Entscheidungslog (43 Einträge), Schritte 1–5, offene Punkte und Lessons |
+| [`docs/projektdokumentation/`](docs/projektdokumentation.md) | Auftrag, Entscheidungslog (47 Einträge), Schritte 1–5, die fünf Schwächen und drei Lessons |
 | [`docs/betrieb.md`](docs/betrieb.md) | Betriebshandbuch: starten, neue Daten, Evals, Störungen |
 | [`evals/README.md`](evals/README.md) | Referenzen, Grader, Suiten |
 | [`CLAUDE.md`](CLAUDE.md) | Arbeitsanweisung für jede KI-Sitzung in diesem Repository |
@@ -106,7 +110,9 @@ src/       run.py            die Pipeline
            extract.py        Schritt 1  data/raw/ -> data/interim/ + Provenienz
            clean.py          Schritt 2  Umwandlung, PII-Allowlist, Kontrolle
            integrate.py      Schritt 3  Datenbank neu bauen und laden
-           modell.py         Schritt 4  Marktmiete aus SQL -> Empfehlung je Vertrag
+           kv_extrakt.py     Gate 4: LLM-Extraktion gegen den Wortlaut der Quelle
+           modell.py         Schritt 4  Markt + KV seit letzter Erhoehung -> Empfehlung je Vertrag
+           demo.py           Mieterverzeichnis mit Empfehlung, Konsole und HTML
            derive.py         Schritt 4  alle kennzahl_*.sql -> CSV
            entscheidung.py   Annahmemodell und Barwertvergleich
            wertsicherung.py  gedeckelte Indexierung
@@ -114,12 +120,13 @@ src/       run.py            die Pipeline
            config.py         Quellen, Allowlist, Bezirke, Schwellen
            sql/              schema.sql · views.sql · kennzahl_*.sql (eine Frage je Datei)
 config/    portfolio.json    Rechtsrahmen, Annahmen mit Sensitivitätsspanne
-           berufsgruppen.json, vertraege.json (synthetisch, erzeugt)
-data/      raw/<datum>/      redigierte Rohdaten + HERKUNFT.md (Quelle der Wahrheit)
+           berufsgruppen.json, vertraege.json (Mieterverzeichnis, synthetisch)
+data/      extrakt/          KV-Erhoehungen aus der LLM-Extraktion (Eingang von Gate 4)
+           raw/<datum>/      redigierte Rohdaten + HERKUNFT.md (Quelle der Wahrheit)
            processed/        mietportfolio.sqlite + kennzahl_*.csv
            sample/           Negativ-Fixture für Gate 1
 evals/     references/ tests/ graders/ providers/ suite_*.yaml lauf.py
-prompts/   kv_extraktion_v1.md · moebliert_v1.md · vorlage_v1.md · CHANGELOG.md
+prompts/   kv_zeitreihe_v1.md · kv_extraktion_v1.md · vorlage_v2.md (+ v1) · CHANGELOG.md
 tools/     snapshot.js · redigiere_schnappschuss.py · kv_quellen_aufbereiten.py
            quelltext_zu_text.py · erzeuge_vertraege.py
 tests/     test_pipeline.py · test_modell.py · test_graders.py
@@ -128,22 +135,24 @@ tests/     test_pipeline.py · test_modell.py · test_graders.py
 ## Pipeline und Kontrollpunkte
 
 ```
-Quellen ─► extract ─► clean ─► GATE 1+2 ─► integrate ─► modell ─► derive ─► GATE 3 ─► Vorlage ─► Suite
+Quellen ─► extract ─► clean ─► GATE 1+2 ─► integrate ─► GATE 4 ─► modell ─► derive ─► GATE 3 ─► Vorlage/Demo ─► Suite
 ```
 
 | Gate | Prüft | Bei Fehler |
 |---|---|---|
 | 1 | richtige Seite: Rubrik, Trefferzahl, PLZ, Feldabdeckung | Datei wird nicht aufgenommen |
 | 2 | keine personenbezogenen Daten (Allowlist, Kontrollsuche, auch in KV-Texten) | Abbruch |
-| 3 | Kennzahlen plausibel; Modell konvergiert; keine Empfehlung ohne Marktmiete | keine Vorlage |
+| 4 | LLM-Extraktion der KV-Abschlüsse: Wortlaut, Zahl und Datum stehen in der Quellzeile | Extraktion geht nicht in die Datenbank |
+| 3 | Kennzahlen plausibel; Fixpunkt konvergiert; jeder Vertrag mit Empfehlung auf belastbarem Markt; Portfolio-Größen in jedem Abruf belastbar; jede Branche mit KV-Reihe | keine Vorlage |
 | Suite | SQL gegen Zweitimplementierung; Vorlage: jede Zahl mit Herkunft; Modell gegen Referenzen | Befund in `06_schritt5` |
 
-## Stand und Lücken
+## Stand und Schwächen
 
-Ein Bezirk von fünf beschafft, zwei Abrufe, Verträge synthetisch,
-Indexreihen nicht geladen, Modelllauf der Extraktion ausstehend. Die
-vollständige Liste mit Wirkung und Abhilfe steht in
-[`07_offene_punkte_lessons.md`](docs/projektdokumentation/07_offene_punkte_lessons.md).
+Drei Abrufe, ein Bezirk, synthetische Mieter, KV-Extraktion vom Modell der
+Arbeitssitzung. Die fünf Schwächen des Projekts — manuelle Beschaffung,
+manueller Auslöser, Evals ohne Geschäftslogik, weniger Werkzeuge als
+gedacht, und warum automatisiertes Auspressen nicht so einfach ist — stehen
+mit Belegen in [`07_offene_punkte_lessons.md`](docs/projektdokumentation/07_offene_punkte_lessons.md).
 
 ## Hinweise
 

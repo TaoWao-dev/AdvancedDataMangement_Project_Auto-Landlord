@@ -19,16 +19,20 @@ lauf.py          dieselbe Suite ohne Node, nur Standardbibliothek
 | Task | Analyse | Werkzeug | Fälle | Referenz | Grader |
 |---|---|---|---:|---|---|
 | `sql` | 1–3 Preisniveau, Anbietertyp, Abdeckung/Dauer | SQL | 8 | Zweitimplementierung `nachrechnen_marktniveau.py` | `sql_referenz` |
-| `kv_extraktion` | 4 Einkommensfortschreibung | **Prompt** `kv_extraktion_v1` | 8 | Wortlaut der KV-Seiten, Lesung zu bestätigen | `extraktion` |
-| `moebliert` | Bereinigung Marktmiete (E38) | **Prompt** `moebliert_v1` | folgt | Markierung des Studierenden | `klassifikation` |
-| `vorlage` | 5 Entscheidungsvorlage | **Prompt** `vorlage_v1` | 2 | Kennzahl-CSV | `zahlen_herkunft`, `vorlage_pflichten` |
+| `kv_extraktion_gespeichert` | 4 KV-Erhöhungen | gespeicherte Ausgabe von **Prompt** `kv_zeitreihe_v1` | 8 (5 gewertet) | Wortlaut der KV-Seiten, Lesung zu bestätigen | `extraktion` |
+| `kv_extraktion` | 4, Zweitlauf | **Prompt** `kv_extraktion_v1`, lokales Modell (optional) | 8 | dito | `extraktion` |
+| ~~`moebliert`~~ | entfallen (E46) | — | — | kein Maßstab | `klassifikation` (bleibt geprüft) |
+| `vorlage` | 5 Entscheidungsvorlage | **Prompt** `vorlage_v2` | 2 | Kennzahl-CSV | `zahlen_herkunft`, `vorlage_pflichten` |
+
+Vor der Datenbank prüft **Gate 4** (`src/kv_extrakt.py`) jede extrahierte
+KV-Zahl gegen den Wortlaut ihrer Quellzeile — ohne Modell.
 
 ## Laufen lassen
 
 ```bash
 python3 -m src.run                 # Datenbank und Kennzahlen
 python3 evals/baue_tests.py        # Testfälle und Kontext aus den Referenzen
-python3 evals/lauf.py              # alles, was ohne Modell läuft: sql, vorlage
+python3 evals/lauf.py sql kv_extraktion_gespeichert vorlage
 python3 tests/test_graders.py      # Grader gegen eigene Positiv-/Negativfälle
 python3 evals/gegenprobe_grader.py # fangen diese Tests eingebaute Fehler?
 ```

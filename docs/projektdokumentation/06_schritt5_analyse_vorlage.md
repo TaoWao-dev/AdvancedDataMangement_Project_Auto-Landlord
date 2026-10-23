@@ -6,160 +6,129 @@ Vorlage, deren Zahlen aus SQL kommen?
 
 **Abnahmekriterium:** Jede Analyse hat einen Task in der Suite, jeder Task
 läuft gegen seine Referenz, und jede Zahl der Vorlage hat eine Herkunft, die
-ein Programm prüft. Wo ein Task nicht gelaufen ist, steht das da — als
-„nicht gelaufen", nicht als Ergebnis.
+ein Programm prüft. Wo ein Task nicht gelaufen ist, steht das da.
+
+**Stand 23.10.2026, abends:** Der Zuschnitt ist auf den Demo-Fall umgestellt
+— Empfehlung zur Mietanpassung je laufendem Vertrag (E44). Die Vorlage ist
+v2; v1 (Verlängerungsentscheidung) liegt in der Git-Historie.
+
+## Der Demo-Fall in einem Durchlauf
+
+```bash
+python3 -m src.run          # 3 Abrufe, KV-Extraktion durch Gate 4, Modell, 10 Kennzahlen
+python3 -m src.demo         # Mieterverzeichnis mit Empfehlung, docs/demo/mieterverzeichnis.html
+python3 -m src.demo LS-27   # ein Vertrag Schritt für Schritt
+```
 
 ## Die Suite
 
 | Task | Analyse | Werkzeug | Fälle | Referenz entstanden durch | Grader |
 |---|---|---|---:|---|---|
-| `sql` | 1–3 Preisniveau, Anbietertyp, Abdeckung, Inseratsdauer | SQL | 9 | Zweitimplementierungen ohne `src/` und SQL (`nachrechnen_*.py`) | `sql_referenz` |
-| `kv_extraktion` | 4 Fortschreibung der Einkommen | Prompt `kv_extraktion_v1` | 8 | Wortlaut der gespeicherten KV-Seiten, Lesung zu bestätigen (E41) | `extraktion` |
-| `moebliert` | Bereinigung der Marktmiete (E38) | Prompt `moebliert_v1` | — | Markierung des Studierenden, steht aus | `klassifikation` |
-| `vorlage` | 5 Entscheidungsvorlage | Prompt `vorlage_v1` | 2 | Kennzahl-CSV und Gliederung | `zahlen_herkunft`, `vorlage_pflichten` |
+| `sql` | 1–3 Preisniveau, Anbietertyp, Abdeckung, Inseratsdauer | SQL | 9 | Zweitimplementierungen ohne `src/` und SQL | `sql_referenz` |
+| `kv_extraktion_gespeichert` | 4 KV-Erhöhungen je Branche | Prompt `kv_zeitreihe_v1`, Ausgabe gespeichert | 8 (5 gewertet) | Wortlaut der KV-Seiten, Lesung (E41) | `extraktion` |
+| Gate 4 | 4, vor der Datenbank | Programm | 15 Datensätze | Wortlaut der Quellzeile | `src/kv_extrakt.py` |
+| `vorlage` | 5 Entscheidungsvorlage | Prompt `vorlage_v2` | 2 | Kennzahl-CSV und Gliederung | `zahlen_herkunft`, `vorlage_pflichten` |
+| ~~`moebliert`~~ | Bereinigung der Marktmiete | — | — | entfallen (E46): kein Maßstab, weder Mensch noch Modell entscheiden es sicher | — |
 
-Konfiguration: `evals/suite_*.yaml` (promptfoo). Testfälle: `evals/tests/*.json`,
-erzeugt aus `evals/references/` durch `evals/baue_tests.py`. Dieselben
-Testdateien und Grader führt `evals/lauf.py` ohne Node aus (E42).
+Konfiguration: `evals/suite_*.yaml` (promptfoo); Testfälle `evals/tests/*.json`
+aus `evals/references/`; derselbe Ablauf ohne Node: `evals/lauf.py` (E42).
 
-**Datenänderung überstanden — als Test, nicht als Behauptung.** Die
-Referenzen vom 25.09. laufen gegen eine Pipeline, die inzwischen auch den
-Abruf vom 09.10. enthält. `marktniveau` filtert nach Abruftag und läuft auf
-dem vollen Datenstand: der neue Abruf lässt die alten Werte unverändert. Die
-übrigen Fälle beschreiben ausdrücklich den 25.09.; der SQL-Provider baut
-dafür eine Wegwerf-Datenbank nur aus diesem Rohordner. Ohne das Pinnen
-meldet er „2 passende Zeilen" statt eine zu wählen. Der neue Fall
-`inseratsdauer_zwei_abrufe` prüft den Stand nach der Änderung.
+### Was das Modell sieht
 
-### Was das Modell sieht (Context Engineering)
-
-- **Extraktion:** die ganze gespeicherte ÖGB-Seite (402 Textblöcke, 2026
-  bis 2024) und die WKO-Listen, jede Zeile mit ihrer Fundstelle `[Z …]`,
-  gelesen aus der Tabelle `kv_textblock`. Bewusst **nicht** vorgefiltert:
-  ein Filter, der nur die passenden Absätze durchlässt, würde die
-  Extraktion vorwegnehmen, und das Eval würde den Filter messen.
-- **Vorlage:** die acht Kennzahl-CSV als Text und die Annahmen aus
-  `config/portfolio.json` — sonst nichts. Keine Rohdaten, kein Code.
+- **Extraktion:** die ganze gespeicherte ÖGB-Seite (402 Textblöcke, 2024
+  bis 2026, mit Forderungen und Arbeiter-KVs als Ablenker) und die
+  WKO-Listen, jede Zeile mit Fundstelle `[Z …]`, aus `kv_textblock`. Nicht
+  vorgefiltert — ein Filter würde die Extraktion vorwegnehmen.
+- **Vorlage:** die zehn Kennzahl-CSV und die Annahmen aus
+  `config/portfolio.json`, sonst nichts.
 
 ### Modellwahl
 
 | Rolle | Modell | Warum | Kosten |
 |---|---|---|---|
-| Extraktion, Klassifikation | **Qwen3 8B**, lokal über LM Studio, gepinnt `qwen/qwen3-8b`, Stand 23.10.2026, Temperatur 0, Seed 20261023 | in der Werkzeugliste der LV, läuft ohne Konto und ohne Datenabfluss; Extraktion aus Fließtext braucht kein großes Modell, und genau das soll die Suite zeigen | 0 € |
-| Alternative | `qwen/qwen3-8b:free` über OpenRouter | ohne lokale Hardware; Rate-Limit | 0 € |
-| Vorlage v1 | Claude Opus 5.5 in der Arbeitssitzung | heute das einzige erreichbare Modell; offen gekennzeichnet (E43) | im Rahmen des bestehenden Zugangs |
+| KV-Extraktion, Vorlage | Claude Opus 5.5 in der Arbeitssitzung, 23.10.2026 | einziges erreichbares Modell; LM Studio ohne unmittelbaren Nutzen (E45) | im bestehenden Zugang |
+| Absicherung der Extraktion | **kein Modell**: Gate 4 prüft jeden Datensatz gegen den Wortlaut | eine Halluzination soll nicht vom Urteil eines zweiten Modells abhängen | 0 € |
+| vorgesehen, nicht genutzt | Qwen3 8B lokal (LM Studio), gepinnt in `suite_kv_extraktion.yaml` | bleibt als Weg für einen unabhängigen Zweitlauf | 0 € |
 
 ## Ergebnisse
 
-Lauf vom 23.10.2026 mit `python3 evals/lauf.py` in der Arbeitssitzung:
+Lauf vom 23.10.2026 mit `python3 evals/lauf.py`:
 
-| Task | Trefferquote | davon bestätigte Referenz | Modell | Anfragen | Zeit | Kosten |
-|---|---|---|---|---:|---:|---:|
-| `sql` | **9/9 (100 %)** | 0 von 9 bestätigt¹ | SQL | 0 | 0,4 s | 0 € |
-| `vorlage` | **2/2 (100 %)** | 2/2 | Claude Opus 5.5 (Text), Grader deterministisch | 0² | < 0,1 s | 0 € |
-| `kv_extraktion` | **nicht gelaufen** | — | Qwen3 8B nicht erreichbar | 0 | — | — |
-| `moebliert` | **nicht gelaufen** | — | Referenz fehlt | 0 | — | — |
+| Task | Trefferquote | Modell | Anfragen | Zeit | Kosten |
+|---|---|---|---:|---:|---:|
+| `sql` | **9/9 (100 %)** | SQL | 0 | 0,6 s | 0 € |
+| Gate 4 | **15/15 Datensätze** an ihrer Quelle | Programm | 0 | < 0,1 s | 0 € |
+| `kv_extraktion_gespeichert` | **5/5 gewertete (100 %)**, 3 nicht gewertet | Claude Opus 5.5 (gespeicherte Ausgabe) | 1 Extraktion | < 0,1 s | 0 € |
+| `vorlage` v2 | **2/2 (100 %)** — 122 Zahlen mit Herkunft | Claude Opus 5.5 (Text) | 1 Vorlage | < 0,1 s | 0 € |
 
-¹ Die SQL-Referenzen sind Zweitimplementierungen und tragen
-`von_hand_bestaetigt: false`; die drei **Handproben** dazu sind vom
-Studierenden am 09.10. bestätigt (`handproben.json`).
-² Die Vorlage wurde in der Arbeitssitzung geschrieben; gezählt sind hier nur
-Anfragen der Suite. Die Prüfung selbst braucht kein Modell.
+**Was diese Zahlen aussagen, und was nicht.**
 
-**Was diese Zahlen aussagen, und was nicht.** 9/9 heißt: SQL und eine
-unabhängige zweite Rechnung kommen auf dieselben Zahlen — auch nachdem neue
-Daten dazugekommen sind. 2/2 bei der Vorlage heißt: keine Zahl ohne
-Herkunft, alle Pflichtabschnitte da. Es heißt **nicht**, dass die Vorlage
-gut ist; drei inhaltliche Fehler des ersten Entwurfs hat der Grader nicht
-gefunden (unten). Über das Modell für Extraktion und Klassifikation sagt der
-heutige Lauf nichts.
+- `sql`: SQL und eine unabhängige Rechnung kommen auf dieselben Zahlen —
+  auch nach zwei weiteren Abrufen, die den Datenbestand von 90 auf 442 Beobachtungen gebracht haben.
+- `kv_extraktion_gespeichert`: Referenz-Lesung und Extraktion stammen vom
+  selben Modell. 5/5 belegt, dass zwei Aufgaben zu denselben Werten kommen,
+  nicht, dass die Werte stimmen. `ist_prozent` fragt der Zeitreihen-Prompt
+  nicht ab und ist nicht gewertet; Versicherungen, Wirtschaftstreuhänder und
+  öffentlicher Dienst deckt die Zeitreihe nicht ab. Unabhängig geprüft hat
+  nur der Studierende („großteils okay"); die Fälle sind nicht einzeln
+  bestätigt.
+- Gate 4 belegt, dass keine Zahl erfunden ist. Eine Verwechslung — etwa der
+  Arbeiter- statt Angestellten-KV im Handel, gleicher Satz — besteht Gate 4
+  (`test_gate4_faengt_keine_verwechslung`).
+- `vorlage`: keine Zahl ohne Herkunft, Pflichtabschnitte da. Ob die
+  Empfehlung richtig ist, prüft kein Grader (07, Schwäche 3).
 
-### Der Grader wurde selbst geprüft
+**Die Pipeline hat die Datenänderung bemerkt.** Nach dem dritten Abruf
+fiel die Vorlage v1 durch: 19 ihrer Zahlen waren vom neuen Datenstand nicht
+mehr gedeckt. Das ist der gewünschte Effekt — eine veraltete Vorlage wird
+rot, statt still falsch zu bleiben. Fünf Pipeline-Tests brachen ebenfalls,
+weil sie Zahlen vom 09.10. fest verdrahtet hatten; sie prüfen jetzt die
+Regel, nicht den Datenstand.
 
-- `tests/test_graders.py`, 26 Tests: je Grader, was bestehen muss und was
-  scheitern muss — darunter die wahrscheinlichen Modellfehler
-  (Vorjahreswert, erfundenes Datum, gleicher Prozentsatz aus dem
-  Arbeiter-KV, Forderung statt Abschluss, selbst gerechnete Differenz).
-- `evals/gegenprobe_grader.py` baut 7 Fehler in die Grader ein. In der
-  ersten Fassung der Tests überlebten 2 von 6; nach dem Nachschärfen werden
-  7 von 7 gefangen.
-- Die Referenz der Extraktion besteht ihren eigenen Grader in allen 8
-  Fällen (`test_referenzantwort_selbst_besteht_jeden_fall`).
+### Die Prüfer wurden selbst geprüft
+
+- `tests/test_graders.py` (27 Tests): je Grader, was bestehen und was
+  scheitern muss.
+- `evals/gegenprobe_grader.py`: 7 eingebaute Fehler, 7 gefangen. In der
+  ersten Fassung überlebten 2 von 6.
+- Gate 4: 5 Tests, darunter einer für die bekannte Grenze (Verwechslung).
+  Ein Test fand einen echten Fehler: „2,5" stand als Zeichenkette in
+  „2,55", Gate 4 hätte den falschen Satz durchgelassen (E45).
+- Beim Ausbau gefunden: sechs Pipeline-Tests standen hinter dem
+  Läuferblock und liefen nie. Seit der Korrektur laufen alle 61.
 
 ## Herkunft jeder Zahl in der Vorlage
 
-`docs/vorlage.md` nennt bei jeder Zahl die Abfrage in eckigen Klammern.
-`evals/graders/zahlen_herkunft.py` liest alle 118 Zahlen, ordnet jede einer
-Kennzahl-CSV, einer Annahme in `config/portfolio.json` oder einer Konstante
-mit Begründung (`evals/graders/vorlage_konstanten.json`) zu und lässt den
-Test scheitern, wenn eine übrig bleibt. Steht im selben Absatz ein Zitat,
-muss die Zahl aus genau dieser Datei kommen.
-
-| Herkunft | Abfrage | Was in der Vorlage daraus wird |
+| Herkunft | Abfrage | in der Vorlage |
 |---|---|---|
-| Marktmiete, Fallzahl, Quartile | `kennzahl_marktniveau`, `kennzahl_bezirksvergleich` | Abschnitt 4, Tabelle Marktmiete |
-| privat / gewerblich | `kennzahl_anbietertyp` | Abschnitt 4 |
+| Markt je Größe und Abruf | `kennzahl_marktentwicklung` | Abschnitt 4 |
 | Inseratsdauer | `kennzahl_inseratsdauer` | Abschnitt 4 |
-| Lücken | `kennzahl_abdeckung`, `kennzahl_empfehlung` | Abschnitte 3, 4 |
-| Empfehlung, Barwerte, Optionen | `kennzahl_empfehlung`, `kennzahl_empfehlung_vertrag` | Abschnitte 1, 5, 6 |
+| KV-Abschlüsse mit Fundstelle | `kennzahl_kv_entwicklung` | Abschnitt 4 |
+| Empfehlung je Größenklasse | `kennzahl_empfehlung` | Abschnitte 1, 5, 7 |
+| Empfehlung je Vertrag | `kennzahl_empfehlung_vertrag` | Abschnitt 5 |
 | Sensitivität | `kennzahl_sensitivitaet` | Abschnitt 6 |
 
-**Was der Grader nicht fand.** Im ersten Entwurf standen „40 der 50
-Wohnungen" (gerechnet, und falsch — es sind 30), eine verdrehte Richtung der
-Marktlücke und „fast doppelt" statt „mehr als doppelt". Alle drei fand die
-eigene Durchsicht vor dem Commit. Die 40 hatte der Grader als belegt
-gewertet, weil sie im Angebotsraster vorkommt; seitdem bindet ein Zitat die
-Zahl an die zitierte Datei (E43). Für Zahlen ohne Zitat im Absatz — in v1
-sind es 64 von 118 — bleibt „belegt" ein schwacher Beleg.
+Der Grader fand in v2 drei Dinge, die die eigene Durchsicht nicht sah: eine
+PLZ in einer Zeile, die eine Datei ohne PLZ zitiert, und zweimal ein
+typografisches Minus, das er als Plus las — Letzteres ein Fehler im Grader,
+behoben und als Test festgehalten. Die eigene Durchsicht fand dafür eine
+addierte Zahl („29 von 50"), die als Summe nicht aus SQL kommt.
 
 ## Was die Vorlage empfiehlt, und ob das Sinn ergibt
 
-Die Empfehlung — im Nordbahnviertel allen 20 Mietern ein Angebot nahe der
-beobachteten Marktmiete — ist plausibel und zugleich das am wenigsten
-belastbare Ergebnis des Projekts:
-
-- **Plausibel**, weil die Angebote dort landen, wo der Markt steht, und
-  weil ein Vermieter mit Mieten deutlich unter Markt tatsächlich so handeln
-  würde. Das Modell bietet nicht mehr als den Markt an, obwohl das Raster es
-  erlaubt; die Gegenkräfte (E17) wirken.
-- **Wenig belastbar**, weil die Sensitivität zeigt, dass die Empfehlung
-  fast vollständig an einer Zahl hängt: Am unteren Quartil der Marktmiete
-  schrumpft der mittlere Aufschlag gegen null, am oberen verdoppelt er sich
-  mehr als. Die Verhaltensparameter — die eigentlichen Annahmen — ändern
-  wenig. Die richtige Investition ist deshalb Messung (Bezirke, Abrufe,
-  Bereinigung um möblierte Angebote), nicht Modellverfeinerung.
-- **Ein Fehler, der fast durchgegangen wäre:** Die erste Fassung des
-  Vertragsbestands hatte Haushalte, die mehr Miete zahlten, als sie
-  verdienten. Das Modell rechnete damit klaglos, und Gate 3 bestand. Erst
-  der Blick auf die Spalte `belastungsquote` zeigte den Unsinn (E40).
+- **Plausibel:** Erhöht wird, wo die Miete unter dem Markt liegt, nicht
+  erhöht, wo sie darüber liegt; die Größenordnung (Median 6 % bzw. 0 %)
+  passt zu Mieten, die nahe am Markt simuliert sind.
+- **Nicht belastbar:** Fast alle Empfehlungen ändern sich, wenn die
+  ungemessene Wechselbereitschaft am Rand ihrer Spanne liegt. Die
+  Marktveränderung „seit letzter Erhöhung" misst für alle Verträge nur die
+  Zeit seit dem ersten Abruf.
+- **Ein Befund, der nicht beabsichtigt war:** Bei gleicher Wohnung bekommt
+  der Haushalt mit höherem Einkommen eine Rasterstufe mehr empfohlen (E47).
+  Die Regel „das Einkommen ist kein Preisargument" stand im Code-Kommentar,
+  galt aber im Modell nicht vollständig — und der Test dazu hatte den
+  Effekt mit seiner Toleranz verdeckt.
 
 ## Selbsttest aus frischem Klon
 
-| | |
-|---|---|
-| **Datum** | 23.10.2026, 15:04 Wiener Zeit |
-| **Stand** | Commit `f30f541` auf `main`, frisch von GitHub geklont in ein leeres Verzeichnis |
-| **Befolgt** | nur der Abschnitt „Sofort ausprobieren" der README, Befehl für Befehl |
-| **Dauer** | 6 Sekunden für Klon, Pipeline, drei Testdateien, Testfallbau und Suite |
-| **Ergebnis** | `GATE 3: bestanden`; 53 + 26 + 26 Tests grün; Suite `sql` 9/9, `vorlage` 2/2 |
-| **Was danach anders war** | nichts: `git status` leer. Datenbank, Kennzahl-CSV, Testfälle und Modellkontext entstehen byteweise identisch zum Commit. |
-
-**Was gehakt hat.** Im Selbsttest selbst nichts. Gehakt hat es davor, und
-das ist der Grund, warum der Selbsttest glatt lief:
-
-- Die README des Termin-3-Stands enthielt den Block „Noch nicht in diesem
-  Stand" doppelt, mit widersprüchlichem Inhalt, und nannte 32 statt 45
-  Pipeline-Tests. Neu geschrieben.
-- Die promptfoo-Installation scheiterte (`ENOTFOUND registry.npmjs.org`).
-  Ergänzt: `evals/lauf.py` ohne Node (E42).
-- Der SQL-Provider legte seine Wegwerf-Datenbank zuerst unter `/tmp` an; die
-  Pipeline schreibt Pfade relativ zum Projekt und brach ab. Ergänzt:
-  Wegwerf-Verzeichnis unter `data/.eval_*` (gitignored).
-- `evals/baue_tests.py` braucht die Datenbank; ohne vorherigen
-  `python3 -m src.run` bricht es ab. Die README nennt die Reihenfolge.
-
-**Was dieser Selbsttest nicht zeigt.** Er lief in derselben Arbeitsumgebung
-(Linux, Python 3.13), in der das Repository gebaut wurde — nur in einem
-anderen Verzeichnis und aus dem entfernten Stand. Ein Lauf auf dem Rechner
-des Studierenden (Windows/macOS, anderes Python) steht aus, ebenso der
-Modelllauf mit LM Studio.
+*Wird nach dem letzten Push eingetragen.*

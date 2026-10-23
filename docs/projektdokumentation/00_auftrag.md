@@ -1,5 +1,19 @@
 # Auftrag
 
+> **Änderung am 23.10.2026 (E44): Demo-Fall.** Für die Abgabe ist der
+> Zuschnitt auf einen lauffähigen Prototyp umgestellt: Für jeden **laufenden**
+> Mietvertrag eines fiktiven Portfolios in der Leopoldstadt (50 Wohnungen,
+> 50–80 und 80–100 m², Mieten nahe dem Marktdurchschnitt) erhält die Leitung
+> Asset Management eine Empfehlung, ob und um wie viel die Miete zu erhöhen
+> ist. Daneben zeigt die Pipeline je Vertrag, wie sich das Preisniveau für
+> Wohnungen vergleichbarer Größe und der KV-Lohn der Branche des Mieters seit
+> der letzten Mieterhöhung entwickelt haben. Das Mieterverzeichnis ist
+> simuliert — mit Branche und den drei Lohnzetteln vor Vertragsabschluss —,
+> und zwar nur für Branchen mit gut abrufbaren KV-Daten und nur für Größen,
+> die im Scrape häufig und belastbar sind (E46). Der Text unten beschreibt
+> den ursprünglichen Auftrag (Verlängerungsentscheidung in drei Quartieren);
+> Adressat, Analysen und die Rolle des Sprachmodells gelten weiter.
+
 ## Das Problem in einem Satz
 
 Ein institutioneller Vermieter muss für 50 befristete Mietverträge, die in den

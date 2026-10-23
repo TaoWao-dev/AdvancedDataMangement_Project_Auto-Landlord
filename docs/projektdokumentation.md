@@ -5,25 +5,25 @@ für Datei. Die Inhalte stehen in den verlinkten Dateien, nicht hier.
 
 ## Die Dateien
 
-| Datei | Inhalt | Abgabe | Stand 23.10.2026 |
+| Datei | Inhalt | Abgabe | Stand 23.10.2026 abends |
 |---|---|---|---|
 | [`00_auftrag.md`](projektdokumentation/00_auftrag.md) | Adressat, Entscheidung, drei Analysen mit Werkzeug, was nicht drin ist | 26.9., laufend | **fertig** |
-| [`01_entscheidungslog.md`](projektdokumentation/01_entscheidungslog.md) | je Entscheidung Datum, Alternative, Grund, Revisionspunkt | laufend | **43 Einträge** |
+| [`01_entscheidungslog.md`](projektdokumentation/01_entscheidungslog.md) | je Entscheidung Datum, Alternative, Grund, Revisionspunkt | laufend | **47 Einträge** |
 | [`02_schritt1_datenzugriff.md`](projektdokumentation/02_schritt1_datenzugriff.md) | Quellentabelle, verworfene Kandidaten, Personenbezug | termin3, ergänzt | **fertig**, KV-Quelle ergänzt |
 | [`03_schritt2_normalisieren.md`](projektdokumentation/03_schritt2_normalisieren.md) | Zahlen aus dem Lauf, Qualitätsbericht mit sechs Fragen je Quelle | termin3, ergänzt | **fertig** |
 | [`04_schritt3_datenmodell.md`](projektdokumentation/04_schritt3_datenmodell.md) | Tabellen, Schlüssel, Beziehungen, Zuordnungslücken | termin3, ergänzt | **fertig**, Modelltabellen ergänzt |
 | [`05_schritt4_abfragen_referenzen.md`](projektdokumentation/05_schritt4_abfragen_referenzen.md) | je Analyse Werkzeug, Referenz, Herkunft, Prüfregel, Toleranz | termin3, ergänzt | **fertig**, Extraktionsfälle angelegt |
-| [`06_schritt5_analyse_vorlage.md`](projektdokumentation/06_schritt5_analyse_vorlage.md) | Eval-Suite, Modellwahl, Ergebnisse, Herkunft jeder Zahl, Selbsttest | termin4 | **fertig**; Modelllauf der Extraktion offen |
-| [`07_offene_punkte_lessons.md`](projektdokumentation/07_offene_punkte_lessons.md) | Datenlücken, Risiken, drei Lessons | termin4 | **fertig** |
+| [`06_schritt5_analyse_vorlage.md`](projektdokumentation/06_schritt5_analyse_vorlage.md) | Eval-Suite, Modellwahl, Ergebnisse, Herkunft jeder Zahl, Selbsttest | termin4 | **fertig**, Demo-Fall (E44) |
+| [`07_offene_punkte_lessons.md`](projektdokumentation/07_offene_punkte_lessons.md) | die fünf Schwächen, Datenlücken, Risiken, drei Lessons | termin4 | **fertig** |
 
 ## Deliverable 3 · Evaluierung und Vorlage (Tag `termin4`, 23.10.)
 
 | Verlangt | Wo | Stand |
 |---|---|---|
-| Entscheidungsvorlage | [`docs/vorlage.md`](vorlage.md) | v1; jede Zahl mit Herkunft, vom Grader geprüft |
-| Prompts | `prompts/*_v1.md`, `prompts/CHANGELOG.md` | drei Aufgaben, je eine Zeile im Changelog |
+| Entscheidungsvorlage | [`docs/vorlage.md`](vorlage.md), Demo [`docs/demo/mieterverzeichnis.html`](demo/mieterverzeichnis.html) | v2 (Demo-Fall); jede Zahl mit Herkunft, vom Grader geprüft |
+| Prompts | `prompts/*_v<n>.md`, `prompts/CHANGELOG.md` | vier Aufgaben, je Version eine Zeile im Changelog |
 | Eval-Suite | `evals/suite_*.yaml`, `evals/graders/` | 4 Suiten, Modell gepinnt; Grader mit Selbsttest und Gegenprobe |
-| Ergebnisse | `06_schritt5_analyse_vorlage.md` | sql 9/9, vorlage 2/2; Extraktion und Klassifikation nicht gelaufen |
+| Ergebnisse | `06_schritt5_analyse_vorlage.md` | sql 9/9, Gate 4 15/15, Extraktion 5/5 (Konsistenz), vorlage 2/2; Klassifikation entfallen |
 | Projektdokumentation | 06 und 07 neu, 00–05 aktualisiert | fertig |
 | Betriebshandbuch | [`docs/betrieb.md`](betrieb.md) | sieben Abschnitte |
 | Agent-Anweisung | [`CLAUDE.md`](../CLAUDE.md) | Was, wo, Datenmodell, Regeln, Starten |

@@ -1,84 +1,130 @@
-# Offene Punkte, Risiken, Lessons
+# Offene Punkte, Schwächen, Lessons
 
-Stand 23.10.2026. Was das Projekt nicht kann, steht hier vollständig —
-nicht verteilt auf Fußnoten.
+Stand 23.10.2026, nach dem Wechsel auf den Demo-Fall (E44). Was das Projekt
+nicht kann, steht hier vollständig — nicht verteilt auf Fußnoten.
+
+## Die fünf Schwächen des Projekts
+
+Formuliert vom Studierenden für die Endpräsentation; je Punkt, woran er im
+Repository nachweisbar ist.
+
+### 1. Die Daten, die man will, lassen sich nur mit menschlichem Input beschaffen — und das Labelling ist mühsam
+
+Die Inseratsplattform untersagt automatisierten Zugriff (`robots.txt`,
+archiviert); jeder der drei Abrufe ist von Hand über `view-source:`
+gespeichert. Zweimal entstand dabei die falsche Seite (E09, Vorfall 2 in
+`02_schritt1_datenzugriff.md`), und erst Gate 1 hat es gemerkt. Das
+Labelling für die Evals scheiterte zweimal: Gemeindewohnungen ließen sich
+am Titel nicht erkennen (E38), und die erste Markierliste stammte von einem
+Modell statt vom Menschen (E37). Am Ende entfiel die Klassifikation ganz
+(E46).
+
+### 2. Auch die KV-Seiten müssen von Hand gespeichert werden — die Pipeline braucht immer einen Menschen als Auslöser
+
+Die ÖGB- und WKO-Seiten sind aus der Arbeitsumgebung nicht abrufbar
+(Proxy 403); eine Zusammenfassung über eine Modellsuche wäre als Referenz
+wertlos (E28). Sie wurden am 23.10. von Hand gespeichert (E41). Damit hat die
+Pipeline zwei manuelle Eingänge, und jeder neue Datenstand — die 14-tägige
+Marktwertkontrolle, jede neue KV-Runde — beginnt mit einem Menschen im
+Browser. Automatisiert ist alles **nach** dem Speichern; das Speichern selbst
+lässt sich nicht automatisieren, ohne die Nutzungsbedingungen zu brechen.
+
+### 3. Die Evals prüfen Rechnungen, nicht ob das Ergebnis stimmt
+
+Was die Suite prüfen kann: dass SQL und eine zweite Rechnung dieselben
+Zahlen liefern (9/9), dass jede Zahl der Vorlage aus einer Kennzahl stammt
+(Grader `zahlen_herkunft`), dass eine extrahierte Zahl wörtlich in der
+Quelle steht (Gate 4). Was sie nicht prüfen kann: ob die Empfehlung richtig
+ist. Dafür gibt es keine Geschäftslogik, gegen die man prüfen könnte — keine
+echten Verträge, keine Abschlussmieten, keine beobachtete Reaktion von
+Mietern auf eine Erhöhung. Die Extraktion besteht 5/5, aber Referenz und
+Extraktion stammen vom selben Modell (E45): das belegt Konsistenz, nicht
+Richtigkeit.
+
+Am schwächsten ist das Filtern der Inserate. Gemeindewohnungen und
+WG-Zimmer verzerren den Markt nach unten, möblierte Kurzzeitangebote nach
+oben; erkennbar sind nur die ausdrücklich benannten (E33, E38). Weder ein
+Mensch noch ein Modell kann am Inserat zuverlässig sagen, was der Rest ist —
+also gibt es für dieses Eval keinen Maßstab.
+
+### 4. Es waren deutlich weniger Werkzeuge nötig als vorgeschlagen
+
+Gebraucht wurden: Python mit Standardbibliothek, SQLite, Git/GitHub und ein
+Sprachmodell in der Arbeitssitzung. Nicht gebraucht: LM Studio (E45 — kein
+unmittelbarer Nutzen, mehr Komplexität), Jupyter, Power BI, NotebookLM.
+promptfoo ist konfiguriert (`evals/suite_*.yaml`), lief in der Sitzung aber
+nicht, weil keine Paketquelle erreichbar war; derselbe Ablauf läuft ohne
+Installation über `evals/lauf.py` (E42). Die Pipeline hat keine einzige
+Abhängigkeit außerhalb von Python.
+
+### 5. Mieter automatisiert auszupressen ist zum Glück nicht so einfach
+
+Die Informationslage, die dafür nötig wäre, lässt sich mit einem Chatbot und
+einer Pipeline nicht herstellen: der Markt ist nur in Stichproben
+beobachtbar, Einkommen nur über Branchen-Mindestlöhne, das Verhalten der
+Mieter gar nicht. Die Empfehlung hängt fast vollständig an einer
+ungemessenen Annahme — wie bereitwillig Mieter wechseln (43 von 50
+Empfehlungen ändern sich am Rand ihrer Spanne, `kennzahl_sensitivitaet`).
+
+Und wo das Modell doch wirkt, wirkt es so, wie man es befürchten würde: Ein
+Erwartungswert-Optimierer verlangt dort mehr, wo es leichter durchgeht. Bei
+gleicher Wohnung bekommt der Haushalt mit höherem Einkommen eine Rasterstufe
+mehr empfohlen (E47) — obwohl das Projekt sich vorgenommen hatte, das
+Einkommen nicht als Preisargument zu verwenden (E05).
 
 ## Datenlücken
 
-| Lücke | Wirkung | Wie sie sichtbar ist | Was sie schließt |
-|---|---|---|---|
-| **Vier von fünf Bezirken nicht beschafft** (1100, 1220, 1010, 1030) | 30 der 50 Verträge ohne Empfehlung; kein Bezirksvergleich | `kennzahl_abdeckung` „fehlt", `modelllauf.eignung` „kein Schnappschuss" | je ein vollständiger Abruf über `view-source:` (docs/betrieb.md) |
-| **Zwei Abrufe, 14 Tage** | Inseratsdauer nicht messbar, Leerstand bleibt Annahme | `kennzahl_inseratsdauer.befund` | dritter Abruf 1020 vor der ersten Tranche |
-| **Indexreihen (VPI, Tariflohnindex) nicht geladen** | Bestandsmieten pauschal mit 4 % p. a. fortgeschrieben, Einkommen gar nicht | `indexreihe` hat 0 Zeilen; A10, A12 | Statistik Austria OGD, automatisch abrufbar (CC-BY) |
-| **KV-Extraktion nicht gelaufen** | die Einkommensfortschreibung, für die sie gebaut ist, fehlt | Suite: „nicht gelaufen" | lokaler Lauf mit Qwen3 8B, danach `config/berufsgruppen.json` |
-| **Möbliert-Klassifikation ohne Referenz** | Marktmiete enthält möblierte Kurzzeitangebote, eher zu hoch | `suite_moebliert` ohne Fälle | Markierliste v3 vom Studierenden |
-| **KV-Referenzen unbestätigt** | 8 Extraktionsfälle sind eine Lesung durch Claude | `von_hand_bestaetigt: false` | Bestätigung in `evals/erfasse_kv_referenz.py` |
-| **Kein Satz 2026 für Versicherungen, Wirtschaftstreuhänder, Landesspitäler** | drei Reihen ohne Fortschreibung | Referenz erwartet „nicht gefunden" | WKO-PDFs der Gehaltsordnungen speichern |
-| **Spitalreihe ersetzt** | Referenz nutzt Privatkrankenanstalten statt „Bundesländer – Krankenanstalten" | E41, Unsicherheit im Fall | klären, wo die Spitalsmieter tatsächlich beschäftigt sind |
+| Lücke | Wirkung | Wie sie sichtbar ist |
+|---|---|---|
+| Marktreihe seit 25.09.2026, drei Abrufe, der erste eine Teilseite | Marktveränderung „seit letzter Erhöhung" ist für alle 50 Verträge nur seit dem ersten Abruf messbar | `empfehlung.bezug_vor_beobachtung`, `kennzahl_marktentwicklung` |
+| ein Bezirk (1020) | kein Vergleich zwischen Lagen | `kennzahl_abdeckung` |
+| KV-Lohn ist Mindestlohn, nicht Ist-Gehalt | Einkommensentwicklung eher unterschätzt (IT: hohe Überzahlung) | A2, `kennzahl_kv_entwicklung` |
+| Tag des Abschlusses fehlt bei 4 von 15 KV-Datensätzen | gerechnet ab 1. Jänner | `kv_erhoehung.datum_angenommen` |
+| Einkommensniveaus sind Platzhalter | fast alle Haushalte brauchen ein Zweiteinkommen | E40, A11 |
+| kein Satz 2026 für Versicherungen, Wirtschaftstreuhänder; öffentlicher Dienst ohne 2024 | Branchen nicht im Demo-Portfolio | E46 |
+| Indexreihen (VPI) nicht geladen | Wertsicherung pauschal angenommen | A10 |
 
 ## Risiken
 
-1. **Die Empfehlung ist eine Wette auf eine Zahl.** Die Sensitivität zeigt:
-   Am unteren Quartil der Marktmiete schrumpft der mittlere Aufschlag fast
-   auf null, am oberen verdoppelt er sich mehr als (`kennzahl_sensitivitaet`).
-   Die Marktmiete beruht auf 32 Angebotsinseraten eines Tages.
-2. **Angebot ist nicht Abschluss.** Inserate zeigen, was verlangt wird. Der
-   Abschlag von 6 % dafür ist nicht belegt.
-3. **Synthetische Verträge.** Die Spreizung der Ergebnisse kommt zum
-   größten Teil aus dem erfundenen Bestand (A10). Mit echten Verträgen kann
-   die Empfehlung je Vertrag ganz anders aussehen; die Richtung
-   („verlängern nahe am Markt statt auslaufen") ist robuster als die Höhe.
-4. **Erwartet wird, dass etwa jeder zweite Mieter auszieht.** Das Modell
-   hält das für wirtschaftlich; es kennt aber weder Reputationsfolgen noch
-   die Kapazität der Vermarktung. Ein Fehler in der Wechselbereitschaft
-   (dem empfindlichsten Verhaltensparameter) ändert alle 20 Angebote.
-5. **Die Zahlenprüfung der Vorlage ist für kleine Zahlen schwach.** Ohne
-   Zitat im Absatz passt eine kleine Zahl fast immer irgendwo (E43).
-   Richtungsfehler in Worten („unter" statt „über") sieht kein Grader.
-6. **Rechtsrahmen nach Zusammenfassungen.** Die gedeckelte Wertsicherung ist
-   nicht aus dem Gesetzestext modelliert. Kein Rechtsrat.
-7. **Die Historie zwischen 10.10. und 23.10. ist leer.** E30 hatte als
-   Revisionspunkt: „Liegen zwischen 9.10. und 23.10. nur Commits am
-   Abgabetag, ist die Entscheidung gescheitert." Zwischen dem 10.10. und dem
-   23.10. gibt es keinen Commit. Die Commits des 23.10. sind einzelne
-   Arbeitseinheiten mit Begründung — aber der Revisionspunkt ist
-   eingetreten, und das steht hier.
+1. **Die Empfehlung ist vor allem eine Aussage über eine Annahme.** Die
+   Wechselbereitschaft ist ungemessen und bewegt fast alle Empfehlungen.
+2. **Ein Verhaltensmodell für Verlängerungen auf laufende Verträge
+   angewendet.** Es erwartet auch ohne Erhöhung viele Auszüge; die
+   Euro-Beträge sind deshalb unsicherer als die Rangfolge.
+3. **Rechtlich ist eine Erhöhung im laufenden Vertrag nur über die
+   Wertsicherung möglich.** Die Empfehlung sagt, was der Markt trägt, nicht
+   was sofort durchsetzbar ist. Kein Rechtsrat.
+4. **Die Zahlenprüfung der Vorlage ist für kleine Zahlen ohne Zitat
+   schwach** (E43), und Richtungsfehler in Worten sieht kein Grader.
+5. **Die Historie zwischen 10.10. und 23.10. ist leer.** Der Revisionspunkt
+   von E30 ist eingetreten.
 
 ## Drei Lessons
 
-### 1. Ein Gate, das besteht, sagt nichts über den Sinn
+### 1. Ein grünes Gate sagt nichts über den Sinn — und ein Test, der nicht läuft, ist kein Test
 
-Zweimal in diesem Projekt lief alles grün, und das Ergebnis war Unsinn: der
-Median über Gebrauchtwaren, der ohne Gate 1 entstanden wäre (E09), und der
-Vertragsbestand, dessen Haushalte mehr Miete zahlten als sie verdienten
-(E40). Gates prüfen Form und Wertebereich; ob ein Haushalt mit 122 %
-Belastung existieren kann, prüft keines. Gefunden hat beide Fehler ein
-Blick auf eine einzelne Spalte, nicht ein Test. Seither wird jede neue
-Kennzahl einmal von Hand gelesen, bevor sie weiterverwendet wird — und was
-dabei auffällt, wird zum Test (`test_vertragsbestand_ist_bei_abschluss_leistbar`).
+Mehrmals lief alles grün, und das Ergebnis war falsch oder ungeprüft: der
+Median über Gebrauchtwaren ohne Gate 1 (E09), Haushalte, die mehr Miete
+zahlten als sie verdienten (E40), sechs Tests, die hinter dem Läuferblock
+standen und nie ausgeführt wurden, und ein Test, der mit seiner Toleranz
+genau den Befund verdeckte, den er melden sollte (E47). Gefunden hat das
+jeweils ein Blick auf eine einzelne Zahl, nicht ein weiterer Test.
 
-### 2. Der Maßstab darf nicht vom Gemessenen stammen — und das gilt auch für den Prüfer
+### 2. Der Maßstab darf nicht vom Gemessenen stammen — das gilt für Referenzen und für Prüfer
 
-Dreimal stand dieselbe Versuchung im Raum: ein Goldset aus
-Suchtreffer-Snippets (E02), Extraktionsreferenzen aus einer
-Modellzusammenfassung (E28), eine Markierliste, die ein Modell ausgefüllt
-hatte (E37). Jedes Mal wäre die Trefferquote gut gewesen und hätte nichts
-bedeutet. Die Antwort war jedes Mal dieselbe: Ein Mensch beschafft oder
-markiert, Code kopiert wörtlich, und was eine Lesung braucht, bleibt
-unbestätigt, bis ein Mensch es bestätigt. Am 23.10. kam die Kehrseite
-dazu: auch der Grader braucht einen Prüfer. Die Gegenprobe mit eingebauten
-Fehlern zeigte, dass 2 von 6 durchgingen, und die eigene Vorlage zeigte,
-dass eine verrechnete Zahl als „belegt" galt. Ein Eval ist erst so gut wie
-der Nachweis, dass es rot werden kann.
+Goldset aus Snippets (E02), Referenzen aus einer Modellzusammenfassung
+(E28), eine vom Modell ausgefüllte Markierliste (E37), Referenz und
+Extraktion vom selben Modell (E45): Jedes Mal hätte die Trefferquote gut
+ausgesehen und wenig bedeutet. Auch die Prüfer brauchen einen Prüfer: Die
+Gegenprobe mit eingebauten Fehlern fand zwei zu schwache Grader-Tests, die
+eigene Vorlage eine verrechnete Zahl, die als belegt galt, und Gate 4 hielt
+„2,5" für einen Teil von „2,55".
 
 ### 3. Die teure Unsicherheit ist selten die, an der man modelliert
 
-Viel Arbeit floss in das Entscheidungsmodell: Annahmekurve, Ausfallrisiko,
-Portfolio-Fixpunkt mit Dämpfung. Die Sensitivität zeigt, dass diese Teile
-die Empfehlung kaum bewegen — die Leerstandsannahme ändert 4 von 20
-Angeboten. Die Marktmiete, eine einzige gemessene Zahl, ändert alle 20 und
-den mittleren Aufschlag zwischen fast null und mehr als dem Doppelten. Für
-die Leitung heißt das: die nächste Investition gehört in Messung (Bezirke,
-Abrufe, möblierte Angebote herausrechnen), nicht in ein feineres Modell. Für
-das Projekt heißt es: die Sensitivität hätte früher laufen sollen — sie
-hätte gezeigt, wohin die Zeit gehört.
+Viel Arbeit floss in das Entscheidungsmodell — Annahmekurve, Ausfallrisiko,
+Fixpunkt mit Dämpfung. Die Sensitivität zeigt, dass die Empfehlung an einer
+ungemessenen Verhaltensannahme und an der Marktmiete hängt, nicht an diesen
+Teilen; die Dämpfung erwies sich im Demo-Portfolio sogar als unnötig (E46).
+Die nächste Investition gehört in Messung, nicht in ein feineres Modell —
+und die Sensitivität hätte früher laufen sollen.

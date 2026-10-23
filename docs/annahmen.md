@@ -74,23 +74,26 @@ indexiert. Ein Marktabschwung ist nicht modelliert.
 **A9 — Ein Angebot, keine Verhandlung.** In der Praxis wird nachverhandelt.
 Das Modell kennt nur Annahme oder Auszug.
 
-**A10 — Die Vertragshistorie ist erfunden.** Abschlussjahre 2019–2022,
-Startmieten aus einem angenommenen Marktniveau je Jahr, 85 % mit
-Wertsicherungsklausel. Diese Verteilung erzeugt den größten Teil der
-Spreizung im Ergebnis — sie ist also nicht harmlos. Erzeugt von
-`tools/erzeuge_vertraege.py` mit festem Startwert, abgelegt in
-`config/vertraege.json`. Mit Klausel ist die Miete bis 2026 pauschal mit 4 %
-p. a. fortgeschrieben, weil die VPI-Reihe nicht beschafft ist; das
-Angebotsniveau je Abschlussjahr (15,8 / 16,4 / 17,3 / 18,9 €/m² für
-2019–2022) ist geschätzt, nicht gemessen.
+**A10 — Das Mieterverzeichnis ist erfunden** (Demo-Fall, E44). 50 Verträge
+in 1020, je 25 in 50–80 und 80–100 m²; Abschluss 2024–2025; Miete heute
+86–102 % des Marktmedians vom 25.09.2026; 85 % mit Wertsicherung, letzte
+Anpassung am 1. April, frühestens 12 Monate nach Abschluss; Branche nach
+`anteil_portfolio`, nur Branchen mit KV-Reihe 2024–2026; drei Lohnzettel
+vor Abschluss, Niveau aus `config/berufsgruppen.json` (Platzhalter),
+Monat = Jahr / 14. Erzeugt von `tools/erzeuge_vertraege.py`, fester
+Startwert.
 
 **A11 — Bonitätsprüfung bei Abschluss.** Ein Haushalt hat den Vertrag nur
 bekommen, wenn die Bruttomiete bei Abschluss höchstens 35 % seines
-Nettoeinkommens betrug (E40). Folge: 44 von 50 Haushalten haben ein
+Nettoeinkommens betrug (E40). Folge im Demo-Verzeichnis: 43 von 50 Haushalten haben ein
 Zweiteinkommen statt der angenommenen 40 %. Das ist ein Hinweis, dass die
 Einkommensplatzhalter für dieses Segment zu niedrig sind.
 
-**A12 — Einkommen nicht fortgeschrieben.** Die Haushaltseinkommen stehen auf
-dem Stand bei Abschluss, weil der Tariflohnindex fehlt. Die heutige
-Belastungsquote ist damit eher zu hoch, die Annahmewahrscheinlichkeit eher zu
-niedrig — das Modell bietet tendenziell vorsichtiger an, als es müsste.
+**A12 — Einkommen mit dem KV-Mindestlohn fortgeschrieben.** Seit dem
+Demo-Fall: Lohnzettel bei Abschluss mal KV-Erhöhungen der Branche seit
+Abschluss (aus der geprüften Extraktion), ein Deckel wirkt je Mieter. Der
+KV-Lohn ist ein Mindestlohn; Ist-Gehälter steigen oft stärker (A2).
+
+**A13 — Ein Satz je KV-Abschluss.** Bei einer Staffel die Mitte der Spanne,
+außer die Quelle nennt selbst einen Durchschnitt; ohne Tag in der Quelle
+ab 1. Jänner (`kv_erhoehung.datum_angenommen`). Fixbeträge gehen nicht ein.

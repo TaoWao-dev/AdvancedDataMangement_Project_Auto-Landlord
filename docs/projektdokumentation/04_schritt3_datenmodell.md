@@ -4,7 +4,7 @@
 Quellen über Schlüssel verknüpft — und was keinen Partner findet, wird gezählt
 statt verworfen.
 
-**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (53 Tests,
+**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (61 Tests,
 darunter zweiter Lauf identisch, keine doppelten Schlüssel, alle Tabellen
 vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
@@ -12,7 +12,7 @@ vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
 ```bash
 python3 -m src.run                 # baut data/processed/mietportfolio.sqlite neu
-python3 tests/test_pipeline.py     # 53 Tests
+python3 tests/test_pipeline.py     # 61 Tests
 sqlite3 data/processed/mietportfolio.sqlite "SELECT * FROM v_abdeckung;"
 ```
 
@@ -34,16 +34,18 @@ erzeugen dieselbe Datei, geprüft über SHA256 mit mehr als einer Sekunde Abstan
 | `qs_befund` | — (Protokolltabelle) | — | Gate-Befunde aus Schritt 2 | 1 (Teilseite 25.09.) |
 | `objekttyp_ausschluss` | `objekttyp` | — | `config.OBJEKTTYP_AUSGESCHLOSSEN`, mit Grund (E33) | 1 (`Zimmer/WG`) |
 | `kv_textblock` | `(datei, block_nr)` | — | KV-Seiten vom 23.10., je Block mit `zeile_original` (E41) | 471 |
-| `vertrag` | `vertrag_id` | — | `config/vertraege.json`, synthetisch (A10, E40) | 50 |
-| `modelllauf` | `cluster_id` | — | `src/modell.py`: Marktmiete aus `v_cluster_marktmiete`, Konvergenz (E39) | 3 (davon 2 ohne Marktmiete) |
-| `empfehlung` | `vertrag_id` | `vertrag_id` → `vertrag` | Optimum je Vertrag im Basisfall | 20 |
-| `empfehlung_sensitivitaet` | `(vertrag_id, parameter, rand)` | `vertrag_id` → `vertrag` | Optimum am Rand jeder Annahme | 240 |
+| `kv_erhoehung` | `(branche_id, jahr)` | — | LLM-Extraktion nach Gate 4 (E45), mit Fundstelle und `datum_angenommen` | 15 |
+| `vertrag` | `vertrag_id` | `plz` → `bezirk` | Mieterverzeichnis aus `config/vertraege.json`: Größe, Branche, drei Lohnzettel, letzte Anpassung (E44) | 50 |
+| `modelllauf` | `segment` (Größenklasse) | — | Marktmiete, Belastbarkeit, Konvergenz des Fixpunkts | 2 |
+| `empfehlung` | `vertrag_id` | `vertrag_id` → `vertrag` | Markt- und KV-Entwicklung seit der letzten Anpassung, Empfehlung, Barwerte | 50 |
+| `empfehlung_sensitivitaet` | `(vertrag_id, parameter, rand)` | `vertrag_id` → `vertrag` | Empfehlung am Rand jeder Annahme | 600 |
 
-Stand 23.10.: Die letzten fünf Tabellen kamen mit Schritt 5 dazu. Das Modell
+Stand 23.10. (Demo-Fall, E44): Die letzten sechs Tabellen kamen mit Schritt 5 dazu. Das Modell
 schreibt seine Ergebnisse in die Datenbank zurück, damit die Vorlage sie über
-SQL liest (E39); `vertrag` hat bewusst keinen Fremdschlüssel auf `bezirk`,
-weil Cluster und Bezirk über `bezirk.cluster_id` verbunden sind und ein
-Cluster ohne Schnappschuss trotzdem Verträge hat.
+SQL liest (E39). Die Größenklasse verbindet Vertrag und Markt
+(`v_marktniveau.groessenklasse`), die Branche verbindet Vertrag und
+KV-Reihe (`kv_erhoehung.branche_id`); Gate 3 prüft, dass beide Verbindungen
+für jeden Vertrag bestehen.
 
 `NOT NULL` steht dort, wo eine Zeile ohne den Wert bedeutungslos wäre:
 `snapshot.sha256`, `snapshot.abruf_ts`, `inserat_beobachtung.status`,
