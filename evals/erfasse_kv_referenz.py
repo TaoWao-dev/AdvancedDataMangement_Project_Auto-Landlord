@@ -120,11 +120,32 @@ FAELLE = [
                      "fixbetrag_eur": None, "ist_prozent": None,
                      "geltungsbeginn": "2026-04-01", "bezugsgroesse": None,
                      "deckelung": True, "fundstelle_zeile": 1851},
+        "nicht_bewertet": ["bezugsgroesse"],
         "fundstellen": [
             (OEGB, 1851, "Ab 1. April 2026 werden die Gehälter bis zu einer Höhe von 3.750 Euro um drei Prozent erhöht"),
         ],
         "ablenker": [(OEGB, 5156, "Für 2025 ist eine Erhöhung um den Verbraucherpreisindex plus 0,45 Prozent vorgesehen.")],
         "unsicherheit": "Die Reihe in config/berufsgruppen.json heisst 'Bundeslaender - Krankenanstalten' (oeffentliche Landesspitaeler). Dazu steht in den Quellen nichts; die Privatkrankenanstalten sind die naechstliegende Reihe und hier bewusst als Ersatz gewaehlt (07_offene_punkte_lessons.md). 'Gehaelter' ohne Zusatz: ob KV- oder Ist-Gehalt gemeint ist, sagt der Text nicht - bezugsgroesse wird nicht bewertet. Ob 'bis zu 3.750 Euro' eine Deckelung oder eine Staffelung ist, ist Auslegung.",
+    },
+    {
+        # Ergaenzt 23.10. nach E48, damit die Vorgabe von 8 Faellen erfuellt
+        # ist. Der schaerfste Ablenker der Quelle: derselbe Satz wie der
+        # Angestellten-KV Handel, aber ein anderer Kollektivvertrag.
+        "id": "kv_handel_arbeiter",
+        "gruppe_id": None,
+        "reihe": "Handelsarbeiter (KV der Arbeiter:innen im Handel)",
+        "erwartet": {"abschluss_gefunden": True, "prozent_min": 2.55, "prozent_max": 2.55,
+                     "fixbetrag_eur": None, "ist_prozent": None,
+                     "geltungsbeginn": None, "bezugsgroesse": None,
+                     "deckelung": False, "fundstelle_zeile": 1911},
+        "nicht_bewertet": ["bezugsgroesse"],
+        "fundstellen": [
+            (OEGB, 1896, "Handelsarbeiter:innen: Krisenabschluss hilft Branche auf die Sprünge"),
+            (OEGB, 1911, "Der Abschluss bringt Lohnerhöhungen von 2,55 Prozent"),
+        ],
+        "ablenker": [(OEGB, 2377, "Die Mindestgehälter der 430.000 Angestellten und 20.000 Lehrlinge im Handel steigen mit 1. Jänner 2026 um 2,55 Prozent"),
+                     (OEGB, 6136, "Die Löhne steigen um durchschnittlich 9,3 Prozent.")],
+        "unsicherheit": "Der 19. Jaenner 2026 ist der Tag der Einigung, nicht der Geltungsbeginn - geltungsbeginn ist null; wer 2026-01-19 oder 2026-01-01 nennt, hat ein Datum erfunden oder uebernommen. 'Lohnerhoehungen' sagt nicht, ob KV- oder Ist-Loehne gemeint sind; bezugsgroesse wird nicht bewertet. Der Angestellten-KV (Zeile 2377) hat denselben Satz und einen Geltungsbeginn - nur die Fundstelle trennt die beiden.",
     },
     {
         "id": "kv_oeffentlicher_dienst",
@@ -176,6 +197,7 @@ def erzeugen() -> dict:
             "herkunft": {"wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
                          "wann": DATUM, "wie": "evals/erfasse_kv_referenz.py aus data/raw/" + DATUM},
             "unsicherheit": f["unsicherheit"],
+            "nicht_bewertet": f.get("nicht_bewertet", []),
             "von_hand_bestaetigt": f["id"] in BESTAETIGT,
             "bestaetigt_am": BESTAETIGT.get(f["id"]),
         })

@@ -1709,9 +1709,17 @@ Geltungsbeginn, aber keinen Prozentsatz, und der Grader-Test, der bisher am
 Fall Wirtschaftstreuhänder hing, prüft jetzt dort. Die sieben übrigen Fälle
 sind ohne Korrektur bestätigt; `von_hand_bestaetigt` steht auf `true`.
 
-**Preis.** Die Vorgabe verlangt mindestens acht Extraktionsfälle; es sind
-jetzt sieben. Das steht in 05 und 06 und wird nicht verschwiegen.
+**Preis.** Die Vorgabe verlangt mindestens acht Extraktionsfälle; es
+waren danach sieben.
 
-**Revisionspunkt.** Verlangt die Bewertung acht Fälle, ist ein achter aus
-den gespeicherten Seiten zu ergänzen — am wertvollsten einer mit Ablenker,
-etwa der Arbeiter-KV Handel neben dem Angestellten-KV.
+**Nachtrag, derselbe Abend:** Auf Wunsch des Studierenden ist der achte
+Fall ergänzt — der Arbeiter-KV Handel (Zeile 1911). Er hat denselben Satz
+wie der Angestellten-KV (2,55 %), aber keinen Geltungsbeginn in der Quelle;
+der 19. Jänner 2026 ist der Tag der Einigung. Ein Modell, das den falschen
+KV liest oder das Einigungsdatum übernimmt, fällt an Datum und Fundstelle
+durch (`test_angestellten_kv_statt_arbeiter_kv_faellt_durch`). Der Fall ist
+eine Lesung durch Claude und steht auf `von_hand_bestaetigt: false`.
+
+**Revisionspunkt.** Bestätigt der Studierende den Fall Handelsarbeiter
+nicht oder korrigiert ihn, gilt die Korrektur; die Trefferquote wird für
+bestätigte und unbestätigte Fälle getrennt ausgewiesen.

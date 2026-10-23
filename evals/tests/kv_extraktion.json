@@ -182,6 +182,38 @@
   ]
  },
  {
+  "description": "kv_handel_arbeiter",
+  "vars": {
+   "reihe": "Handelsarbeiter (KV der Arbeiter:innen im Handel)",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 2.55,
+    "prozent_max": 2.55,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": null,
+    "bezugsgroesse": null,
+    "deckelung": false,
+    "fundstelle_zeile": 1911
+   },
+   "nicht_bewertet": [
+    "bezugsgroesse"
+   ]
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
   "description": "kv_oeffentlicher_dienst",
   "vars": {
    "reihe": "Oeffentlicher Dienst (Bund, Vergleichsreihe)",

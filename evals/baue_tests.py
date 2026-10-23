@@ -81,7 +81,9 @@ def kv_tests() -> list[dict]:
     ref = json.loads((REF / "kv_extraktion.json").read_text(encoding="utf-8"))
     out = []
     for fall in ref["faelle"]:
-        nicht = ["bezugsgroesse"] if fall["fall_id"] == "kv_privatkrankenanstalten" else []
+        # Welche Felder nicht bewertet werden, steht in der Referenz selbst
+        # (bis 23.10. hart fuer einen Fall im Code - jetzt fuer jeden lesbar).
+        nicht = fall.get("nicht_bewertet", [])
         out.append({
             "description": fall["fall_id"],
             "vars": {"reihe": fall["eingabe"]["reihe"],

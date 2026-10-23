@@ -65,6 +65,20 @@ def test_gleicher_prozentsatz_aus_falschem_kv_faellt_ueber_die_fundstelle():
     assert not r["pass"] and "fundstelle" in r["reason"]
 
 
+def test_angestellten_kv_statt_arbeiter_kv_faellt_durch():
+    """Handelsarbeiter 2026: derselbe Satz wie die Angestellten, aber ohne
+    Geltungsbeginn in der Quelle. Wer den Angestellten-KV liest, hat Datum
+    und Fundstelle falsch."""
+    f = FALL["kv_handel_arbeiter"]
+    soll = f["erwartete_antwort"]
+    ist = dict(soll, geltungsbeginn="2026-01-01", fundstelle_zeile=2377)
+    r = extraktion.pruefen(json.dumps(ist), soll, f["nicht_bewertet"])
+    assert not r["pass"] and "fundstelle" in r["reason"] and "geltungsbeginn" in r["reason"]
+    # Einigungsdatum ist nicht Geltungsbeginn
+    assert not extraktion.pruefen(json.dumps(dict(soll, geltungsbeginn="2026-01-19")), soll,
+                                  f["nicht_bewertet"])["pass"]
+
+
 def test_forderung_statt_abschluss_faellt_durch():
     soll = FALL["kv_it"]["erwartete_antwort"]
     ist = dict(soll, prozent_min=3.9, prozent_max=3.9, fundstelle_zeile=680)

@@ -25,7 +25,7 @@ python3 -m src.demo LS-27   # ein Vertrag Schritt für Schritt
 | Task | Analyse | Werkzeug | Fälle | Referenz entstanden durch | Grader |
 |---|---|---|---:|---|---|
 | `sql` | 1–3 Preisniveau, Anbietertyp, Abdeckung, Inseratsdauer | SQL | 9 | Zweitimplementierungen ohne `src/` und SQL | `sql_referenz` |
-| `kv_extraktion_gespeichert` | 4 KV-Erhöhungen je Branche | Prompt `kv_zeitreihe_v1`, Ausgabe gespeichert | 7 (5 gewertet), alle bestätigt | Wortlaut der KV-Seiten, Lesung, vom Studierenden bestätigt (E41, E48) | `extraktion` |
+| `kv_extraktion_gespeichert` | 4 KV-Erhöhungen je Branche | Prompt `kv_zeitreihe_v1`, Ausgabe gespeichert | 8 (5 gewertet), 7 bestätigt | Wortlaut der KV-Seiten, Lesung, vom Studierenden bestätigt (E41, E48) | `extraktion` |
 | Gate 4 | 4, vor der Datenbank | Programm | 15 Datensätze | Wortlaut der Quellzeile | `src/kv_extrakt.py` |
 | `vorlage` | 5 Entscheidungsvorlage | Prompt `vorlage_v2` | 2 | Kennzahl-CSV und Gliederung | `zahlen_herkunft`, `vorlage_pflichten` |
 | ~~`moebliert`~~ | Bereinigung der Marktmiete | — | — | entfallen (E46): kein Maßstab, weder Mensch noch Modell entscheiden es sicher | — |
@@ -58,7 +58,7 @@ Lauf vom 23.10.2026 mit `python3 evals/lauf.py`:
 |---|---|---|---:|---:|---:|
 | `sql` | **9/9 (100 %)** | SQL | 0 | 0,6 s | 0 € |
 | Gate 4 | **15/15 Datensätze** an ihrer Quelle | Programm | 0 | < 0,1 s | 0 € |
-| `kv_extraktion_gespeichert` | **5/5 gewertete (100 %), alle gegen bestätigte Referenzen**, 2 nicht gewertet | Claude Opus 5.5 (gespeicherte Ausgabe) | 1 Extraktion | < 0,1 s | 0 € |
+| `kv_extraktion_gespeichert` | **5/5 gewertete (100 %), alle gegen bestätigte Referenzen**, 3 nicht gewertet | Claude Opus 5.5 (gespeicherte Ausgabe) | 1 Extraktion | < 0,1 s | 0 € |
 | `vorlage` v2 | **2/2 (100 %)** — 122 Zahlen mit Herkunft | Claude Opus 5.5 (Text) | 1 Vorlage | < 0,1 s | 0 € |
 
 **Was diese Zahlen aussagen, und was nicht.**
@@ -67,14 +67,15 @@ Lauf vom 23.10.2026 mit `python3 evals/lauf.py`:
   auch nach zwei weiteren Abrufen, die den Datenbestand von 90 auf 442 Beobachtungen gebracht haben.
 - `kv_extraktion_gespeichert`: Referenz-Lesung und Extraktion stammen vom
   selben Modell. Seit der Durchsicht des Studierenden am 23.10. sind alle 7
-  Referenzfälle bestätigt — ohne Korrektur an einem erwarteten Feld (E48).
+  damaligen Referenzfälle bestätigt — ohne Korrektur an einem erwarteten Feld (E48).
   5/5 heißt damit: die Extraktion trifft die vom Menschen bestätigten
   Werte. Unabhängig ist die Bestätigung aber nur so weit, wie der Mensch
   die Quelle selbst gelesen hat. `ist_prozent` fragt der Zeitreihen-Prompt
   nicht ab und ist nicht gewertet; Versicherungen und öffentlicher Dienst
-  deckt die Zeitreihe nicht ab. **Mit 7 Fällen ist die Vorgabe von
-  mindestens 8 Extraktionsfällen unterschritten** — der achte Fall
-  (Wirtschaftstreuhänder) wurde auf Wunsch des Studierenden entfernt.
+  deckt die Zeitreihe nicht ab. Der achte Fall, Handelsarbeiter (E48),
+  ersetzt die Wirtschaftstreuhänder; er ist nicht Teil der Zeitreihe und
+  deshalb nicht gewertet, prüft aber jeden künftigen Modelllauf auf den
+  schärfsten Ablenker der Quelle.
 - Gate 4 belegt, dass keine Zahl erfunden ist. Eine Verwechslung — etwa der
   Arbeiter- statt Angestellten-KV im Handel, gleicher Satz — besteht Gate 4
   (`test_gate4_faengt_keine_verwechslung`).
@@ -90,7 +91,7 @@ Regel, nicht den Datenstand.
 
 ### Die Prüfer wurden selbst geprüft
 
-- `tests/test_graders.py` (27 Tests): je Grader, was bestehen und was
+- `tests/test_graders.py` (28 Tests): je Grader, was bestehen und was
   scheitern muss.
 - `evals/gegenprobe_grader.py`: 7 eingebaute Fehler, 7 gefangen. In der
   ersten Fassung überlebten 2 von 6.

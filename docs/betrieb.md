@@ -20,7 +20,7 @@ python3 -m src.run                 # 4 Schritte, 4 Gates, unter 1 s
 python3 -m src.demo                # Mieterverzeichnis mit Empfehlung
 python3 tests/test_pipeline.py     # 61 Tests
 python3 tests/test_modell.py       # 26 Tests
-python3 tests/test_graders.py      # 27 Tests
+python3 tests/test_graders.py      # 28 Tests
 ```
 
 Python ≥ 3.10, nur Standardbibliothek, kein Netz, keine Zugangsdaten.

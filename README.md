@@ -36,7 +36,7 @@ python3 -m src.demo                 # Mieterverzeichnis mit Empfehlung je Vertra
 python3 -m src.demo LS-27           # ein Vertrag Schritt für Schritt
 python3 tests/test_pipeline.py      # 61 Tests: Parser, Gates, PII, SQL, Gate 4, Modell
 python3 tests/test_modell.py        # 26 Tests: Wertsicherung, Entscheidungsmodell
-python3 tests/test_graders.py       # 27 Tests: die Grader der Eval-Suite
+python3 tests/test_graders.py       # 28 Tests: die Grader der Eval-Suite
 python3 evals/baue_tests.py         # Testfälle und Modellkontext aus den Referenzen
 python3 evals/lauf.py sql kv_extraktion_gespeichert vorlage   # Eval-Suite
 ```

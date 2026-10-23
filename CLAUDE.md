@@ -49,7 +49,7 @@ python3 -m src.run                  # Pipeline: 4 Schritte, 4 Gates, Modell, 10 
 python3 -m src.demo                 # Mieterverzeichnis mit Empfehlung (+ LS-27 für einen Vertrag)
 python3 tests/test_pipeline.py      # 61 Tests (pytest-kompatibel, läuft auch ohne)
 python3 tests/test_modell.py        # 26 Tests
-python3 tests/test_graders.py       # 27 Tests der Eval-Grader
+python3 tests/test_graders.py       # 28 Tests der Eval-Grader
 python3 evals/baue_tests.py && python3 evals/lauf.py sql kv_extraktion_gespeichert vorlage
 ```
 
@@ -169,7 +169,7 @@ Daten `tools/erzeuge_vertraege.py` nur, wenn sich das Verzeichnis ändern soll.
 
 ## Was noch fehlt
 
-Ein achter Extraktionsfall (seit E48 sind es sieben, alle bestätigt), eine
+Die Bestätigung des achten Extraktionsfalls (Handelsarbeiter, E48), eine
 längere Marktreihe, echte Einkommensniveaus, ein zweites Modell für die
 Extraktion. Vollständig, mit
 den fünf Schwächen des Projekts, in `07_offene_punkte_lessons.md`.
