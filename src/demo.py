@@ -71,7 +71,8 @@ def erklaeren(v: dict, kv: list[dict]) -> None:
               f"Mehrwert über 5 Jahre {de(v['mehrwert_5j_eur'], 0)} €.")
     else:
         print("  ⇒  Empfehlung: nicht erhöhen - die Miete liegt am oder über dem Markt.")
-    print("     Das Einkommen bestimmt nur, wie wahrscheinlich der Mieter annimmt - nicht die Höhe (E05, E44).")
+    print("     Das Einkommen wirkt über die Annahmewahrscheinlichkeit - und dadurch um bis zu eine")
+    print("     Stufe auch auf die Höhe (E47). Die Regel 'kein Preisargument' hält im Modell nicht ganz.")
 
 
 def html_seite(vertraege: list[dict], segmente: list[dict], markt: list[dict], kv: list[dict]) -> str:
@@ -114,7 +115,7 @@ Erzeugt von <code>python3 -m src.demo</code> aus <code>data/processed/kennzahl_*
 {s_rows}</table></div>
 <h2>Je Vertrag</h2>
 <p class="hinweis">* letzte Erhöhung liegt vor dem ersten Abruf (25.09.2026) — die Marktveränderung misst nur die Zeit seither.
-Das Einkommen bestimmt die Annahmewahrscheinlichkeit, nicht die Höhe der Empfehlung.</p>
+Das Einkommen soll nur die Annahmewahrscheinlichkeit bestimmen — es verschiebt die Empfehlung aber um bis zu eine Stufe (E47).</p>
 <div class="scroll"><table>
 {zeile(["Vertrag", "Größe", "Branche", "letzte Erh.", "Miete €/m²", "Markt €/m²", "Markt Δ", "KV Δ seit Erh.", "Lücke", "Empfehlung", "neu €/m²", "Annahme"], "th")}
 {v_rows}</table></div>

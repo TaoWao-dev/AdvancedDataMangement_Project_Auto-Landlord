@@ -7,9 +7,9 @@
 --
 -- Fallstricke: bezug_vor_beobachtung = 1 heisst, die letzte Erhoehung liegt
 -- vor unserem ersten Abruf - markt_veraenderung_pct misst dann nur die Zeit
--- seit dem 25.09.2026. Die KV-Entwicklung bestimmt NICHT die Hoehe der
--- Empfehlung (Obergrenze ist der Markt), sondern wie wahrscheinlich der
--- Mieter annimmt (E05, E44). Die neue Miete kann den Marktmedian um eine
+-- seit dem 25.09.2026. Die KV-Entwicklung soll nur bestimmen, wie
+-- wahrscheinlich der Mieter annimmt (E05, E44) - ueber diesen Weg
+-- verschiebt sie die Empfehlung aber um bis zu eine Rasterstufe (E47). Die neue Miete kann den Marktmedian um eine
 -- Rasterstufe ueberschreiten (Umzugskosten halten den Mieter). Die Mieter
 -- sind synthetisch (E44).
 SELECT v.vertrag_id,

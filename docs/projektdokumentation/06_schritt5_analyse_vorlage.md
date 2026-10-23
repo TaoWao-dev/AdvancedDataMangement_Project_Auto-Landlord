@@ -131,4 +131,23 @@ addierte Zahl („29 von 50"), die als Summe nicht aus SQL kommt.
 
 ## Selbsttest aus frischem Klon
 
-*Wird nach dem letzten Push eingetragen.*
+| | |
+|---|---|
+| **Datum** | 23.10.2026, 19:52 Wiener Zeit |
+| **Stand** | Commit `28005bf` auf `main`, frisch von GitHub geklont in ein leeres Verzeichnis |
+| **Befolgt** | nur „Sofort ausprobieren" der README, Befehl für Befehl, einschließlich `src.demo` |
+| **Dauer** | 8 Sekunden für Klon, Pipeline, Demo, drei Testdateien, Testfallbau und Suite |
+| **Ergebnis** | Gates 1–4 bestanden; 61 + 26 + 27 Tests grün; Suite `sql` 9/9, `kv_extraktion_gespeichert` 5/5, `vorlage` 2/2 |
+| **Was danach anders war** | nichts: `git status` leer — Datenbank, Kennzahl-CSV, Demo-Seite und Testfälle entstehen byteweise wie im Commit |
+
+**Was gehakt hat — vor dem Selbsttest, beim Bauen:** sechs Tests liefen
+nie (hinter dem Läuferblock); fünf Tests brachen am neuen Abruf, weil sie
+Zahlen fest verdrahtet hatten; Gate 4 brach in gepinnten Datenständen ohne
+KV-Texte ab; Demo und ein SQL-Kommentar behaupteten noch, das Einkommen
+wirke nicht auf die Höhe — das widersprach E47 und ist nach dem Selbsttest
+korrigiert. Ein erster Selbsttest am Nachmittag (Stand `f30f541`, vor dem
+Demo-Fall) lief ebenfalls ohne Haken durch.
+
+**Was dieser Selbsttest nicht zeigt.** Er lief in derselben Arbeitsumgebung
+(Linux, Python 3.13), nur in einem anderen Verzeichnis und aus dem
+entfernten Stand. Ein Lauf auf dem Rechner des Studierenden steht aus.
