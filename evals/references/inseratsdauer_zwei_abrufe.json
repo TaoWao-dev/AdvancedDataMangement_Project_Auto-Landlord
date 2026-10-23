@@ -1,0 +1,39 @@
+{
+ "_zweck": "Referenz fuer Analyse 3 mit zwei Abrufen. Existiert vor jedem Modell.",
+ "_quelle": "data/raw/2026-09-25/, data/raw/2026-10-09/ (wh_1020_*.json)",
+ "_erzeugt_von": "evals/nachrechnen_inseratsdauer.py",
+ "_warnung": "Nicht von Hand bearbeiten.",
+ "faelle": [
+  {
+   "fall_id": "inseratsdauer_zwei_abrufe",
+   "eingabe": {
+    "abfrage": "src/sql/kennzahl_inseratsdauer.sql",
+    "filter": {
+     "plz": "1020"
+    },
+    "datenstand": [
+     "2026-09-25",
+     "2026-10-09"
+    ]
+   },
+   "erwartete_antwort": {
+    "inserate": 205,
+    "davon_zensiert": 178,
+    "abgaenge_ungemessen": 27,
+    "anteil_aeltere_noch_online": 0.7,
+    "auswertbar": false
+   },
+   "pruefregel": "exakter Vergleich; Anteil auf 0,01",
+   "toleranz": {
+    "anteil_aeltere_noch_online": 0.01
+   },
+   "herkunft": {
+    "wer": "Zweitimplementierung (Claude), Pruefung durch den Studierenden ausstehend",
+    "wann": "2026-10-23",
+    "wie": "evals/nachrechnen_inseratsdauer.py: Mengen der Inseratskennungen je Rohordner, ohne src/ und SQL"
+   },
+   "von_hand_bestaetigt": false,
+   "unsicherheit": "Mit zwei Abrufen ist keine Dauer messbar: wer am 25.09. stand und am 09.10. fehlt, ist irgendwann dazwischen verschwunden. 'auswertbar' muss false bleiben; ein Mittelwert waere erfunden (E36). Belastbar ist nur der Anteil der aelteren Inserate, die noch online sind - eine Untergrenze fuer die Leerstandsdauer, kein Schaetzwert."
+  }
+ ]
+}

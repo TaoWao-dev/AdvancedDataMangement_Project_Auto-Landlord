@@ -44,7 +44,9 @@ def kennzahlen_tests() -> list[dict]:
     # Datumsfilter und beschreiben den Stand vom 25.09.; sie laufen gepinnt.
     for datei, stand, auswertung in (("marktniveau.json", None, None),
                                       ("anbietertyp.json", ["2026-09-25"], None),
-                                      ("abdeckung_und_dauer.json", ["2026-09-25"], "auto")):
+                                      ("abdeckung_und_dauer.json", ["2026-09-25"], "auto"),
+                                      ("inseratsdauer_zwei_abrufe.json",
+                                       ["2026-09-25", "2026-10-09"], "auto")):
         for fall in json.loads((REF / datei).read_text(encoding="utf-8"))["faelle"]:
             erwartet = {k: v for k, v in fall["erwartete_antwort"].items() if k != "begruendung"}
             art = None

@@ -270,5 +270,38 @@
     "value": "file://graders/sql_referenz.py"
    }
   ]
+ },
+ {
+  "description": "inseratsdauer_zwei_abrufe",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_inseratsdauer.sql",
+   "filter": {
+    "plz": "1020"
+   },
+   "datenstand": [
+    "2026-09-25",
+    "2026-10-09"
+   ],
+   "auswertung": "inseratsdauer",
+   "erwartet": {
+    "inserate": 205,
+    "davon_zensiert": 178,
+    "abgaenge_ungemessen": 27,
+    "anteil_aeltere_noch_online": 0.7,
+    "auswertbar": false
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/inseratsdauer_zwei_abrufe.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
  }
 ]

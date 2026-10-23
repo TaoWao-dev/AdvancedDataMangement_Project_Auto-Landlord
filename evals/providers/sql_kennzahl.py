@@ -75,7 +75,10 @@ def _auswerten(art: str | None, zeilen: list[dict], filt: dict) -> dict:
         if not z:
             return {"fehler": "keine Zeile"}
         r = z[0]
-        return {"zeilen_mit_dauer_ueber_null": sum(
+        return {"inserate": r["inserate"], "davon_zensiert": r["davon_zensiert"],
+                "abgaenge_ungemessen": r["abgaenge_ungemessen"],
+                "anteil_aeltere_noch_online": r["anteil_aeltere_noch_online"],
+                "zeilen_mit_dauer_ueber_null": sum(
                     1 for x in zeilen if (x["mittel_tage_abgeschlossen"] or 0) > 0),
                 "anteil_zensiert": r["anteil_zensiert"],
                 "auswertbar": r["mittel_tage_abgeschlossen"] is not None}
