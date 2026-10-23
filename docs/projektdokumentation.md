@@ -30,6 +30,14 @@ für Datei. Die Inhalte stehen in den verlinkten Dateien, nicht hier.
 | Abhängigkeiten | `requirements.txt`, `.env.example` | Versionen, alle Variablen der Suite |
 | Selbsttest | `06_schritt5_analyse_vorlage.md` | frischer Klon nach README |
 
+## Deliverable 4 · Präsentation (24.10.)
+
+| Verlangt | Wo |
+|---|---|
+| Folien | [`docs/vortrag/auto-landlord.pdf`](vortrag/auto-landlord.pdf), 12 Folien, ca. 11 min |
+| Vorbereitung auf Live-Fragen | [`docs/interview_prompt.md`](interview_prompt.md): Prüfer-Prompt und Erwartungshorizont mit Belegen |
+| Live-Demo | Colab-Notebook [`docs/demo/auto_landlord_demo.ipynb`](demo/auto_landlord_demo.ipynb) |
+
 ## Deliverable 2 · Datenpipeline (Tag `termin3`, 9.10.)
 
 Pipeline, Datenmodell, Datenbank, fünf Abfragen, Referenzen, Tests und

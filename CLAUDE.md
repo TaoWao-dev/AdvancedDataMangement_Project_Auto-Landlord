@@ -114,6 +114,7 @@ Abgabemarkierungen: `termin3` (Schritte 1–4, 9.10.), `termin4` (Schritt 5,
 | KV-Extraktion (LLM-Ausgabe) und Gate 4 | `data/extrakt/`, `src/kv_extrakt.py` |
 | Demo | `src/demo.py`, `docs/demo/mieterverzeichnis.html`, Colab-Notebook `docs/demo/auto_landlord_demo.ipynb` (nur Anzeige) |
 | Endpräsentation (12 Folien, ca. 11 min) | `docs/vortrag/auto-landlord.pdf` |
+| Vorbereitung auf Live-Fragen | `docs/interview_prompt.md` |
 | eine Frage je Datei, mit Fallstrick im Kopf | `src/sql/kennzahl_*.sql` |
 | Referenzen, Testfälle, Grader, Suiten | `evals/` (siehe `evals/README.md`) |
 | Prompts, versioniert | `prompts/<aufgabe>_v<n>.md`, `prompts/CHANGELOG.md` |
