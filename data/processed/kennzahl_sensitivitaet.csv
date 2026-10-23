@@ -1,0 +1,13 @@
+parameter;rand;wert;vertraege;geaendert;auslaufen;mittel_aufschlag_pct;mittel_aufschlag_basis_pct
+marktmiete;oben;29.21;20;20;0;36.5;15.7
+marktmiete;unten;19.88;20;20;0;0.6;15.7
+wechselbereitschaft_k;unten;0.3;20;20;0;20.5;15.7
+marktrisiko_abschlag;unten;0.0;20;17;0;19.3;15.7
+marktrisiko_abschlag;oben;0.12;20;16;0;12.7;15.7
+wechselbereitschaft_k;oben;0.9;20;9;0;14.3;15.7
+belastungsquote_schmerzgrenze;oben;0.4;20;6;0;16.9;15.7
+umzugskosten_eur;unten;2500.0;20;5;0;14.9;15.7
+leerstand_monate;oben;4.0;20;4;0;15.0;15.7
+leerstand_monate;unten;1.5;20;4;0;16.5;15.7
+umzugskosten_eur;oben;7000.0;20;3;0;16.4;15.7
+belastungsquote_schmerzgrenze;unten;0.28;20;2;0;15.4;15.7

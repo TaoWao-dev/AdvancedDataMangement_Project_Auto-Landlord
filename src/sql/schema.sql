@@ -100,3 +100,62 @@ CREATE TABLE qs_befund (
   stufe    TEXT NOT NULL,                    -- ok | warnung | fehler
   detail   TEXT
 );
+
+-- ─────────────────────────────────────────────── Portfolio und Modell
+-- Synthetischer Vertragsbestand aus config/vertraege.json (Annahme A10).
+-- Keine Personen: berufsgruppe und einkommen sind erfundene Modellgroessen.
+CREATE TABLE vertrag (
+  vertrag_id          TEXT PRIMARY KEY,
+  cluster_id          TEXT    NOT NULL,
+  flaeche_m2          REAL    NOT NULL,
+  abschluss_jahr      INTEGER NOT NULL,
+  vertragsende        TEXT    NOT NULL,      -- JJJJ-MM
+  wertsicherung       INTEGER NOT NULL,
+  miete_aktuell_eur   REAL    NOT NULL,
+  berufsgruppe        TEXT    NOT NULL,
+  einkommen_brutto_pa REAL    NOT NULL,
+  zweiteinkommen      INTEGER NOT NULL
+);
+
+-- Ein Eintrag je Modelllauf und Cluster: welche Marktmiete, ob der
+-- Portfolio-Fixpunkt konvergiert ist (E18). Ein Cluster ohne verwendbare
+-- Marktmiete steht hier mit eignung <> 'verwendbar' und bekommt KEINE
+-- Empfehlung - Luecke sichtbar statt geschaetzt.
+CREATE TABLE modelllauf (
+  cluster_id        TEXT PRIMARY KEY,
+  datenstand        TEXT,                    -- abruf_datum der Marktmiete
+  marktmiete_eur_m2 REAL,
+  marktmiete_fallzahl INTEGER,
+  eignung           TEXT NOT NULL,
+  iterationen       INTEGER,
+  konvergiert       INTEGER,                 -- NULL = nicht gerechnet
+  leerstand_monate  REAL                     -- Ergebnis des Fixpunkts
+);
+
+-- Die Empfehlung je Vertrag im Basisfall. Option ist 'verlaengern' oder
+-- 'auslaufen'. Alle Barwerte in EUR ueber fuenf Jahre, diskontiert.
+CREATE TABLE empfehlung (
+  vertrag_id        TEXT PRIMARY KEY REFERENCES vertrag(vertrag_id),
+  option            TEXT NOT NULL,
+  aufschlag_pct     REAL,                    -- NULL bei 'auslaufen'
+  angebot_eur       REAL,
+  angebot_eur_m2    REAL,
+  p_annahme         REAL,
+  belastungsquote   REAL,
+  bw_empfehlung     REAL NOT NULL,           -- Erwartungswert der Option
+  bw_nur_index      REAL NOT NULL,           -- Aufschlag 0: Bestandsmiete
+  bw_auslaufen      REAL NOT NULL
+);
+
+-- Sensitivitaet: dieselbe Optimierung mit je einem Parameter am unteren und
+-- oberen Rand seiner Spanne aus config/portfolio.json. Zeigt, ob eine
+-- Empfehlung an einer Annahme haengt.
+CREATE TABLE empfehlung_sensitivitaet (
+  vertrag_id    TEXT NOT NULL REFERENCES vertrag(vertrag_id),
+  parameter     TEXT NOT NULL,
+  rand          TEXT NOT NULL,               -- unten | oben
+  wert          REAL NOT NULL,
+  option        TEXT NOT NULL,
+  aufschlag_pct REAL,
+  PRIMARY KEY (vertrag_id, parameter, rand)
+);

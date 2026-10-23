@@ -9,8 +9,10 @@ Ablauf:
                GATE 1     Eingangspruefung je Schnappschuss
                GATE 2     PII-Kontrolle
     Schritt 3  integrate  Datenbank loeschen, Schema anlegen, laden, verknuepfen
-    Schritt 4  derive     alle kennzahl_*.sql -> data/processed/*.csv
-               GATE 3     Plausibilitaet der Kennzahlen
+    Schritt 4  modell     Marktmiete aus SQL -> Empfehlung je Vertrag,
+                          Portfolio-Fixpunkt, Sensitivitaet -> Tabellen
+               derive     alle kennzahl_*.sql -> data/processed/*.csv
+               GATE 3     Plausibilitaet der Kennzahlen und des Modells
 
 Reproduzierbarkeit: die Datenbank wird bei jedem Lauf aus ALLEN Rohordnern
 neu gebaut. data/raw/ ist die Quelle der Wahrheit, die Datenbank ist ein
@@ -31,7 +33,7 @@ if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     __package__ = "src"
 
-from . import clean, config as C, derive, extract, integrate
+from . import clean, config as C, derive, extract, integrate, modell
 
 
 def kopf(nr: str, titel: str) -> None:
@@ -65,7 +67,8 @@ def hauptlauf() -> int:
     res = integrate.ausfuehren(bereinigt)
     con = res["con"]
 
-    kopf("Schritt 4", "Abfragen und Kennzahlen")
+    kopf("Schritt 4", "Modell und Kennzahlen")
+    mz = modell.ausfuehren(con)
     kennzahlen = derive.ausfuehren(con)
 
     kopf("GATE 3", "Plausibilität der Kennzahlen")
@@ -103,6 +106,27 @@ def hauptlauf() -> int:
     ).fetchone()[0]
     pruef.append(("jede Beobachtung hat einen Bezirk", waise == 0, f"{waise}"))
 
+    # Ein Fixpunkt, der nicht konvergiert, hat ein Zwischenergebnis
+    # geliefert, kein Ergebnis (E18). Daraus darf keine Vorlage entstehen.
+    nicht_konv = con.execute(
+        "SELECT COUNT(*) FROM modelllauf WHERE konvergiert = 0").fetchone()[0]
+    pruef.append(("Portfolio-Fixpunkt konvergiert", nicht_konv == 0,
+                  f"{nicht_konv} Cluster ohne Konvergenz"))
+
+    ausser = con.execute(
+        """SELECT COUNT(*) FROM empfehlung
+           WHERE p_annahme < 0 OR p_annahme > 1
+              OR (option = 'verlaengern' AND aufschlag_pct IS NULL)"""
+    ).fetchone()[0]
+    pruef.append(("Empfehlungen im gueltigen Bereich", ausser == 0, f"{ausser}"))
+
+    # Eine Empfehlung ohne beobachtete Marktmiete waere eine geschaetzte.
+    ohne = con.execute(
+        """SELECT COUNT(*) FROM empfehlung e JOIN vertrag v USING (vertrag_id)
+           JOIN modelllauf m ON m.cluster_id = v.cluster_id
+           WHERE m.eignung <> 'verwendbar'""").fetchone()[0]
+    pruef.append(("Empfehlung nur mit Marktmiete", ohne == 0, f"{ohne}"))
+
     for name, ok, detail in pruef:
         print(f"  {'ok    ' if ok else 'FEHLER'} {name} {detail}")
     gate("3", all(ok for _, ok, _ in pruef))
@@ -114,6 +138,9 @@ def hauptlauf() -> int:
           f"{wh['zahlen']['abgelehnt']} abgelehnt")
     print(f"  Beobachtungen   : {res['zahlen']['inserat_beobachtung']}")
     print(f"  Zuordnungslücken: {res['luecken']}")
+    print(f"  Empfehlungen    : {mz['empfehlungen']} Vertraege in "
+          f"{mz['cluster_gerechnet']} Cluster(n), {mz['cluster_ohne_markt']} "
+          f"Cluster ohne Marktmiete")
     print(f"  Kennzahl-CSV    : {sum(1 for k in kennzahlen if 'fehler' not in k)}")
     print(f"  Datenbank       : data/processed/{C.DB.name}")
 

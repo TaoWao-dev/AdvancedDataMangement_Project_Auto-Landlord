@@ -28,7 +28,7 @@ sys.path.insert(0, str(WURZEL))
 
 from src import clean as CL          # noqa: E402
 from src import config as C          # noqa: E402
-from src import derive, integrate    # noqa: E402
+from src import derive, integrate, modell  # noqa: E402
 from src import validierung as V     # noqa: E402
 from src import wh_next_data as P    # noqa: E402
 
@@ -215,7 +215,11 @@ def _snapshot_id(con: sqlite3.Connection, datei: Path) -> int:
 
 
 def _baue(pfad: Path) -> sqlite3.Connection:
+    # Dieselbe Reihenfolge wie src/run.py: laden, Modell, Kennzahlen. Ohne
+    # den Modellschritt waeren die Empfehlungstabellen leer, und die
+    # Kennzahlen darauf liefen gegen nichts.
     res = integrate.ausfuehren(pfad=pfad)
+    modell.ausfuehren(res["con"])
     derive.ausfuehren(res["con"])
     return res["con"]
 
@@ -680,3 +684,93 @@ if __name__ == "__main__":
                 print(f"  BRUCH {name}: {type(e).__name__}: {e}")
     print(f"\n{'alle Tests gruen' if not fehler else f'{fehler} Test(s) rot'}")
     sys.exit(1 if fehler else 0)
+
+
+# ─────────────────────────────────────────── Modell an den Daten (Schritt 4)
+def test_fixpunkt_konvergiert_und_meldet_es(tmp_path=None):
+    """E18: ein Zwischenstand nach MAX_ITER waere kein Ergebnis."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_fixpunkt.sqlite"
+    con = _baue(ziel)
+    zeilen = con.execute("SELECT cluster_id, konvergiert, iterationen"
+                         " FROM modelllauf WHERE eignung = 'verwendbar'").fetchall()
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert zeilen, "kein Cluster mit Marktmiete gerechnet"
+    for r in zeilen:
+        assert r["konvergiert"] == 1, dict(r)
+        assert r["iterationen"] < modell.MAX_ITER, dict(r)
+
+
+def test_ungedaempfter_fixpunkt_waere_nicht_konvergiert():
+    """Die Daempfung ist keine Kosmetik: ohne sie pendelt der Leerstand.
+    Faellt dieser Test, ist entweder die Daempfung unnoetig geworden oder
+    der Test misst nicht mehr, was er soll - beides ist eine Nachricht."""
+    par, raster = modell.parameter_laden()
+    vs = [v for v in modell.vertraege_laden() if v["cluster_id"] == "NORDBAHN"]
+    alt = modell.DAEMPFUNG
+    try:
+        modell.DAEMPFUNG = 0.0
+        _, _, it_ohne, ok_ohne = modell.fixpunkt(vs, 24.01, par, raster)
+    finally:
+        modell.DAEMPFUNG = alt
+    _, _, it_mit, ok_mit = modell.fixpunkt(vs, 24.01, par, raster)
+    assert ok_mit
+    assert (not ok_ohne) or it_ohne > it_mit, (it_ohne, ok_ohne, it_mit)
+
+
+def test_ohne_marktmiete_keine_empfehlung(tmp_path=None):
+    """Zwei Cluster haben keinen Schnappschuss. Sie bekommen keine Empfehlung
+    und keine geschaetzte Marktmiete, sondern stehen sichtbar als Luecke."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_ohne_markt.sqlite"
+    con = _baue(ziel)
+    luecke = {r["cluster_id"]: r["eignung"] for r in con.execute(
+        "SELECT cluster_id, eignung FROM modelllauf WHERE eignung <> 'verwendbar'")}
+    mit = con.execute(
+        """SELECT COUNT(*) FROM empfehlung JOIN vertrag USING (vertrag_id)
+           WHERE cluster_id IN (SELECT cluster_id FROM modelllauf
+                                WHERE eignung <> 'verwendbar')""").fetchone()[0]
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert set(luecke) == {"SONNWEND", "SEESTADT"}, luecke
+    assert mit == 0
+
+
+def test_empfehlung_kommt_aus_der_beobachteten_marktmiete(tmp_path=None):
+    """Die Marktmiete im Modell ist genau die Zahl aus v_cluster_marktmiete -
+    kein zweiter Weg, keine Konstante im Code."""
+    ziel = Path(tmp_path or C.PROCESSED) / "test_markt_herkunft.sqlite"
+    con = _baue(ziel)
+    m = con.execute("SELECT marktmiete_eur_m2 FROM modelllauf"
+                    " WHERE cluster_id = 'NORDBAHN'").fetchone()[0]
+    v = con.execute("SELECT median_eur_m2 FROM v_cluster_marktmiete"
+                    " WHERE cluster_id = 'NORDBAHN'").fetchone()[0]
+    con.close()
+    ziel.unlink(missing_ok=True)
+    assert m == v
+
+
+def test_vertragsbestand_ist_bei_abschluss_leistbar():
+    """Korrektur vom 23.10. (E40): der erste Bestand hatte Belastungsquoten
+    bis 1,22. Ein Haushalt, der mehr Miete zahlt als er verdient, haette den
+    Vertrag nie bekommen."""
+    import json
+    port = json.loads((C.WURZEL / "config" / "portfolio.json").read_text(encoding="utf-8"))
+    bk = port["annahmen"]["betriebskosten_eur_m2"]["wert"]
+    nf = port["annahmen"]["netto_von_brutto_faktor"]["wert"]
+    for v in modell.vertraege_laden():
+        brutto = v["miete_start_eur"] + bk * v["flaeche_m2"]
+        netto = v["einkommen_brutto_pa"] * (1.55 if v["zweiteinkommen"] else 1.0) * nf
+        # Einkommen ist auf 100 EUR gerundet: kleine Toleranz
+        assert brutto * 12 / netto <= 0.355, (v["vertrag_id"], brutto * 12 / netto)
+
+
+def test_vertragsgenerator_ist_deterministisch():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "erz", C.WURZEL / "tools" / "erzeuge_vertraege.py")
+    erz = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(erz)
+    import json
+    a = erz.erzeugen()
+    gespeichert = json.loads((C.WURZEL / "config" / "vertraege.json").read_text(encoding="utf-8"))
+    assert a == gespeichert, "config/vertraege.json weicht vom Generator ab - neu erzeugen"

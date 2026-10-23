@@ -77,4 +77,20 @@ Das Modell kennt nur Annahme oder Auszug.
 **A10 — Die Vertragshistorie ist erfunden.** Abschlussjahre 2019–2022,
 Startmieten aus einem angenommenen Marktniveau je Jahr, 85 % mit
 Wertsicherungsklausel. Diese Verteilung erzeugt den größten Teil der
-Spreizung im Ergebnis — sie ist also nicht harmlos.
+Spreizung im Ergebnis — sie ist also nicht harmlos. Erzeugt von
+`tools/erzeuge_vertraege.py` mit festem Startwert, abgelegt in
+`config/vertraege.json`. Mit Klausel ist die Miete bis 2026 pauschal mit 4 %
+p. a. fortgeschrieben, weil die VPI-Reihe nicht beschafft ist; das
+Angebotsniveau je Abschlussjahr (15,8 / 16,4 / 17,3 / 18,9 €/m² für
+2019–2022) ist geschätzt, nicht gemessen.
+
+**A11 — Bonitätsprüfung bei Abschluss.** Ein Haushalt hat den Vertrag nur
+bekommen, wenn die Bruttomiete bei Abschluss höchstens 35 % seines
+Nettoeinkommens betrug (E40). Folge: 44 von 50 Haushalten haben ein
+Zweiteinkommen statt der angenommenen 40 %. Das ist ein Hinweis, dass die
+Einkommensplatzhalter für dieses Segment zu niedrig sind.
+
+**A12 — Einkommen nicht fortgeschrieben.** Die Haushaltseinkommen stehen auf
+dem Stand bei Abschluss, weil der Tariflohnindex fehlt. Die heutige
+Belastungsquote ist damit eher zu hoch, die Annahmewahrscheinlichkeit eher zu
+niedrig — das Modell bietet tendenziell vorsichtiger an, als es müsste.

@@ -53,6 +53,8 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E37](#e37) | 09.10. | Referenz markiert der Studierende selbst; Modell-Labeling nur als Testfall | Modellmarkierung als Referenz uebernehmen | ein Modell als Massstab fuer ein Modell misst die eigene Formulierung (E02, E28) | `evals/references/ (folgt)` |
 | [E35](#e35) | 09.10. | view-source als empfohlener Beschaffungsweg | gerendertes HTML parsen; nur snapshot.js | view-source holt die Seite immer frisch; das gerenderte HTML traegt Preise nur in CSS-Klassen | `02_schritt1_datenzugriff.md, docs/betrieb.md` |
 | [E36](#e36) | 09.10. | Ungemessene Abgaenge nicht als null Tage; Anteil noch online als Kennzahl | Mittelwert mit 0 fuer Einmal-Gesehene; nur Mittelwert der Wiedergesehenen | eine unbekannte Dauer ist nicht null; mit zwei Abrufen ist der Anteil die einzige ehrliche Aussage | `src/sql/kennzahl_inseratsdauer.sql, Commit 8e7565a` |
+| [E39](#e39) | 23.10. | Modell an die Daten angeschlossen: Marktmiete aus SQL, Ergebnis als Tabelle zurueck, Kennzahlen wieder SQL | Empfehlung direkt in Python ausgeben; Barwertrechnung in SQL | jede Zahl der Vorlage nennt eine Abfrage; die Iteration ist in SQL nicht pruefbar | `src/modell.py, kennzahl_empfehlung*.sql, kennzahl_sensitivitaet.sql` |
+| [E40](#e40) | 23.10. | Vertragsbestand mit Bonitaetspruefung bei Abschluss erzeugt | Einkommen unabhaengig von der Miete ziehen (erste Fassung) | Belastungsquoten bis 1,22 beschreiben Vertraege, die nie zustande gekommen waeren | `tools/erzeuge_vertraege.py, config/vertraege.json` |
 
 ---
 
@@ -1277,3 +1279,88 @@ ein Mensch nicht als Gemeindewohnung liest, ist es zu weit. Zeigt ein späterer
 Abruf im Zielsegment mehr als zwei Treffer, ändert sich die Größenklasse
 sichtbar — dann gehört das in die Vorlage.
 
+---
+
+## E39 {#e39}
+### Das Entscheidungsmodell hängt an der Datenbank, nicht daneben
+**Datum:** 23.10.2026
+
+**Situation.** Bis Termin 3 war `src/entscheidung.py` getestet, aber nicht
+angeschlossen: keine Verträge, keine Empfehlung, und der Portfolio-Fixpunkt aus
+E18 war beim Umbau auf die vorgegebene Struktur verloren gegangen — E18 stand
+im Log, der Code dazu nicht mehr im Repository. Ohne Empfehlung je Vertrag hat
+die Entscheidungsvorlage keine Empfehlung.
+
+**Alternativen.**
+1. Ein Skript, das die Empfehlung direkt ausgibt (CSV aus Python).
+2. Barwerte und Optimierung in SQL.
+3. Marktmiete aus der Datenbank lesen (`v_cluster_marktmiete`), in Python
+   optimieren, das Ergebnis in die Tabellen `modelllauf`, `empfehlung`,
+   `empfehlung_sensitivitaet` zurückschreiben und daraus mit
+   `kennzahl_empfehlung*.sql` und `kennzahl_sensitivitaet.sql` lesen.
+
+**Entscheidung.** Variante 3, als Teil von Schritt 4 in `src/run.py`.
+
+**Begründung.** (1) bricht Regel 2: die Zahlen der Vorlage hätten keine
+Abfrage, die man nennen kann. (2) wäre eine rekursive CTE über einen Fixpunkt
+mit Dämpfung — schreibbar, aber nicht mehr lesbar und nicht testbar. (3)
+trennt nach dem Kriterium aus E27: was iteriert, ist Programm; was die Vorlage
+zitiert, ist SQL. Gate 3 prüft zusätzlich Konvergenz, Wertebereich und dass
+kein Vertrag ohne beobachtete Marktmiete eine Empfehlung bekommt.
+
+**Was dabei herauskam.** Der Fixpunkt ist wiederhergestellt, und dass er die
+Dämpfung braucht, ist jetzt ein Test: ohne Dämpfung läuft er bis `MAX_ITER`
+und konvergiert nicht (`test_ungedaempfter_fixpunkt_waere_nicht_konvergiert`).
+Zwei der drei Cluster bekommen keine Empfehlung, weil 1100 und 1220 nicht
+beschafft sind; sie stehen in `modelllauf` mit `eignung = 'kein
+Schnappschuss'`.
+
+**Revisionspunkt.** Steht in `docs/vorlage.md` eine Zahl zur Empfehlung, die in
+keiner `kennzahl_*.csv` vorkommt, ist die Trennung verletzt — das prüft der
+Grader `evals/graders/zahlen_herkunft.py`. Bekommt ein Cluster ohne
+Schnappschuss eine Empfehlung, fällt Gate 3.
+
+---
+
+## E40 {#e40}
+### Der synthetische Vertragsbestand besteht eine Bonitätsprüfung bei Abschluss
+**Datum:** 23.10.2026 · **Korrektur eines eigenen Fehlers derselben Sitzung**
+
+**Situation.** Die erste Fassung von `tools/erzeuge_vertraege.py` zog das
+Einkommen je Haushalt unabhängig von der Miete. Das Modell lief damit
+fehlerfrei, Gate 3 bestand, und die Empfehlung sah vernünftig aus: Aufschläge
+zwischen 9 und 40 %. Erst die Spalte `belastungsquote` in
+`kennzahl_empfehlung_vertrag.csv` zeigte, dass der Bestand selbst unmöglich
+war: Quoten bis 1,22, also Haushalte, die mehr Bruttomiete zahlen, als sie
+netto verdienen. Die niedrigen Annahmewahrscheinlichkeiten (Mittel 0,27) kamen
+von dort, nicht vom Markt.
+
+**Alternativen.**
+1. So lassen — die Verträge sind ohnehin erfunden.
+2. Einkommen auf die Grenze anheben, wo es nicht reicht.
+3. Neu ziehen, bis der Haushalt die Bonitätsprüfung des Vermieters besteht
+   (Bruttomiete bei Abschluss höchstens 35 % des Nettoeinkommens),
+   Zweiteinkommen mitgezogen.
+
+**Entscheidung.** Variante 3.
+
+**Begründung.** (1) hätte eine Empfehlung auf Haushalten gebaut, die es nicht
+geben kann — die Zahl wäre glatt und sinnlos gewesen. (2) setzt alle
+Abgewiesenen genau auf die Grenze; die Verteilung bekäme einen Knick, der dann
+die Leistbarkeitsbremse im Modell auslöst. (3) bildet ab, was ein Vermieter
+tatsächlich tut: er wählt aus. Danach liegen die Angebote bei 23,5–24,7 €/m²,
+also an der beobachteten Marktmiete, und die Annahmewahrscheinlichkeit im
+Mittel bei 0,48.
+
+**Was der Fehler über die Annahmen sagt.** Die Bonitätsprüfung treibt den
+Anteil mit Zweiteinkommen von angenommenen 40 % auf 88 % (44 von 50). Die
+Handelsangestellten — als Kontrollgruppe gedacht — kommen nur mit
+Zweiteinkommen am oberen Rand der Verteilung durch. Das heißt: die
+Einkommensplatzhalter in `config/berufsgruppen.json` liegen für 80–100 m²
+Neubau zu niedrig, oder die Berufsgruppenmischung passt nicht zu diesem
+Segment. Beides ist offen und steht in `07_offene_punkte_lessons.md`.
+
+**Revisionspunkt.** `test_vertragsbestand_ist_bei_abschluss_leistbar`.
+Sobald echte Einkommensniveaus aus der Lohnsteuerstatistik vorliegen, muss der
+Anteil mit Zweiteinkommen von selbst sinken — tut er das nicht, ist die
+Berufsgruppenmischung falsch.

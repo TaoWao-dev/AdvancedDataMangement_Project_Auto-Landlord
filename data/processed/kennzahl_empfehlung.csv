@@ -1,0 +1,4 @@
+cluster_id;datenstand;marktmiete_eur_m2;marktmiete_fallzahl;eignung;vertraege;mit_empfehlung;verlaengern;auslaufen;median_aufschlag_pct;min_aufschlag_pct;max_aufschlag_pct;mittel_p_annahme;erwartete_auszuege;bw_empfehlung_summe;bw_nur_index_summe;mehrwert_gegen_nur_index;konvergiert;iterationen;leerstand_fixpunkt_monate
+NORDBAHN;2026-10-09;24.01;32;verwendbar;20;20;20;0;15.0;12.0;25.0;0.482;10.4;2251247.0;2104246.0;147001.0;1;7;3.054
+SEESTADT;;;;kein Schnappschuss;10;0;;;;;;;1.0;;;;;;
+SONNWEND;;;;kein Schnappschuss;20;0;;;;;;;1.0;;;;;;
