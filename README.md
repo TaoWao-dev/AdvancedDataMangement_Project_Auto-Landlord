@@ -1,6 +1,23 @@
 # ADDM Projekt "Auto-Landlord" - fhb251452@fh-vie.ac.at
 ## Mietportfolio Wien — Mieterhöhungsentscheidungen automatisiert vorbereiten.
 
+## ▶ Direkt ausprobieren
+
+[![In Colab öffnen](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TaoWao-dev/AdvancedDataMangement_Project_Auto-Landlord/blob/main/docs/demo/auto_landlord_demo.ipynb)
+
+**https://colab.research.google.com/github/TaoWao-dev/AdvancedDataMangement_Project_Auto-Landlord/blob/main/docs/demo/auto_landlord_demo.ipynb**
+
+Der Link öffnet das Demo-Notebook im Browser. Installation und Anmeldung
+sind nicht nötig. *Laufzeit → Alle ausführen* klont das Repository, baut die
+Datenbank aus den Rohdaten neu (alle Gates, rund 8 s) und zeigt dann:
+- Markt und KV-Reihen,
+- die Empfehlung je Vertrag mit Auswahlfeld,
+- die Sensitivität,
+- die Entscheidungsvorlage,
+- zuletzt Evals und Tests.
+
+Lokal geht dasselbe mit `python3 -m src.run && python3 -m src.demo LS-45`.
+
 >
 > **AdvancedDataManagement_Project_Auto-Landlord**
 > My github repo for a dystopian data-management project that scrapes
@@ -13,8 +30,10 @@ automatisierten Zugriff ausdrücklich; die Schnappschüsse werden von einem
 Menschen im Browser gespeichert, und erst die Verarbeitung ist automatisiert.
 Das ist eine der zentralen Entscheidungen des Projekts, nicht ein Detail —
 siehe `docs/projektdokumentation/02_schritt1_datenzugriff.md` und
-Entscheidungslog E06. Einkommensdaten fließen nicht in die Preisbildung ein,
-sondern nur in Annahme- und Ausfallwahrscheinlichkeit (E05).
+Entscheidungslog E06. Einkommensdaten sollen nicht in die Preisbildung
+einfließen, sondern nur in Annahme- und Ausfallwahrscheinlichkeit (E05). Über
+die Annahmewahrscheinlichkeit wirken sie aber doch auf die Höhe, um bis zu
+eine Rasterstufe. Die Vorlage nennt das offen als wichtigsten Befund (E47).
 
 **Lauffähiger Prototyp (23.10.2026, E44):** Für jeden laufenden
 Mietvertrag eines fiktiven Portfolios in der Leopoldstadt — soll die Miete
