@@ -20,7 +20,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {
@@ -50,7 +50,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {
@@ -80,7 +80,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {
@@ -110,7 +110,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {
@@ -140,7 +140,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {
@@ -172,37 +172,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
-  },
-  "assert": [
-   {
-    "type": "python",
-    "value": "file://graders/extraktion.py"
-   }
-  ]
- },
- {
-  "description": "kv_wirtschaftstreuhaender",
-  "vars": {
-   "reihe": "Wirtschaftstreuhaender",
-   "dokumente": "file://kontext/kv_dokumente.txt",
-   "erwartet": {
-    "abschluss_gefunden": false,
-    "prozent_min": null,
-    "prozent_max": null,
-    "fixbetrag_eur": null,
-    "ist_prozent": null,
-    "geltungsbeginn": null,
-    "bezugsgroesse": null,
-    "deckelung": null,
-    "fundstelle_zeile": null
-   },
-   "nicht_bewertet": []
-  },
-  "metadata": {
-   "task": "kv_extraktion",
-   "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {
@@ -232,7 +202,7 @@
   "metadata": {
    "task": "kv_extraktion",
    "referenz": "evals/references/kv_extraktion.json",
-   "von_hand_bestaetigt": false
+   "von_hand_bestaetigt": true
   },
   "assert": [
    {

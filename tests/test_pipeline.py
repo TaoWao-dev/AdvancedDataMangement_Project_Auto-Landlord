@@ -810,7 +810,9 @@ def test_kv_rohtext_steht_woertlich_in_der_rohdatei():
     """E02: ein Goldset aus Nachschriften misst die eigene Formulierung.
     Jeder rohtext muss zeichengenau in der Zeile der Rohdatei stehen."""
     ref = json.loads((REFERENZEN / "kv_extraktion.json").read_text(encoding="utf-8"))
-    assert len(ref["faelle"]) >= 8
+    # 7 seit E48: der Fall Wirtschaftstreuhaender ist auf Wunsch entfernt;
+    # die Vorgabe von mindestens 8 Faellen ist damit unterschritten (steht in 06).
+    assert len(ref["faelle"]) >= 7
     for fall in ref["faelle"]:
         for f in fall["fundstellen"] + fall["ablenker"]:
             pfad = C.WURZEL / f["datei"]

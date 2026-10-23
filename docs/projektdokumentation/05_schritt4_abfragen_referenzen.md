@@ -96,8 +96,11 @@ Zeile trägt `abruf_datum`, damit das nicht verloren geht.
 wörtlich aus der Rohdatei, mit Originalzeile. Drei Reihen haben in den
 Quellen keinen Satz für 2026 (Versicherungen, Wirtschaftstreuhänder,
 Landesspitäler — letztere ersetzt durch Privatkrankenanstalten); fünf haben
-Ablenker. Die erwarteten Felder sind eine Lesung und stehen auf
-`von_hand_bestaetigt: false`. Der Text unten ist der Stand vom 09.10.
+Ablenker. Die erwarteten Felder waren eine Lesung durch Claude; am 23.10.
+hat der Studierende sie durchgesehen und bestätigt, den Fall
+Wirtschaftstreuhänder aber herausgenommen (E48). Seither **7 bestätigte
+Fälle** — einer weniger, als die Vorgabe verlangt. Der Text unten ist der
+Stand vom 09.10.
 
 Für die Extraktion verlangt die Vorgabe mindestens acht Fälle. Die Fälle sind
 festgelegt — es sind die sieben Berufsgruppen aus `config/berufsgruppen.json`
@@ -111,7 +114,7 @@ plus der öffentliche Dienst als Vergleichsreihe:
 | 4 | Elektro- u. Elektronikindustrie | dito |
 | 5 | Handelsangestellte Allgemeiner Groß- und Kleinhandel | dito |
 | 6 | Privatkrankenanstalten / konfessionelle Einrichtungen | dito |
-| 7 | Wirtschaftstreuhänder | dito |
+| ~~7~~ | ~~Wirtschaftstreuhänder~~ | entfernt am 23.10. (E48) |
 | 8 | Öffentlicher Dienst (Vergleichsreihe) | dito |
 
 **Was fehlt, ist das Quelldokument.** Die Abschlüsse stehen auf öffentlichen

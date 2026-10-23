@@ -62,6 +62,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E45](#e45) | 23.10. | KV-Extraktion durch das Modell der Arbeitssitzung, gesichert durch Gate 4 (Wortlaut in der Quellzeile); kein lokales Modell | LM Studio mit Qwen3 8B (E42 geplant) | LM Studio brachte keinen unmittelbaren Nutzen und haette den Ablauf verkompliziert (Studierender); Gate 4 prueft jeden Datensatz unabhaengig vom Modell | `src/kv_extrakt.py, data/extrakt/, prompts/kv_zeitreihe_v1.md` |
 | [E46](#e46) | 23.10. | Demo-Portfolio: 1020, Groessen 50-80 und 80-100, fuenf Branchen mit KV-Reihe 2024-2026; Ausschluss von WG-Zimmern und ausdruecklichen Gemeindewohnungen nach eigenen Kriterien | alle Groessen und Branchen; Klassifikation mit menschlicher Referenz (E37) | nur was in jedem Abruf belastbar ist und eine lueckenlose KV-Reihe hat; die Markierung war weder fuer Mensch noch Modell eindeutig (Studierender) | `config.PORTFOLIO_GROESSEN, tools/erzeuge_vertraege.py, Gate 3` |
 | [E47](#e47) | 23.10. | Befund offen in die Vorlage: das Einkommen wirkt ueber die Annahmewahrscheinlichkeit doch auf die Hoehe; Empfehlung als Obergrenze, beim Markt gedeckelt | Modell so lassen und schweigen; Einkommen ganz aus dem Modell nehmen | der Revisionspunkt von E44 ist eingetreten; ihn zu verschweigen waere genau die glatte Zahl, die CLAUDE.md verbietet | `docs/vorlage.md, tests/test_pipeline.py` |
+| [E48](#e48) | 23.10. | KV-Referenzen bestaetigt, Fall Wirtschaftstreuhaender entfernt | Fall behalten; durch einen anderen ersetzen | Entscheidung des Studierenden nach Durchsicht; die Reihe gehoert nicht zum Demo-Portfolio und hat in den Quellen keinen Satz | `evals/erfasse_kv_referenz.py, evals/references/kv_extraktion.json` |
 
 ---
 
@@ -1681,3 +1682,36 @@ Präsentation (07, Schwäche 5).
 **Revisionspunkt.** `test_einkommen_wirkt_ueber_die_annahme_auf_die_hoehe_hoechstens_eine_stufe`:
 wirkt das Einkommen um mehr als eine Rasterstufe, ist der Effekt kein
 Randeffekt mehr.
+
+---
+
+## E48 {#e48}
+### KV-Referenzen bestätigt, Wirtschaftstreuhänder entfernt
+**Datum:** 23.10.2026 · schließt die offene Bestätigung aus E41
+
+**Situation.** Der Studierende hat die acht Extraktionsfälle anhand der
+Prüfliste (Erwartung und Beleg je Fall) durchgesehen: „Lass einfach die
+Berufsgruppe der Wirtschaftstreuhänder aus. Der Rest der KV-Daten passt."
+
+**Alternativen.**
+1. Den Fall behalten — er prüft, dass das Modell nichts erfindet, wo die
+   Quelle schweigt.
+2. Den Fall entfernen und die übrigen sieben als bestätigt führen.
+3. Den Fall durch einen anderen ersetzen, um die Vorgabe von acht Fällen zu
+   halten.
+
+**Entscheidung.** Variante 2, auf Wunsch des Studierenden.
+
+**Begründung.** Die Reihe gehört nicht zum Demo-Portfolio (E46), und die
+Quellen nennen sie nicht. Die Prüfung „nichts erfinden, wo die Quelle
+schweigt" bleibt erhalten: Der Fall Versicherungen verlangt für 2026 einen
+Geltungsbeginn, aber keinen Prozentsatz, und der Grader-Test, der bisher am
+Fall Wirtschaftstreuhänder hing, prüft jetzt dort. Die sieben übrigen Fälle
+sind ohne Korrektur bestätigt; `von_hand_bestaetigt` steht auf `true`.
+
+**Preis.** Die Vorgabe verlangt mindestens acht Extraktionsfälle; es sind
+jetzt sieben. Das steht in 05 und 06 und wird nicht verschwiegen.
+
+**Revisionspunkt.** Verlangt die Bewertung acht Fälle, ist ein achter aus
+den gespeicherten Seiten zu ergänzen — am wertvollsten einer mit Ablenker,
+etwa der Arbeiter-KV Handel neben dem Angestellten-KV.

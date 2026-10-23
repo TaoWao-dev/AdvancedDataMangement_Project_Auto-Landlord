@@ -8,7 +8,7 @@ für Datei. Die Inhalte stehen in den verlinkten Dateien, nicht hier.
 | Datei | Inhalt | Abgabe | Stand 23.10.2026 abends |
 |---|---|---|---|
 | [`00_auftrag.md`](projektdokumentation/00_auftrag.md) | Adressat, Entscheidung, drei Analysen mit Werkzeug, was nicht drin ist | 26.9., laufend | **fertig** |
-| [`01_entscheidungslog.md`](projektdokumentation/01_entscheidungslog.md) | je Entscheidung Datum, Alternative, Grund, Revisionspunkt | laufend | **47 Einträge** |
+| [`01_entscheidungslog.md`](projektdokumentation/01_entscheidungslog.md) | je Entscheidung Datum, Alternative, Grund, Revisionspunkt | laufend | **48 Einträge** |
 | [`02_schritt1_datenzugriff.md`](projektdokumentation/02_schritt1_datenzugriff.md) | Quellentabelle, verworfene Kandidaten, Personenbezug | termin3, ergänzt | **fertig**, KV-Quelle ergänzt |
 | [`03_schritt2_normalisieren.md`](projektdokumentation/03_schritt2_normalisieren.md) | Zahlen aus dem Lauf, Qualitätsbericht mit sechs Fragen je Quelle | termin3, ergänzt | **fertig** |
 | [`04_schritt3_datenmodell.md`](projektdokumentation/04_schritt3_datenmodell.md) | Tabellen, Schlüssel, Beziehungen, Zuordnungslücken | termin3, ergänzt | **fertig**, Modelltabellen ergänzt |

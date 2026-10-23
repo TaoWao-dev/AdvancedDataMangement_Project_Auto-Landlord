@@ -85,7 +85,9 @@ def test_nicht_bewertetes_feld_zaehlt_nicht():
 
 
 def test_null_heisst_null_nicht_null_prozent():
-    soll = FALL["kv_wirtschaftstreuhaender"]["erwartete_antwort"]
+    # Versicherung 2026: kein Satz in der Quelle - prozent_* muessen null sein.
+    # (Bis 23.10. pruefte das der Fall Wirtschaftstreuhaender, E48.)
+    soll = FALL["kv_versicherung_innendienst"]["erwartete_antwort"]
     ist = dict(soll, prozent_min=0, prozent_max=0)
     assert not extraktion.pruefen(json.dumps(ist), soll)["pass"]
 

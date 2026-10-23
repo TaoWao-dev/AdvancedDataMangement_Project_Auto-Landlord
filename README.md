@@ -66,7 +66,7 @@ ihre Abfrage; ein Grader prüft das (`evals/graders/zahlen_herkunft.py`).
 
 | Wo | Was |
 |---|---|
-| [`docs/projektdokumentation/`](docs/projektdokumentation.md) | Auftrag, Entscheidungslog (47 Einträge), Schritte 1–5, die fünf Schwächen und drei Lessons |
+| [`docs/projektdokumentation/`](docs/projektdokumentation.md) | Auftrag, Entscheidungslog (48 Einträge), Schritte 1–5, die fünf Schwächen und drei Lessons |
 | [`docs/betrieb.md`](docs/betrieb.md) | Betriebshandbuch: starten, neue Daten, Evals, Störungen |
 | [`evals/README.md`](evals/README.md) | Referenzen, Grader, Suiten |
 | [`CLAUDE.md`](CLAUDE.md) | Arbeitsanweisung für jede KI-Sitzung in diesem Repository |

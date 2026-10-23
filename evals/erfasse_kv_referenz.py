@@ -25,8 +25,13 @@ OEGB = f"kv_oegb_{DATUM}.txt"
 ZIEL = WURZEL / "evals" / "references" / "kv_extraktion.json"
 
 # Fall-IDs, die der Studierende geprueft hat, mit Datum.
-# Beispiel: {"kv_handel_angestellte": "2026-10-23"}
-BESTAETIGT: dict[str, str] = {}
+# 23.10.2026, Studierender nach Durchsicht der Pruefliste: "Lass einfach die
+# Berufsgruppe der Wirtschaftstreuhaender aus. Der Rest der KV-Daten passt."
+# Der Fall Wirtschaftstreuhaender ist deshalb entfernt (E48); die uebrigen
+# sieben gelten als bestaetigt, ohne Korrektur an den erwarteten Feldern.
+BESTAETIGT: dict[str, str] = {f: "2026-10-23" for f in (
+    "kv_banken", "kv_versicherung_innendienst", "kv_it", "kv_elektroindustrie",
+    "kv_handel_angestellte", "kv_privatkrankenanstalten", "kv_oeffentlicher_dienst")}
 
 FRAGE = ("Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die "
          "Reihe '{reihe}'? Antworte nur aus den beigefuegten Dokumenten.")
@@ -120,18 +125,6 @@ FAELLE = [
         ],
         "ablenker": [(OEGB, 5156, "Für 2025 ist eine Erhöhung um den Verbraucherpreisindex plus 0,45 Prozent vorgesehen.")],
         "unsicherheit": "Die Reihe in config/berufsgruppen.json heisst 'Bundeslaender - Krankenanstalten' (oeffentliche Landesspitaeler). Dazu steht in den Quellen nichts; die Privatkrankenanstalten sind die naechstliegende Reihe und hier bewusst als Ersatz gewaehlt (07_offene_punkte_lessons.md). 'Gehaelter' ohne Zusatz: ob KV- oder Ist-Gehalt gemeint ist, sagt der Text nicht - bezugsgroesse wird nicht bewertet. Ob 'bis zu 3.750 Euro' eine Deckelung oder eine Staffelung ist, ist Auslegung.",
-    },
-    {
-        "id": "kv_wirtschaftstreuhaender",
-        "gruppe_id": None,
-        "reihe": "Wirtschaftstreuhaender",
-        "erwartet": {"abschluss_gefunden": False, "prozent_min": None, "prozent_max": None,
-                     "fixbetrag_eur": None, "ist_prozent": None,
-                     "geltungsbeginn": None, "bezugsgroesse": None,
-                     "deckelung": None, "fundstelle_zeile": None},
-        "fundstellen": [],
-        "ablenker": [(OEGB, 4584, "Unternehmensberatung und Bilanzbuchhalter")],
-        "unsicherheit": "Keine der gespeicherten Seiten nennt den KV der Wirtschaftstreuhaender. Bestanden ist der Fall nur, wenn nichts behauptet wird. Der KV Information & Consulting (Bilanzbuchhalter) ist ein anderer KV.",
     },
     {
         "id": "kv_oeffentlicher_dienst",

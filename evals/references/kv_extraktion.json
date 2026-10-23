@@ -51,8 +51,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Die OeGB-Seite spricht vom 'Finanzsektor', nicht woertlich vom KV Banken und Bankiers, und nennt kein Datum. Das Datum stammt aus der WKO-Liste der KV-Fassungen (gueltig ab 1.4.2026). Der Ablenker 2025 hat denselben Prozentsatz - ein Modell kann ihn treffen und trotzdem den falschen Abschnitt gelesen haben; deshalb zaehlt die Fundstelle.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_versicherung_innendienst",
@@ -96,8 +96,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Fuer 2026 nennt keine Quelle einen Prozentsatz; die WKO-Liste belegt nur, dass eine Fassung ab 1.3.2026 existiert. Richtig ist: Geltungsbeginn ja, Prozentsatz nein. Wer 2,9 % nennt, hat den Abschluss 2025 uebernommen.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_it",
@@ -146,8 +146,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Gestaffelt: ein einzelner Prozentsatz ist falsch, die Spanne richtig. 3,9 % ist eine laufende Forderung fuer die naechste Runde, kein Abschluss. Die Reihe in config/berufsgruppen.json ist die Fachverbandsebene UBIT (A3); der OeGB-Text nennt die 'IT-Branche'.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_elektroindustrie",
@@ -196,8 +196,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Die Zuordnung von Zeile 1069 zur Elektroindustrie ergibt sich nur aus der Ueberschrift in Zeile 1054. 'bis zu 2,7 Prozent' bei den Ist-Einkommen ist eine Obergrenze, kein fester Satz.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_handel_angestellte",
@@ -246,8 +246,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Die Handelsarbeiter haben denselben Satz, aber einen anderen KV (Zeile 1911) - nur die Fundstelle unterscheidet. 'Ueberzahlung bleibt betragsmaessig aufrecht' heisst: Ist-Gehaelter steigen nicht automatisch, deshalb ist_prozent = null.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_privatkrankenanstalten",
@@ -291,47 +291,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Die Reihe in config/berufsgruppen.json heisst 'Bundeslaender - Krankenanstalten' (oeffentliche Landesspitaeler). Dazu steht in den Quellen nichts; die Privatkrankenanstalten sind die naechstliegende Reihe und hier bewusst als Ersatz gewaehlt (07_offene_punkte_lessons.md). 'Gehaelter' ohne Zusatz: ob KV- oder Ist-Gehalt gemeint ist, sagt der Text nicht - bezugsgroesse wird nicht bewertet. Ob 'bis zu 3.750 Euro' eine Deckelung oder eine Staffelung ist, ist Auslegung.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
-  },
-  {
-   "fall_id": "kv_wirtschaftstreuhaender",
-   "analyse": "4 - Fortschreibung der Einkommen je Berufsgruppe",
-   "gruppe_id": null,
-   "eingabe": {
-    "reihe": "Wirtschaftstreuhaender",
-    "frage": "Welcher Kollektivvertragsabschluss gilt fuer das Jahr 2026 fuer die Reihe 'Wirtschaftstreuhaender'? Antworte nur aus den beigefuegten Dokumenten.",
-    "dokumente": "alle kv_*.txt des Abrufs 2026-10-23 (Tabelle kv_textblock)"
-   },
-   "erwartete_antwort": {
-    "abschluss_gefunden": false,
-    "prozent_min": null,
-    "prozent_max": null,
-    "fixbetrag_eur": null,
-    "ist_prozent": null,
-    "geltungsbeginn": null,
-    "bezugsgroesse": null,
-    "deckelung": null,
-    "fundstelle_zeile": null
-   },
-   "fundstellen": [],
-   "ablenker": [
-    {
-     "datei": "data/raw/2026-10-23/kv_oegb_2026-10-23.txt",
-     "zeile_original": 4584,
-     "rohtext": "Unternehmensberatung und Bilanzbuchhalter"
-    }
-   ],
-   "pruefregel": "Feldvergleich je Feld (evals/graders/extraktion.py); Fall bestanden, wenn alle bewerteten Felder stimmen",
-   "toleranz": "Prozentsaetze exakt (0,001), Datum exakt, Fundstelle exakt; null nur bei null",
-   "herkunft": {
-    "wer": "rohtext: Skript (woertlich, geprueft); erwartete_antwort: Lesung durch Claude",
-    "wann": "2026-10-23",
-    "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
-   },
-   "unsicherheit": "Keine der gespeicherten Seiten nennt den KV der Wirtschaftstreuhaender. Bestanden ist der Fall nur, wenn nichts behauptet wird. Der KV Information & Consulting (Bilanzbuchhalter) ist ein anderer KV.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   },
   {
    "fall_id": "kv_oeffentlicher_dienst",
@@ -380,8 +341,8 @@
     "wie": "evals/erfasse_kv_referenz.py aus data/raw/2026-10-23"
    },
    "unsicherheit": "Der Text nennt das Jahr, nicht den Tag: geltungsbeginn ist null, ein Datum waere erfunden. Der Ablenker aus dem Abschluss 2025 kuendigte fuer 2026 'rollierende Inflation plus 0,3' an; der spaetere Dreijahresabschluss ersetzt das.",
-   "von_hand_bestaetigt": false,
-   "bestaetigt_am": null
+   "von_hand_bestaetigt": true,
+   "bestaetigt_am": "2026-10-23"
   }
  ]
 }

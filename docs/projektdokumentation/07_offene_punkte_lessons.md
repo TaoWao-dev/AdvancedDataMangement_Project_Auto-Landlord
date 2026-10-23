@@ -81,7 +81,7 @@ Einkommen nicht als Preisargument zu verwenden (E05).
 | KV-Lohn ist Mindestlohn, nicht Ist-Gehalt | Einkommensentwicklung eher unterschätzt (IT: hohe Überzahlung) | A2, `kennzahl_kv_entwicklung` |
 | Tag des Abschlusses fehlt bei 4 von 15 KV-Datensätzen | gerechnet ab 1. Jänner | `kv_erhoehung.datum_angenommen` |
 | Einkommensniveaus sind Platzhalter | fast alle Haushalte brauchen ein Zweiteinkommen | E40, A11 |
-| kein Satz 2026 für Versicherungen, Wirtschaftstreuhänder; öffentlicher Dienst ohne 2024 | Branchen nicht im Demo-Portfolio | E46 |
+| kein Satz 2026 für Versicherungen; öffentlicher Dienst ohne 2024; Wirtschaftstreuhänder entfernt | Branchen nicht im Demo-Portfolio; 7 statt 8 Extraktionsfälle | E46, E48 |
 | Indexreihen (VPI) nicht geladen | Wertsicherung pauschal angenommen | A10 |
 
 ## Risiken
