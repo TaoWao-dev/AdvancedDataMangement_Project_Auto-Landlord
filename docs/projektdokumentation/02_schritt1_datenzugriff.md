@@ -8,21 +8,27 @@ Provenienzeintrag mit SHA256 an und bricht ab, wenn eine Pflichtquelle fehlt.
 Eine erneut verarbeitete Datei erhält denselben Zeitstempel wie beim ersten Mal
 (er kommt aus den Daten, nicht von der Uhr).
 
-## Die drei Quellen auf einen Blick
+## Die Quellen auf einen Blick
 
 | Quelle | Form | Beschaffung | Lizenz | Pflicht | Stand |
 |---|---|---|---|---|---|
 | willhaben Mietinserate | JSON (`__NEXT_DATA__` einer Next.js-Suchseite) | **manuell** im Browser gespeichert | Nutzung nur als unwesentlicher Teil; robots.txt archiviert | ja | 1 von 5 Bezirken, zwei Abrufe (25.09. Teilseite, 09.10. vollständig) |
 | Tariflohnindex | CSV, Statistik Austria OGD | automatisch, `data.statistik.gv.at` | CC-BY 4.0 | nein | noch nicht beschafft |
 | VPI | CSV, Statistik Austria OGD | automatisch, `data.statistik.gv.at` | CC-BY 4.0 | nein | noch nicht beschafft |
+| Kollektivvertragsabschlüsse | Text aus gespeicherter Quelltextansicht (ÖGB-Übersicht, 6 WKO-Seiten) | **manuell** mit `view-source:` gespeichert, `tools/kv_quellen_aufbereiten.py` | öffentliche Seiten, nur als Eingabe der Extraktion | nein | Abruf 23.10.2026, 471 Textblöcke; Herkunft in `data/raw/2026-10-23/HERKUNFT.md` (E41) |
 
 Maschinenlesbar steht dieselbe Tabelle in `src/config.py` unter `QUELLEN` —
 und zwar nur dort. Die Pipeline liest von dort, diese Datei erklärt es.
 
 Strukturiert sind die Inserate und die Indexreihen. **Unstrukturiert** kommt im
 LLM-Schritt dazu: Kollektivvertragsabschlüsse als Fließtext und die
-Gesetzesmaterialien zur gedeckelten Wertsicherung. Deren Beschaffung ist in
-Schritt 5 dokumentiert.
+Gesetzesmaterialien zur gedeckelten Wertsicherung. Die KV-Seiten sind seit
+23.10. beschafft — auf demselben Weg wie die Inserate: ein Mensch speichert
+die Quelltextansicht, ein Werkzeug schneidet auf den Seiteninhalt zu (die
+Autorenzeile der ÖGB-Seite bleibt draußen), redigiert und legt die
+SHA256 des Originals ab. Jede Zeile trägt ihre Nummer im Originalquelltext;
+das ist die Fundstelle der Extraktionsreferenzen. Die Gesetzesmaterialien
+sind nicht beschafft.
 
 ---
 

@@ -78,13 +78,26 @@ nicht falsch, sondern auf den 25.09. bezogen, wie alle Referenzen hier —
 zwei Abrufen nichts behauptet, was sie nicht messen kann, prüfen seitdem
 Tests auf echten Daten: 27 ungemessene Abgänge, Mittelwert leer, 0,70 noch
 online (`test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage`, E36). Eine
-Referenz für den Zwei-Abruf-Stand gehört zu Deliverable 3.
+Referenz für den Zwei-Abruf-Stand gehört zu Deliverable 3. **Nachtrag
+23.10.:** angelegt als `evals/references/inseratsdauer_zwei_abrufe.json`,
+unabhängig nachgerechnet über die Mengen der Inseratskennungen je Rohordner
+(`evals/nachrechnen_inseratsdauer.py`); SQL und Zweitimplementierung
+stimmen überein.
 
 **Die Referenz selbst steht auf einer Teilseite.** 90 von 154 Treffern. Sie ist
 korrekt für die gespeicherte Seite und falsch für „den Markt in 1020". Jede
 Zeile trägt `abruf_datum`, damit das nicht verloren geht.
 
-## Analyse 4: was fehlt, und warum es nicht geschätzt wird
+## Analyse 4: was fehlte, und warum es nicht geschätzt wurde
+
+**Nachtrag 23.10.: geschlossen durch E41.** Der Studierende hat die
+ÖGB-Übersicht und sechs WKO-Seiten gespeichert. Die acht Fälle stehen in
+`evals/references/kv_extraktion.json`, jeder `rohtext` maschinell geprüft
+wörtlich aus der Rohdatei, mit Originalzeile. Drei Reihen haben in den
+Quellen keinen Satz für 2026 (Versicherungen, Wirtschaftstreuhänder,
+Landesspitäler — letztere ersetzt durch Privatkrankenanstalten); fünf haben
+Ablenker. Die erwarteten Felder sind eine Lesung und stehen auf
+`von_hand_bestaetigt: false`. Der Text unten ist der Stand vom 09.10.
 
 Für die Extraktion verlangt die Vorgabe mindestens acht Fälle. Die Fälle sind
 festgelegt — es sind die sieben Berufsgruppen aus `config/berufsgruppen.json`

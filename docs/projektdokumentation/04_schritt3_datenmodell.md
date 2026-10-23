@@ -4,7 +4,7 @@
 Quellen über Schlüssel verknüpft — und was keinen Partner findet, wird gezählt
 statt verworfen.
 
-**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (45 Tests,
+**Abnahmekriterium:** `python3 tests/test_pipeline.py` ist grün (53 Tests,
 darunter zweiter Lauf identisch, keine doppelten Schlüssel, alle Tabellen
 vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
@@ -12,7 +12,7 @@ vorhanden) und keine Zeile ist unerklärt ohne Zuordnung.
 
 ```bash
 python3 -m src.run                 # baut data/processed/mietportfolio.sqlite neu
-python3 tests/test_pipeline.py     # 45 Tests
+python3 tests/test_pipeline.py     # 53 Tests
 sqlite3 data/processed/mietportfolio.sqlite "SELECT * FROM v_abdeckung;"
 ```
 
@@ -33,6 +33,17 @@ erzeugen dieselbe Datei, geprüft über SHA256 mit mehr als einer Sekunde Abstan
 | `zuordnungsluecke` | — (Protokolltabelle) | — | von `integrate.py` geschrieben | **0** — keine Lücke |
 | `qs_befund` | — (Protokolltabelle) | — | Gate-Befunde aus Schritt 2 | 1 (Teilseite 25.09.) |
 | `objekttyp_ausschluss` | `objekttyp` | — | `config.OBJEKTTYP_AUSGESCHLOSSEN`, mit Grund (E33) | 1 (`Zimmer/WG`) |
+| `kv_textblock` | `(datei, block_nr)` | — | KV-Seiten vom 23.10., je Block mit `zeile_original` (E41) | 471 |
+| `vertrag` | `vertrag_id` | — | `config/vertraege.json`, synthetisch (A10, E40) | 50 |
+| `modelllauf` | `cluster_id` | — | `src/modell.py`: Marktmiete aus `v_cluster_marktmiete`, Konvergenz (E39) | 3 (davon 2 ohne Marktmiete) |
+| `empfehlung` | `vertrag_id` | `vertrag_id` → `vertrag` | Optimum je Vertrag im Basisfall | 20 |
+| `empfehlung_sensitivitaet` | `(vertrag_id, parameter, rand)` | `vertrag_id` → `vertrag` | Optimum am Rand jeder Annahme | 240 |
+
+Stand 23.10.: Die letzten fünf Tabellen kamen mit Schritt 5 dazu. Das Modell
+schreibt seine Ergebnisse in die Datenbank zurück, damit die Vorlage sie über
+SQL liest (E39); `vertrag` hat bewusst keinen Fremdschlüssel auf `bezirk`,
+weil Cluster und Bezirk über `bezirk.cluster_id` verbunden sind und ein
+Cluster ohne Schnappschuss trotzdem Verträge hat.
 
 `NOT NULL` steht dort, wo eine Zeile ohne den Wert bedeutungslos wäre:
 `snapshot.sha256`, `snapshot.abruf_ts`, `inserat_beobachtung.status`,

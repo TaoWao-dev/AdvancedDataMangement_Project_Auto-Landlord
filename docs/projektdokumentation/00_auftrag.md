@@ -56,6 +56,12 @@ Analysen stützen — sie stehen in `05_schritt4_abfragen_referenzen.md` als
 Nummer 4 und 5: die Extraktion der Kollektivvertragsabschlüsse und die
 Formulierung der Entscheidungsvorlage aus der Kennzahltabelle (siehe unten).
 
+**Stand 23.10.2026.** Die drei Analysen speisen das Entscheidungsmodell
+(E39); seine Empfehlung je Vertrag steht wieder als SQL-Kennzahl zur
+Verfügung (`kennzahl_empfehlung*.sql`, `kennzahl_sensitivitaet.sql`). Das
+Ergebnis für die Leitung ist `docs/vorlage.md`; wie es geprüft ist, steht in
+`06_schritt5_analyse_vorlage.md`.
+
 ## Wo das Sprachmodell arbeitet, und wo nicht
 
 **Nicht:** rechnen. Jede Zahl der Entscheidungsvorlage kommt aus einer

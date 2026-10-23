@@ -71,6 +71,17 @@ jedem Lauf.
 | **Wem gehört sie?** | wie am 25.09. | — |
 | **Woher kommt sie?** | gespeicherte `view-source:`-Ansicht, `__NEXT_DATA__` daraus extrahiert. Erster Versuch lieferte die Startseite (Vorfall 2 in `02_schritt1_datenzugriff.md`). | SHA256 beider Fassungen in `data/raw/2026-10-09/HERKUNFT.md`. |
 
+### Kollektivvertragsseiten (ÖGB, WKO, 23.10.2026)
+
+| Frage | Befund | Konsequenz |
+|---|---|---|
+| **Vollständig?** | ÖGB: 402 Textblöcke, Abschlüsse 2026, 2025 und 2024. WKO: nur die Listen der KV-Fassungen; die Prozentsätze stehen in PDFs, die nicht gespeichert sind. | Für Versicherungen, Wirtschaftstreuhänder und Landesspitäler gibt es keinen Satz 2026 — in der Referenz als Befund, nicht als Lücke gefüllt. |
+| **Korrekt?** | Der Text ist zeichengenau der sichtbare Seitentext; Zeilennummern lückenlos (sonst bricht `tools/quelltext_zu_text.py` ab). | Fundstellen sind nachschlagbar. |
+| **Konsistent?** | Dieselben Branchen erscheinen mit mehreren Jahrgängen, Forderungen und Abschlüssen nebeneinander. | Genau das muss die Extraktion trennen; die Referenz enthält diese Ablenker absichtlich. |
+| **Aktuell?** | Abruf 23.10.2026; die Seite meldet Verhandlungen vom selben Tag. | Stand je Datei in `HERKUNFT.md`. |
+| **Wem gehört sie?** | ÖGB, WKO; öffentliche Seiten. | Nur als Eingabe der Extraktion; manuell gespeichert wie die Inserate. |
+| **Woher?** | `view-source:` im Browser, aufbereitet mit `tools/kv_quellen_aufbereiten.py`. | Autorenzeile (Personenname) außerhalb des übernommenen Ausschnitts; zwei Webadressen ersetzt; SHA256 der Originale in `HERKUNFT.md`. |
+
 ### Tariflohnindex und VPI (Statistik Austria, OGD)
 
 | Frage | Befund | Konsequenz |
