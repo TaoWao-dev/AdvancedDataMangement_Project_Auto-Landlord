@@ -66,6 +66,27 @@ CREATE TABLE kv_textblock (
   PRIMARY KEY (datei, block_nr)
 );
 
+-- KV-Erhoehungen je Branche und Jahr: Ausgabe der LLM-Extraktion, nur nach
+-- Gate 4 (Wortlaut steht in der Quellzeile, src/kv_extrakt.py). satz_index
+-- ist eine Rechenregel des Programms (Durchschnitt laut Quelle, sonst Mitte
+-- der Spanne), keine Angabe der Quelle.
+CREATE TABLE kv_erhoehung (
+  branche_id        TEXT    NOT NULL,
+  jahr              INTEGER NOT NULL,
+  gueltig_ab        TEXT    NOT NULL,
+  datum_angenommen  INTEGER NOT NULL,       -- 1 = Quelle nennt keinen Tag
+  prozent_min       REAL    NOT NULL,
+  prozent_max       REAL    NOT NULL,
+  prozent_mittel_laut_quelle REAL,
+  satz_index        REAL    NOT NULL,
+  fixbetrag_eur     REAL,
+  deckel_eur        REAL,
+  datei             TEXT    NOT NULL,
+  zeile_original    INTEGER NOT NULL,
+  wortlaut          TEXT    NOT NULL,
+  PRIMARY KEY (branche_id, jahr)
+);
+
 -- ───────────────────────────────────────────────────────────── Fakten
 CREATE TABLE inserat_beobachtung (
   snapshot_id     INTEGER NOT NULL REFERENCES snapshot(snapshot_id),

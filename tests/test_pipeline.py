@@ -800,6 +800,47 @@ def test_kv_textbloecke_landen_in_der_datenbank(tmp_path=None):
     assert n > 400, n
     assert z and "2,55 Prozent" in z[0]
 
+# ──────────────────────────────────────── Gate 4: Extraktion gegen Wortlaut
+def _gate4(datensatz_aendern, tmp_path=None):
+    from src import kv_extrakt
+    ziel = Path(tmp_path or C.PROCESSED) / "test_gate4.sqlite"
+    con = _baue(ziel)
+    ds = json.loads(kv_extrakt.neueste_datei().read_text(encoding="utf-8"))["erhoehungen"]
+    handel = [dict(d) for d in ds if d["branche_id"] == "HANDEL" and d["jahr"] == 2026]
+    datensatz_aendern(handel[0])
+    fehler = kv_extrakt.pruefen(handel, con)
+    con.close()
+    ziel.unlink(missing_ok=True)
+    return fehler
+
+
+def test_gate4_laesst_die_echte_extraktion_durch(tmp_path=None):
+    assert _gate4(lambda d: None, tmp_path) == []
+
+
+def test_gate4_faengt_erfundenen_wortlaut(tmp_path=None):
+    f = _gate4(lambda d: d.update(wortlaut="steigen mit 1. Jänner 2026 um 2,6 Prozent"), tmp_path)
+    assert f and "Wortlaut" in f[0], f
+
+
+def test_gate4_faengt_zahl_die_nicht_im_wortlaut_steht(tmp_path=None):
+    f = _gate4(lambda d: d.update(prozent_min=2.5, prozent_max=2.5), tmp_path)
+    assert f and "prozent" in " ".join(f), f
+
+
+def test_gate4_faengt_erfundenes_datum(tmp_path=None):
+    f = _gate4(lambda d: d.update(gueltig_ab="2026-04-01"), tmp_path)
+    assert f and "gueltig_ab" in f[0], f
+
+
+def test_gate4_faengt_keine_verwechslung(tmp_path=None):
+    """Dokumentierte Grenze: der Arbeiter-KV Handel hat denselben Satz.
+    Gate 4 laesst ihn durch - das ist Aufgabe des Evals, nicht des Gates."""
+    f = _gate4(lambda d: d.update(zeile=1911, wortlaut="Lohnerhöhungen von 2,55 Prozent",
+                                  gueltig_ab=None), tmp_path)
+    assert f == [], f
+
+
 if __name__ == "__main__":
     import tempfile
     fehler = 0

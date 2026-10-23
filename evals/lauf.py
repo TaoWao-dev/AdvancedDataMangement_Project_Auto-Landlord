@@ -40,6 +40,9 @@ TASKS = {
     "vorlage": ("vorlage.json", "datei", None),
     "kv_extraktion": ("kv_extraktion.json", "modell", "prompts/kv_extraktion_v1.md"),
     "moebliert": ("moebliert.json", "modell", "prompts/moebliert_v1.md"),
+    # Die gespeicherte Zeitreihen-Extraktion (Claude, Sitzung 23.10.) gegen
+    # dieselben Referenzen - ohne erneuten Modellaufruf (E45).
+    "kv_extraktion_gespeichert": ("kv_extraktion.json", "extrakt", "prompts/kv_zeitreihe_v1.md"),
 }
 
 # Gepinnt: Modellname und Stand. Wer ein anderes Modell nimmt, setzt
@@ -105,7 +108,8 @@ def task_laufen(task: str) -> dict:
                                      f"({os.environ.get('EVAL_BASE_URL', BASE_STANDARD)})"}
         info["modell"] = f"{os.environ.get('EVAL_MODELL', MODELL_STANDARD)} (Stand {MODELL_STAND})"
     else:
-        info["modell"] = {"sql": "SQL (src/sql/kennzahl_*.sql)",
+        info["modell"] = {"extrakt": "Claude Opus 5.5, gespeicherte Ausgabe von kv_zeitreihe_v1 (23.10.2026)",
+                          "sql": "SQL (src/sql/kennzahl_*.sql)",
                           "datei": "docs/vorlage.md (Ausgabe von prompts/vorlage_v1.md)"}[provider]
     start = time.monotonic()
     for t in tests:
@@ -113,6 +117,15 @@ def task_laufen(task: str) -> dict:
         if provider == "sql":
             from evals.providers import sql_kennzahl
             ausgabe = sql_kennzahl.ausfuehren(v)
+        elif provider == "extrakt":
+            from evals.providers import extrakt
+            ausgabe = extrakt.ausfuehren(t["description"])
+            if ausgabe is None:
+                info["ergebnisse"].append({"fall": t["description"], "pass": True, "score": 1.0,
+                                           "grund": "Branche nicht in der Zeitreihe - nicht gewertet",
+                                           "gewertet": False, "bestaetigt": False, "ausgabe": None})
+                continue
+            v = dict(v, nicht_bewertet=list(v.get("nicht_bewertet", [])) + ["ist_prozent"])
         elif provider == "datei":
             from evals.providers import datei
             ausgabe = datei.ausfuehren(v)

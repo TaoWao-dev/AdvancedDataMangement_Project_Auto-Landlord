@@ -58,6 +58,8 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E41](#e41) | 23.10. | KV-Seiten als Quelle aufgenommen, Referenzen mit woertlichem Rohtext per Skript, erwartete Felder bis zur Bestaetigung offen | Referenz frei von Hand schreiben; Referenz aus Modellrecherche (E28) | der Rohtext ist maschinell geprueft woertlich; die Lesung braucht trotzdem einen Menschen | `tools/kv_quellen_aufbereiten.py, evals/erfasse_kv_referenz.py, kv_textblock` |
 | [E42](#e42) | 23.10. | Zahlenpruefung der Vorlage deterministisch statt LLM-Judge; Suite als promptfoo und als Stdlib-Laeufer mit denselben Gradern | Judge-Modell (E27 geplant); nur promptfoo | pruefbare Frage gehoert in Code; npm/PyPI waren in der Sitzung nicht erreichbar, und die Pipeline kommt ohne Installation aus | `evals/graders/, evals/lauf.py, evals/suite_*.yaml` |
 | [E43](#e43) | 23.10. | Vorlage v1 von Claude in der Arbeitssitzung formuliert, nach prompts/vorlage_v1.md, gegen die Grader geprueft; Zitat bindet die Zahl an die zitierte Datei | auf den lokalen Modelllauf warten; Vorlage per Schablone ohne Modell | heute lauffaehig und pruefbar; der Grader hat dabei selbst eine Luecke gezeigt | `docs/vorlage.md, evals/graders/zahlen_herkunft.py` |
+| [E44](#e44) | 23.10. | Scope: Demo-Fall Mietanpassung je laufendem Vertrag statt Verlaengerungsentscheidung in drei Quartieren | beim bisherigen Zuschnitt bleiben | Entscheidung des Studierenden: ein lauffaehiger, sichtbarer Prototyp bis 23:59; nur Branchen und Groessen mit guter Datenlage | `config/vertraege.json, src/modell.py, docs/vorlage.md` |
+| [E45](#e45) | 23.10. | KV-Extraktion durch das Modell der Arbeitssitzung, gesichert durch Gate 4 (Wortlaut in der Quellzeile); kein lokales Modell | LM Studio mit Qwen3 8B (E42 geplant) | LM Studio brachte keinen unmittelbaren Nutzen und haette den Ablauf verkompliziert (Studierender); Gate 4 prueft jeden Datensatz unabhaengig vom Modell | `src/kv_extrakt.py, data/extrakt/, prompts/kv_zeitreihe_v1.md` |
 
 ---
 
@@ -1517,3 +1519,82 @@ ein Mensch.
 Prompt, kommt dessen Vorlage durch dieselben Grader. Besteht sie und ist sie
 für die Leitung brauchbar, ersetzt sie v1; besteht sie nicht, ist das ein
 Befund über das kleinere Modell und gehört nach 06.
+
+---
+
+## E44 {#e44}
+### Der Demo-Fall: Mietanpassung je laufendem Vertrag
+**Datum:** 23.10.2026 · ändert E04 und den Zuschnitt aus 00_auftrag.md
+
+**Situation.** Am Abgabetag entscheidet der Studierende, den Zuschnitt zu
+ändern: Statt einer Verlängerungsentscheidung für 50 Verträge in drei
+Quartieren — von denen zwei keine Marktdaten haben — soll ein lauffähiger
+Prototyp zeigen, wie gescrapte Mietpreise und extrahierte KV-Erhöhungen in
+eine Empfehlung je laufendem Mietvertrag eingehen: ob und um wie viel die
+Miete zu erhöhen ist.
+
+**Alternativen.**
+1. Beim bisherigen Zuschnitt bleiben; zwei Drittel des Portfolios ohne
+   Empfehlung.
+2. Den Demo-Fall auf das zuschneiden, was die Daten tragen: nur 1020, nur
+   Größenklassen mit belastbarem Median in allen drei Abrufen, nur Branchen
+   mit lückenloser KV-Reihe 2024–2026.
+
+**Entscheidung.** Variante 2, auf Wunsch des Studierenden.
+
+**Begründung.** (1) zeigt vor allem Lücken. (2) zeigt den Mechanismus von
+Anfang bis Ende — Abruf, Kennzahl, Extraktion, Gate, Empfehlung — und
+benennt die Lücken trotzdem: Der Zuschnitt auf die gut belegten Fälle ist
+selbst eine Aussage darüber, wofür die Daten reichen.
+
+**Was sich inhaltlich ändert.** Die KV-Lohnentwicklung der Branche geht
+jetzt sichtbar in die Empfehlung ein. Sie bleibt, wie in E05 entschieden,
+eine Größe für Leistbarkeit und Annahmewahrscheinlichkeit — kein
+Preisargument. Das Einkommen bestimmt, wie viel Erhöhung ein Mieter
+voraussichtlich trägt, nicht, was die Wohnung wert ist.
+
+**Revisionspunkt.** Wenn die Empfehlung für einen Mieter mit stärker
+gestiegenem KV-Lohn höher ausfällt, obwohl Wohnung, Miete und Markt gleich
+sind, ist das Einkommen doch zum Preisargument geworden — dann hat E05
+verloren, und das gehört offen in die Vorlage.
+
+---
+
+## E45 {#e45}
+### Die KV-Extraktion macht das Modell der Sitzung; Gate 4 prüft sie gegen den Wortlaut
+**Datum:** 23.10.2026 · ändert E42 (Modellwahl)
+
+**Situation.** Geplant war die Extraktion mit Qwen3 8B lokal über LM Studio.
+Der Studierende hält fest: LM Studio brachte keinen unmittelbaren Nutzen und
+hätte die Sache weiter verkompliziert.
+
+**Alternativen.**
+1. Den lokalen Lauf trotzdem einrichten.
+2. Die Extraktion vom Modell der Arbeitssitzung (Claude Opus 5.5) machen
+   lassen, die Ausgabe als Datei ablegen (`data/extrakt/`) und vor der
+   Datenbank durch ein Gate prüfen, das kein Modell braucht.
+
+**Entscheidung.** Variante 2.
+
+**Begründung.** Die Aufgabe — Prozentsätze und Daten aus Fließtext — ist
+klein; ein zweites Modell brächte eine Installation und keinen Nutzen für
+die Entscheidung. Was zählt, ist die Prüfung: Gate 4
+(`src/kv_extrakt.py`) verlangt für jeden Datensatz, dass der Wortlaut
+zeichengenau in der angegebenen Quellzeile steht und jede Zahl und jedes
+Datum darin vorkommt. Eine halluzinierte Zahl kommt so nicht in die
+Datenbank. Beim Bauen fand der eigene Test einen Fehler im Gate: „2,5“ stand
+als Zeichenkette in „2,55“ und wäre durchgegangen; jetzt wird auf
+Zahlgrenzen geprüft.
+
+**Was Gate 4 nicht kann.** Eine Verwechslung erkennen. Der Arbeiter-KV
+Handel hat denselben Satz wie der Angestellten-KV; ein Datensatz aus der
+falschen Zeile besteht das Gate (`test_gate4_faengt_keine_verwechslung`
+hält das als bekannte Grenze fest). Das prüft das Eval gegen die
+Referenzen: 5 von 5 abgedeckten Fällen stimmen. Aber Referenz-Lesung und
+Extraktion stammen vom selben Modell — das Ergebnis belegt Konsistenz, nicht
+unabhängige Richtigkeit. Die einzige unabhängige Prüfung ist die Durchsicht
+des Studierenden („großteils okay").
+
+**Revisionspunkt.** Bestätigt der Studierende einen Referenzfall nicht oder
+ändert ihn, und die Extraktion bleibt beim alten Wert, ist der Gleichklang
+von Referenz und Extraktion als Selbstbestätigung entlarvt.

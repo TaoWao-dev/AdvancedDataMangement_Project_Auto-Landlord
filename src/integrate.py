@@ -13,7 +13,7 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from . import clean, config as C
+from . import clean, config as C, kv_extrakt
 
 
 def verbinde(pfad: Path | None = None) -> sqlite3.Connection:
@@ -131,6 +131,9 @@ def ausfuehren(bereinigt: dict | None = None,
         con.execute("INSERT INTO kv_textblock VALUES (?,?,?,?,?,?)",
                     (b["datei"], je_datei[b["datei"]], b["abrufdatum"],
                      b["quelle_url"], b["zeile_original"], b["text"]))
+
+    # KV-Erhoehungen aus der LLM-Extraktion - nur nach Gate 4.
+    kv_extrakt.laden(con)
 
     # abgelehnte Dateien in den Qualitaetsbericht
     for a in wh["abgelehnt"]:
