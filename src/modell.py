@@ -51,8 +51,10 @@ def vertraege_laden() -> list[dict]:
                       .read_text(encoding="utf-8"))["vertraege"]
 
 
-def quartal(vertragsende: str) -> int:
-    return (int(vertragsende[5:7]) - 1) // 3 + 1
+def quartal(vertragsende: str) -> str:
+    # Mit Jahr: Vertragsenden reichen ueber den Jahreswechsel, und Q3/2027
+    # konkurriert nicht mit Q3/2028.
+    return f"{vertragsende[:4]}-Q{(int(vertragsende[5:7]) - 1) // 3 + 1}"
 
 
 def beste_option(v: dict, markt: float, par: dict, raster: list[float],
@@ -90,7 +92,7 @@ def fixpunkt(vertraege: list[dict], markt: float, par: dict,
         ergebnis = {v["vertrag_id"]: beste_option(v, markt, par, raster,
                                                   leer[quartal(v["vertragsende"])])
                     for v in vertraege}
-        auszuege: dict[int, float] = {q: 0.0 for q in leer}
+        auszuege: dict[str, float] = {q: 0.0 for q in leer}
         for v in vertraege:
             auszuege[quartal(v["vertragsende"])] += 1.0 - ergebnis[v["vertrag_id"]]["p"]
         # Die erste Neuvermietung je Quartal ist der Normalfall (Basis); erst

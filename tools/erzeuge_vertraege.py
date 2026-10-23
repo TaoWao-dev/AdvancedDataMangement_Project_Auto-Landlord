@@ -12,8 +12,12 @@ Annahmen (alle in docs/annahmen.md unter A10 und A11):
 
   - 50 Vertraege, Cluster und Einheiten aus config/portfolio.json
   - Abschlussjahr 2019-2022, gleichverteilt
-  - Vertragsende 2027, Monat gleichverteilt: die Tranche der naechsten
-    zwoelf Monate aus 00_auftrag.md
+  - Vertragsende Juli 2027 bis Juni 2028, Monat gleichverteilt. Entschieden
+    wird 6 Monate vor Vertragsende; die erste Tranche entscheidet im
+    1. Quartal 2027 (00_auftrag.md) und betrifft damit Vertragsenden ab
+    Juli 2027. Korrektur 23.10.: die erste Fassung liess Vertraege ab
+    Jaenner 2027 enden - deren Entscheidung waere vor dem heutigen Tag
+    faellig gewesen.
   - Startmiete = angenommenes Marktniveau des Abschlussjahres * Streuung
   - 85 % mit Wertsicherungsklausel; mit Klausel bis 2026 fortgeschrieben
     mit einer pauschalen Jahresrate, weil die Indexreihen nicht beschafft
@@ -52,6 +56,7 @@ ANTEIL_KLAUSEL = 0.85
 INDEX_RATE_PA = 0.040        # ANNAHME, pauschal, bis 2026
 STICHJAHR = 2026
 ANTEIL_ZWEITEINKOMMEN = 0.40
+ENDE_MONATE = [f"2027-{m:02d}" for m in range(7, 13)] + [f"2028-{m:02d}" for m in range(1, 7)]
 QUOTE_BEI_ABSCHLUSS_MAX = 0.35   # ANNAHME: uebliche Bonitaetsgrenze
 
 
@@ -110,7 +115,7 @@ def erzeugen() -> dict:
                 "cluster_id": c["cluster_id"],
                 "flaeche_m2": flaeche,
                 "abschluss_jahr": jahr,
-                "vertragsende": f"2027-{rng.randint(1, 12):02d}",
+                "vertragsende": ENDE_MONATE[rng.randrange(len(ENDE_MONATE))],
                 "wertsicherung": klausel,
                 "miete_start_eur": round(start_m2 * flaeche, 2),
                 "miete_aktuell_eur": round(heute_m2 * flaeche, 2),

@@ -14,7 +14,7 @@
 -- Referenzantwort: keine aus einer Zweitimplementierung. Geprueft durch
 -- tests/test_modell.py (Fixpunkt, Gegenkraft) und Gate 3 (Konvergenz).
 WITH e AS (
-  SELECT v.cluster_id, e.*
+  SELECT v.cluster_id, v.wertsicherung, e.*
   FROM empfehlung e JOIN vertrag v ON v.vertrag_id = e.vertrag_id
 ),
 r AS (
@@ -42,6 +42,11 @@ SELECT m.cluster_id,
        ROUND(SUM(e.bw_empfehlung), 0)                                        AS bw_empfehlung_summe,
        ROUND(SUM(e.bw_nur_index), 0)                                         AS bw_nur_index_summe,
        ROUND(SUM(e.bw_empfehlung - e.bw_nur_index), 0)                       AS mehrwert_gegen_nur_index,
+       ROUND(SUM(e.bw_auslaufen), 0)                                         AS bw_alle_auslaufen_summe,
+       ROUND(SUM(e.bw_empfehlung - e.bw_auslaufen), 0)                       AS mehrwert_gegen_auslaufen,
+       MIN(e.angebot_eur_m2)                                                 AS min_angebot_eur_m2,
+       MAX(e.angebot_eur_m2)                                                 AS max_angebot_eur_m2,
+       SUM(e.wertsicherung = 0)                                              AS ohne_wertsicherung,
        m.konvergiert,
        m.iterationen,
        m.leerstand_monate                                                    AS leerstand_fixpunkt_monate
