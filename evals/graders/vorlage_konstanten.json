@@ -1,0 +1,19 @@
+{
+ "_zweck": "Zahlen, die in der Vorlage stehen duerfen, ohne aus einer Kennzahl-CSV zu kommen. Jede mit Grund. Diese Liste klein halten: jede Zeile hier ist eine Zahl, die der Grader nicht prueft.",
+ "werte": [
+  {"wert": 50, "grund": "Portfoliogroesse, Auftrag (00_auftrag.md, config/portfolio.json)"},
+  {"wert": 80, "grund": "Zielsegment Untergrenze m2 (config.ZIELSEGMENT)"},
+  {"wert": 100, "grund": "Zielsegment Obergrenze m2 (config.ZIELSEGMENT)"},
+  {"wert": 3, "grund": "drei Quartiere / Cluster (config/portfolio.json)"},
+  {"wert": 5, "grund": "Bindungsdauer der Verlaengerung in Jahren (entscheidung.BINDUNG_JAHRE)"},
+  {"wert": 6, "grund": "Entscheidung 6 Monate vor Vertragsende (00_auftrag.md)"},
+  {"wert": 35, "grund": "Bonitaetsgrenze bei Abschluss in Prozent (tools/erzeuge_vertraege.py, A11)"},
+  {"wert": 88, "grund": "Anteil mit Zweiteinkommen nach Bonitaetspruefung in Prozent, 44 von 50 (E40)"},
+  {"wert": 44, "grund": "Haushalte mit Zweiteinkommen (E40)"},
+  {"wert": 40, "grund": "angenommener Anteil Zweiteinkommen vor der Bonitaetspruefung in Prozent (A11)"},
+  {"wert": "2026-10-23", "grund": "Datum der Vorlage"},
+  {"wert": "2026-01-01", "grund": "Inkrafttreten des gedeckelten Wertsicherungsrahmens (docs/annahmen.md)"},
+  {"wert": "2027-01-01", "grund": "Beginn der ersten Tranche, 1. Quartal 2027 (00_auftrag.md)"},
+  {"wert": "2026-09-25", "grund": "erster Abruf 1020 (data/raw/2026-09-25)"}
+ ]
+}

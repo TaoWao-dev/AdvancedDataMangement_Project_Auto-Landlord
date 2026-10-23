@@ -1,0 +1,24 @@
+# Titelklassifikation "moebliert / Kurzzeit" (E38).
+#   cd evals && npx promptfoo@latest eval -c suite_moebliert.yaml
+# Testfaelle entstehen erst aus der Markierung des Studierenden
+# (evals/references/moebliert.json). Solange sie fehlt, ist die Datei leer.
+description: "Moebliert/Kurzzeit aus dem Inseratstitel - Referenz: Markierung des Studierenden"
+
+prompts:
+  - id: file://../prompts/moebliert_v1.md
+    label: moebliert_v1
+
+providers:
+  - id: openai:chat:qwen/qwen3-8b
+    label: "qwen3-8b via LM Studio, Stand 2026-10-23"
+    config:
+      apiBaseUrl: http://localhost:1234/v1
+      apiKey: lm-studio
+      temperature: 0
+      seed: 20261023
+      max_tokens: 300
+
+tests: file://tests/moebliert.json
+
+evaluateOptions:
+  maxConcurrency: 1

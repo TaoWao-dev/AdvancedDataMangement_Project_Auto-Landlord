@@ -14,3 +14,8 @@ __pycache__/
 *.pyc
 .env
 .ipynb_checkpoints/
+
+# Wegwerf-Datenbanken der Eval-Suite (evals/providers/sql_kennzahl.py)
+data/.eval_*/
+# Ergebnisse der Eval-Laeufe bleiben lokal (Vorgabe Deliverable 3)
+evals/results/

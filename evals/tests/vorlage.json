@@ -1,0 +1,36 @@
+[
+ {
+  "description": "vorlage_jede_zahl_mit_herkunft",
+  "vars": {
+   "pfad": "docs/vorlage.md"
+  },
+  "metadata": {
+   "task": "vorlage",
+   "referenz": "data/processed/kennzahl_*.csv",
+   "von_hand_bestaetigt": true
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/zahlen_herkunft.py"
+   }
+  ]
+ },
+ {
+  "description": "vorlage_pflichten",
+  "vars": {
+   "pfad": "docs/vorlage.md"
+  },
+  "metadata": {
+   "task": "vorlage",
+   "referenz": "prompts/vorlage_v1.md (Gliederung)",
+   "von_hand_bestaetigt": true
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/vorlage_pflichten.py"
+   }
+  ]
+ }
+]

@@ -56,6 +56,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E39](#e39) | 23.10. | Modell an die Daten angeschlossen: Marktmiete aus SQL, Ergebnis als Tabelle zurueck, Kennzahlen wieder SQL | Empfehlung direkt in Python ausgeben; Barwertrechnung in SQL | jede Zahl der Vorlage nennt eine Abfrage; die Iteration ist in SQL nicht pruefbar | `src/modell.py, kennzahl_empfehlung*.sql, kennzahl_sensitivitaet.sql` |
 | [E40](#e40) | 23.10. | Vertragsbestand mit Bonitaetspruefung bei Abschluss erzeugt | Einkommen unabhaengig von der Miete ziehen (erste Fassung) | Belastungsquoten bis 1,22 beschreiben Vertraege, die nie zustande gekommen waeren | `tools/erzeuge_vertraege.py, config/vertraege.json` |
 | [E41](#e41) | 23.10. | KV-Seiten als Quelle aufgenommen, Referenzen mit woertlichem Rohtext per Skript, erwartete Felder bis zur Bestaetigung offen | Referenz frei von Hand schreiben; Referenz aus Modellrecherche (E28) | der Rohtext ist maschinell geprueft woertlich; die Lesung braucht trotzdem einen Menschen | `tools/kv_quellen_aufbereiten.py, evals/erfasse_kv_referenz.py, kv_textblock` |
+| [E42](#e42) | 23.10. | Zahlenpruefung der Vorlage deterministisch statt LLM-Judge; Suite als promptfoo und als Stdlib-Laeufer mit denselben Gradern | Judge-Modell (E27 geplant); nur promptfoo | pruefbare Frage gehoert in Code; npm/PyPI waren in der Sitzung nicht erreichbar, und die Pipeline kommt ohne Installation aus | `evals/graders/, evals/lauf.py, evals/suite_*.yaml` |
 
 ---
 
@@ -1414,3 +1415,53 @@ nur, wenn das Portfolio dort Mieter hat — es ist eine Annahme mehr (07).
 Ändert der Studierende beim Bestätigen eine erwartete Antwort, ist das kein
 Fehler, sondern der Zweck des Schritts — die Änderung gehört dann in diesen
 Eintrag.
+
+---
+
+## E42 {#e42}
+### Die Grader sind Programme, und die Suite läuft auch ohne Node
+**Datum:** 23.10.2026 · ändert die Planung aus E27
+
+**Situation.** E27 hatte für die Vorlage ein Judge-Eval vorgesehen: ein
+Modell prüft, ob im Text eine Zahl steht, die nicht in der Tabelle steht. Für
+die Suite war promptfoo gesetzt. In der Arbeitssitzung waren weder npm noch
+PyPI erreichbar.
+
+**Alternativen.**
+1. Judge-Modell für die Zahlenprüfung, Suite nur in promptfoo.
+2. Zahlenprüfung als Programm (`zahlen_herkunft.py`); die Grader als reines
+   Python, das promptfoo (`type: python`) und ein eigener Läufer
+   (`evals/lauf.py`) gleichermaßen aufrufen; Testfälle als JSON, aus den
+   Referenzen erzeugt.
+3. Nur der eigene Läufer, ohne promptfoo.
+
+**Entscheidung.** Variante 2.
+
+**Begründung.** „Steht jede Zahl in einer Kennzahl-CSV?" ist eine prüfbare
+Frage; ein Judge-Modell könnte eine Zahl übersehen oder selbst eine
+erfinden — es würde also genau das Risiko tragen, das es prüfen soll (E27:
+was prüfbar sein muss, gehört in Code). (1) hätte zudem heute nicht laufen
+können. (3) würde die Vorgabe der Lehrveranstaltung (promptfoo) ignorieren.
+Mit (2) gibt es genau einen Maßstab: dieselben Testdateien und dieselben
+Grader-Funktionen, egal wer sie aufruft.
+
+**Wie geprüft ist, dass die Grader prüfen.** `tests/test_graders.py` hat zu
+jedem Grader Fälle, die bestehen müssen, und solche, die scheitern müssen —
+darunter die wahrscheinlichen Modellfehler (Vorjahreswert, erfundenes Datum,
+gleicher Prozentsatz aus dem falschen KV, selbst gerechnete Differenz).
+Zusätzlich baut `evals/gegenprobe_grader.py` absichtlich Fehler in die
+Grader ein. In der ersten Fassung überlebten 2 von 6: ein Klassifikations-
+Grader, der „nein, eher doch ja" als „ja" liest, und eine Fallzahl, die
+mit Toleranz verglichen wird. Beide Tests wurden nachgeschärft; jetzt werden
+6 von 6 gefangen.
+
+**Bekannte Grenze.** `zahlen_herkunft` liest vierstellige Jahreszahlen nicht
+als Zahl. Ein erfundenes Jahr fällt nicht auf. Das steht als Test
+(`test_bekannte_luecke_jahreszahl`), damit es niemand versehentlich für
+geschlossen hält.
+
+**Revisionspunkt.** Meldet die Zahlenprüfung bei einer von Hand geprüften
+Vorlage eine Zahl als unbelegt, die tatsächlich in einer CSV steht, ist der
+Parser zu eng; findet ein Mensch in einer bestandenen Vorlage eine Zahl ohne
+Herkunft, ist er zu weit. Beides gehört dann als Testfall nach
+`tests/test_graders.py`.

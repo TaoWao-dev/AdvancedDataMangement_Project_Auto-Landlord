@@ -1,0 +1,14 @@
+# Analysen 1-3: die Kennzahl-Abfragen gegen die Referenzantworten.
+#   cd evals && npx promptfoo@latest eval -c suite_kennzahlen.yaml
+# Das "Modell" ist SQL: der Provider baut je Datenstand eine Wegwerf-Datenbank
+# aus data/raw/ und fuehrt src/sql/kennzahl_*.sql aus. Kein Netz, keine Kosten.
+description: "Analysen 1-3 - SQL gegen Referenzen (Zweitimplementierung)"
+
+prompts:
+  - "{{abfrage}}"
+
+providers:
+  - id: file://providers/sql_kennzahl.py
+    label: "SQL, src/sql/kennzahl_*.sql"
+
+tests: file://tests/kennzahlen.json

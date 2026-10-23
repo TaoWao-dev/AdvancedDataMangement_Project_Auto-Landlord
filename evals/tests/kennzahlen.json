@@ -1,0 +1,274 @@
+[
+ {
+  "description": "marktniveau_1020_bis_50",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_marktniveau.sql",
+   "filter": {
+    "plz": "1020",
+    "groessenklasse": "bis 50",
+    "abruf_datum": "2026-09-25",
+    "status": "aktiv"
+   },
+   "datenstand": null,
+   "auswertung": null,
+   "erwartet": {
+    "fallzahl": 10,
+    "median_eur_m2": 33.49,
+    "q1_eur_m2": 25.16,
+    "q3_eur_m2": 41.94,
+    "min_eur_m2": 21.11,
+    "max_eur_m2": 62.1,
+    "davon_privat": 4,
+    "davon_gewerblich": 6,
+    "belastbarkeit": "duenn"
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/marktniveau.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "marktniveau_1020_50-80",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_marktniveau.sql",
+   "filter": {
+    "plz": "1020",
+    "groessenklasse": "50-80",
+    "abruf_datum": "2026-09-25",
+    "status": "aktiv"
+   },
+   "datenstand": null,
+   "auswertung": null,
+   "erwartet": {
+    "fallzahl": 37,
+    "median_eur_m2": 24.98,
+    "q1_eur_m2": 21.05,
+    "q3_eur_m2": 33.91,
+    "min_eur_m2": 7.51,
+    "max_eur_m2": 39.15,
+    "davon_privat": 14,
+    "davon_gewerblich": 23,
+    "belastbarkeit": "belastbar"
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/marktniveau.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "marktniveau_1020_80-100",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_marktniveau.sql",
+   "filter": {
+    "plz": "1020",
+    "groessenklasse": "80-100",
+    "abruf_datum": "2026-09-25",
+    "status": "aktiv"
+   },
+   "datenstand": null,
+   "auswertung": null,
+   "erwartet": {
+    "fallzahl": 15,
+    "median_eur_m2": 26.67,
+    "q1_eur_m2": 20.77,
+    "q3_eur_m2": 30.79,
+    "min_eur_m2": 18.4,
+    "max_eur_m2": 37.04,
+    "davon_privat": 3,
+    "davon_gewerblich": 12,
+    "belastbarkeit": "belastbar"
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/marktniveau.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "marktniveau_1020_ueber_100",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_marktniveau.sql",
+   "filter": {
+    "plz": "1020",
+    "groessenklasse": "ueber 100",
+    "abruf_datum": "2026-09-25",
+    "status": "aktiv"
+   },
+   "datenstand": null,
+   "auswertung": null,
+   "erwartet": {
+    "fallzahl": 24,
+    "median_eur_m2": 19.02,
+    "q1_eur_m2": 17.75,
+    "q3_eur_m2": 21.57,
+    "min_eur_m2": 14.07,
+    "max_eur_m2": 46.52,
+    "davon_privat": 3,
+    "davon_gewerblich": 21,
+    "belastbarkeit": "belastbar"
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/marktniveau.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "anbietertyp_1020_80-100_privat",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_anbietertyp.sql",
+   "filter": {
+    "plz": "1020",
+    "groessenklasse": "80-100",
+    "anbietertyp": "privat"
+   },
+   "datenstand": [
+    "2026-09-25"
+   ],
+   "auswertung": null,
+   "erwartet": {
+    "fallzahl": 3,
+    "median_eur_m2": 23.16
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/anbietertyp.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "anbietertyp_1020_80-100_gewerblich",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_anbietertyp.sql",
+   "filter": {
+    "plz": "1020",
+    "groessenklasse": "80-100",
+    "anbietertyp": "gewerblich"
+   },
+   "datenstand": [
+    "2026-09-25"
+   ],
+   "auswertung": null,
+   "erwartet": {
+    "fallzahl": 12,
+    "median_eur_m2": 26.91
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/anbietertyp.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "abdeckung_bezirke",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_abdeckung.sql",
+   "filter": {},
+   "datenstand": [
+    "2026-09-25"
+   ],
+   "auswertung": "abdeckung",
+   "erwartet": {
+    "bezirke_in_konfiguration": 5,
+    "bezirke_mit_schnappschuss": 1,
+    "beobachtungen_gesamt": 90,
+    "ohne_schnappschuss": [
+     "1010",
+     "1030",
+     "1100",
+     "1220"
+    ]
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/abdeckung_und_dauer.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ },
+ {
+  "description": "inseratsdauer_nicht_messbar",
+  "vars": {
+   "abfrage": "src/sql/kennzahl_inseratsdauer.sql",
+   "filter": {},
+   "datenstand": [
+    "2026-09-25"
+   ],
+   "auswertung": "inseratsdauer",
+   "erwartet": {
+    "zeilen_mit_dauer_ueber_null": 0,
+    "anteil_zensiert": 1.0,
+    "auswertbar": false
+   },
+   "toleranz": 0.01
+  },
+  "metadata": {
+   "task": "sql",
+   "referenz": "evals/references/abdeckung_und_dauer.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/sql_referenz.py"
+   }
+  ]
+ }
+]

@@ -1,0 +1,15 @@
+# Analyse 5: die Entscheidungsvorlage.
+#   cd evals && npx promptfoo@latest eval -c suite_vorlage.yaml
+# Geprueft wird docs/vorlage.md, wie sie im Repository steht: jede Zahl muss
+# aus data/processed/kennzahl_*.csv (oder einer benannten Annahme/Konstante)
+# kommen, und die Pflichtabschnitte muessen da sein.
+description: "Analyse 5 - Entscheidungsvorlage: Zahlenherkunft und Pflichten"
+
+prompts:
+  - "{{pfad}}"
+
+providers:
+  - id: file://providers/datei.py
+    label: "docs/vorlage.md (Ausgabe von prompts/vorlage_v1.md)"
+
+tests: file://tests/vorlage.json

@@ -1,0 +1,244 @@
+[
+ {
+  "description": "kv_banken",
+  "vars": {
+   "reihe": "Banken und Bankiers",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.0,
+    "prozent_max": 3.0,
+    "fixbetrag_eur": 5.0,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-04-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 1258
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_versicherung_innendienst",
+  "vars": {
+   "reihe": "Versicherungsunternehmungen/Innendienst",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": false,
+    "prozent_min": null,
+    "prozent_max": null,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-03-01",
+    "bezugsgroesse": null,
+    "deckelung": null,
+    "fundstelle_zeile": null
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_it",
+  "vars": {
+   "reihe": "Fachverband Unternehmensberatung, Buchhaltung und Informationstechnologie (IT-KV)",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 2.7,
+    "prozent_max": 3.1,
+    "fixbetrag_eur": null,
+    "ist_prozent": 2.75,
+    "geltungsbeginn": "2026-01-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 1806
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_elektroindustrie",
+  "vars": {
+   "reihe": "Elektro- u. Elektronikindustrie",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.0,
+    "prozent_max": 3.0,
+    "fixbetrag_eur": null,
+    "ist_prozent": 2.7,
+    "geltungsbeginn": "2026-05-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 1069
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_handel_angestellte",
+  "vars": {
+   "reihe": "Handelsangestellte Allgemeiner Gross- und Kleinhandel",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 2.55,
+    "prozent_max": 2.55,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-01-01",
+    "bezugsgroesse": "kv_mindest",
+    "deckelung": false,
+    "fundstelle_zeile": 2377
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_privatkrankenanstalten",
+  "vars": {
+   "reihe": "Privatkrankenanstalten",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.0,
+    "prozent_max": 3.0,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": "2026-04-01",
+    "bezugsgroesse": null,
+    "deckelung": true,
+    "fundstelle_zeile": 1851
+   },
+   "nicht_bewertet": [
+    "bezugsgroesse"
+   ]
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_wirtschaftstreuhaender",
+  "vars": {
+   "reihe": "Wirtschaftstreuhaender",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": false,
+    "prozent_min": null,
+    "prozent_max": null,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": null,
+    "bezugsgroesse": null,
+    "deckelung": null,
+    "fundstelle_zeile": null
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ },
+ {
+  "description": "kv_oeffentlicher_dienst",
+  "vars": {
+   "reihe": "Oeffentlicher Dienst (Bund, Vergleichsreihe)",
+   "dokumente": "file://kontext/kv_dokumente.txt",
+   "erwartet": {
+    "abschluss_gefunden": true,
+    "prozent_min": 3.3,
+    "prozent_max": 3.3,
+    "fixbetrag_eur": null,
+    "ist_prozent": null,
+    "geltungsbeginn": null,
+    "bezugsgroesse": "gehaltsschema",
+    "deckelung": false,
+    "fundstelle_zeile": 2782
+   },
+   "nicht_bewertet": []
+  },
+  "metadata": {
+   "task": "kv_extraktion",
+   "referenz": "evals/references/kv_extraktion.json",
+   "von_hand_bestaetigt": false
+  },
+  "assert": [
+   {
+    "type": "python",
+    "value": "file://graders/extraktion.py"
+   }
+  ]
+ }
+]

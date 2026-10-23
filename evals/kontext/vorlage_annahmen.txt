@@ -1,0 +1,11 @@
+- leerstand_monate: 2.5 (Spanne [1.5, 2.5, 4.0]) - Zeit zwischen Auszug und Neubezug inkl. Vermarktung. Kuenftig messbar aus v_inseratsdauer.
+- neuvermietungskosten_monatsmieten: 2.0 (Spanne [1.0, 2.0, 3.5]) - Vermarktung, Maklerleistung, Malerei, Grundreinigung.
+- diskontsatz_pa: 0.045 (Spanne [0.03, 0.045, 0.06]) - Kalkulationszins des Bestandhalters.
+- umzugskosten_eur: 4500 (Spanne [2500, 4500, 7000]) - Was der Mieter beim Wechsel traegt. Bindet ihn an einen Vertrag ueber Markt.
+- belastungsquote_schmerzgrenze: 0.33 (Spanne [0.28, 0.33, 0.4]) - Anteil der Bruttomiete am Haushaltsnetto, ab dem die Annahmebereitschaft faellt.
+- wechselbereitschaft_k: 0.55 (Spanne [0.3, 0.55, 0.9]) - Steilheit der Annahmekurve. DER SENSIBELSTE PARAMETER des Modells.
+- betriebskosten_eur_m2: 2.6 (Spanne [2.2, 2.6, 3.2]) - Fuer die Bruttomiete in der Belastungsquote. Nicht Teil des Mietzinses.
+- netto_von_brutto_faktor: 0.66 (Spanne [0.62, 0.66, 0.7]) - Grobe Ueberleitung Brutto-Jahreseinkommen auf verfuegbares Netto.
+- marktrisiko_abschlag: 0.06 (Spanne [0.0, 0.06, 0.12]) - Abschlag auf die geschaetzte Marktmiete gegenueber dem sicheren Bestandsmietvertrag. Inserate sind Angebots-, keine Abschlussmieten.
+- ausfall_monate_je_fall: 4.0 (Spanne [2.0, 4.0, 7.0]) - Mietausfall plus Verfahrensdauer je Zahlungsausfall.
+- leerstand_zuschlag_je_gleichzeitiger_neuvermietung: 0.35 (Spanne [0.15, 0.35, 0.6]) - Wer viele idente Wohnungen im selben Quartal inseriert, konkurriert mit sich selbst. Dieser Parameter verkoppelt die 50 Einzelentscheidungen.

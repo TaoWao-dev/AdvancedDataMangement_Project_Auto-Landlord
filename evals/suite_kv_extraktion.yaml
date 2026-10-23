@@ -1,0 +1,32 @@
+# Analyse 4: Extraktion aus Kollektivvertragstexten.
+#   cd evals && npx promptfoo@latest eval -c suite_kv_extraktion.yaml
+# Ohne Node:  EVAL_MODELL=qwen/qwen3-8b python3 evals/lauf.py kv_extraktion
+#
+# Testfaelle: evals/tests/kv_extraktion.json, erzeugt von evals/baue_tests.py
+# aus evals/references/kv_extraktion.json. Nicht von Hand bearbeiten.
+description: "Analyse 4 - KV-Abschluesse 2026 aus OeGB/WKO-Seiten (Abruf 23.10.2026)"
+
+prompts:
+  - id: file://../prompts/kv_extraktion_v1.md
+    label: kv_extraktion_v1
+
+# Modell gepinnt: Name und Stand. Ein anderes Modell ist eine neue Zeile im
+# prompts/CHANGELOG.md, kein stiller Tausch.
+providers:
+  - id: openai:chat:qwen/qwen3-8b
+    label: "qwen3-8b via LM Studio, Stand 2026-10-23"
+    config:
+      apiBaseUrl: http://localhost:1234/v1
+      apiKey: lm-studio            # LM Studio verlangt einen, prueft ihn nicht
+      temperature: 0
+      seed: 20261023
+      max_tokens: 1200
+  # Alternative ohne lokale Hardware, kostenlos (Rate-Limit beachten):
+  # - id: openrouter:qwen/qwen3-8b:free
+  #   label: "qwen3-8b:free via OpenRouter, Stand 2026-10-23"
+  #   config: {temperature: 0}    # OPENROUTER_API_KEY in .env
+
+tests: file://tests/kv_extraktion.json
+
+evaluateOptions:
+  maxConcurrency: 1                # lokales Modell, eine Anfrage nach der anderen
