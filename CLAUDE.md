@@ -169,6 +169,7 @@ Daten `tools/erzeuge_vertraege.py` nur, wenn sich das Verzeichnis ändern soll.
 
 ## Was noch fehlt
 
-Unabhängige Bestätigung der KV-Referenzen, eine längere Marktreihe, echte
-Einkommensniveaus, ein zweites Modell für die Extraktion. Vollständig, mit
+Ein achter Extraktionsfall (seit E48 sind es sieben, alle bestätigt), eine
+längere Marktreihe, echte Einkommensniveaus, ein zweites Modell für die
+Extraktion. Vollständig, mit
 den fünf Schwächen des Projekts, in `07_offene_punkte_lessons.md`.
