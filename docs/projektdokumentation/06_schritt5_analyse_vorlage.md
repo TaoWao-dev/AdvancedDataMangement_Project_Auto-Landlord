@@ -135,4 +135,31 @@ belastbare Ergebnis des Projekts:
 
 ## Selbsttest aus frischem Klon
 
-*Wird nach dem Push des letzten Commits eingetragen.*
+| | |
+|---|---|
+| **Datum** | 23.10.2026, 15:04 Wiener Zeit |
+| **Stand** | Commit `f30f541` auf `main`, frisch von GitHub geklont in ein leeres Verzeichnis |
+| **Befolgt** | nur der Abschnitt „Sofort ausprobieren" der README, Befehl für Befehl |
+| **Dauer** | 6 Sekunden für Klon, Pipeline, drei Testdateien, Testfallbau und Suite |
+| **Ergebnis** | `GATE 3: bestanden`; 53 + 26 + 26 Tests grün; Suite `sql` 9/9, `vorlage` 2/2 |
+| **Was danach anders war** | nichts: `git status` leer. Datenbank, Kennzahl-CSV, Testfälle und Modellkontext entstehen byteweise identisch zum Commit. |
+
+**Was gehakt hat.** Im Selbsttest selbst nichts. Gehakt hat es davor, und
+das ist der Grund, warum der Selbsttest glatt lief:
+
+- Die README des Termin-3-Stands enthielt den Block „Noch nicht in diesem
+  Stand" doppelt, mit widersprüchlichem Inhalt, und nannte 32 statt 45
+  Pipeline-Tests. Neu geschrieben.
+- Die promptfoo-Installation scheiterte (`ENOTFOUND registry.npmjs.org`).
+  Ergänzt: `evals/lauf.py` ohne Node (E42).
+- Der SQL-Provider legte seine Wegwerf-Datenbank zuerst unter `/tmp` an; die
+  Pipeline schreibt Pfade relativ zum Projekt und brach ab. Ergänzt:
+  Wegwerf-Verzeichnis unter `data/.eval_*` (gitignored).
+- `evals/baue_tests.py` braucht die Datenbank; ohne vorherigen
+  `python3 -m src.run` bricht es ab. Die README nennt die Reihenfolge.
+
+**Was dieser Selbsttest nicht zeigt.** Er lief in derselben Arbeitsumgebung
+(Linux, Python 3.13), in der das Repository gebaut wurde — nur in einem
+anderen Verzeichnis und aus dem entfernten Stand. Ein Lauf auf dem Rechner
+des Studierenden (Windows/macOS, anderes Python) steht aus, ebenso der
+Modelllauf mit LM Studio.
