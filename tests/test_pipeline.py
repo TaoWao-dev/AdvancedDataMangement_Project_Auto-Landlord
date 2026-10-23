@@ -349,7 +349,9 @@ def test_inseratsdauer_wird_gemessen_sobald_zwei_abrufe_da_sind(tmp_path=None):
     con.close()
     ziel.unlink(missing_ok=True)
     assert tage, "kein Inserat in zwei Abrufen - Testdaten fehlen"
-    assert all(t[0] == 14 for t in tage), sorted({t[0] for t in tage})
+    # Eine Dauer ist immer der Abstand zweier Abruftage (14 bzw. 28 Tage).
+    erlaubt = {14, 28}
+    assert {t[0] for t in tage} <= erlaubt, sorted({t[0] for t in tage})
 
 
 def test_preissenkung_erscheint_als_senkung(tmp_path=None):
@@ -394,13 +396,19 @@ def test_zensiert_heisst_im_letzten_abruf_noch_online(tmp_path=None):
     con = _baue(ziel)
     zensiert = con.execute("SELECT SUM(zensiert) FROM v_inseratsdauer"
                            " WHERE plz = '1020'").fetchone()[0]
-    im_letzten = con.execute("SELECT COUNT(DISTINCT ad_id) FROM"
-                             " inserat_beobachtung WHERE plz = '1020' AND"
-                             " substr(abruf_ts, 1, 10) = '2026-10-09'"
-                             ).fetchone()[0]
+    im_letzten = con.execute(
+        """SELECT COUNT(DISTINCT ad_id) FROM inserat_beobachtung
+           WHERE plz = '1020' AND substr(abruf_ts, 1, 10) =
+                 (SELECT MAX(substr(abruf_ts, 1, 10)) FROM inserat_beobachtung
+                  WHERE plz = '1020')""").fetchone()[0]
+    treffer = con.execute(
+        """SELECT treffer FROM v_abruf WHERE plz = '1020'
+           ORDER BY abruf_datum DESC LIMIT 1""").fetchone()[0]
     con.close()
     ziel.unlink(missing_ok=True)
-    assert zensiert == im_letzten == 178, (zensiert, im_letzten)
+    # Der juengste Abruf ist vollstaendig: alle seine Inserate sind zensiert,
+    # und es sind so viele, wie die Suche Treffer meldete.
+    assert zensiert == im_letzten == treffer, (zensiert, im_letzten, treffer)
 
 
 def test_kein_inserat_doppelt_im_angebot_eines_abrufs(tmp_path=None):
@@ -426,10 +434,19 @@ def test_ungemessene_abgaenge_zaehlen_nicht_als_null_tage(tmp_path=None):
                     .read_text(encoding="utf-8")).fetchone()
     con.close()
     ziel.unlink(missing_ok=True)
-    assert r["abgaenge_ungemessen"] == 27, dict(r)
-    assert r["mittel_tage_abgeschlossen"] is None, dict(r)
-    # 63 von 90 Inseraten des 25.09. stehen am 09.10. noch online
-    assert r["anteil_aeltere_noch_online"] == 0.7, dict(r)
+    # Gegen die Zweitimplementierung (Mengen der Inseratskennungen je
+    # Rohordner), nicht gegen feste Zahlen: ein neuer Abruf aendert die
+    # Zahlen, aber nicht die Regel. Seit dem dritten Abruf (23.10.) gibt es
+    # gemessene Abgaenge; ein Mittel von 0 Tagen waere trotzdem falsch.
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "nach", C.WURZEL / "evals" / "nachrechnen_inseratsdauer.py")
+    nach = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(nach)
+    soll = nach.rechnen(None)
+    assert r["abgaenge_ungemessen"] == soll["abgaenge_ungemessen"], (dict(r), soll)
+    assert r["anteil_aeltere_noch_online"] == soll["anteil_aeltere_noch_online"], (dict(r), soll)
+    assert r["mittel_tage_abgeschlossen"] is None or r["mittel_tage_abgeschlossen"] >= 14, dict(r)
 
 
 def test_wg_zimmer_sind_kein_wohnungsangebot(tmp_path=None):
@@ -449,7 +466,7 @@ def test_wg_zimmer_sind_kein_wohnungsangebot(tmp_path=None):
     con.close()
     ziel.unlink(missing_ok=True)
     assert im_angebot == 0
-    assert beobachtet == 2, "die Beobachtung selbst bleibt erhalten"
+    assert beobachtet >= 2, "die Beobachtung selbst bleibt erhalten"
     assert grund and grund[0]
 
 
@@ -644,8 +661,11 @@ def test_ausdrueckliche_gemeindewohnung_ist_kein_marktangebot(tmp_path=None):
     - nicht pruefbar, nicht 'nein'."""
     ziel = Path(tmp_path or C.PROCESSED) / "test_gemeinde.sqlite"
     con = _baue(ziel)
+    # Zaehlung am Abruf vom 09.10., an dem das Merkmal eingefuehrt wurde -
+    # spaetere Abrufe bringen neue Treffer und duerfen den Test nicht brechen.
     beob = con.execute("SELECT COUNT(*) FROM inserat_beobachtung"
-                       " WHERE gemeinde_explizit = 1").fetchone()[0]
+                       " WHERE gemeinde_explizit = 1"
+                       " AND substr(abruf_ts,1,10) = '2026-10-09'").fetchone()[0]
     im_angebot = con.execute("SELECT COUNT(*) FROM v_angebot"
                              " WHERE gemeinde_explizit = 1").fetchone()[0]
     alt_null = con.execute(
@@ -663,27 +683,6 @@ def test_ausdrueckliche_gemeindewohnung_ist_kein_marktangebot(tmp_path=None):
     assert alt_null == 1, "25.09.: Merkmal muss NULL sein, nicht 0"
     assert neu_geprueft == 1, "09.10.: jedes Inserat ist geprueft"
 
-
-if __name__ == "__main__":
-    import tempfile
-    fehler = 0
-    with tempfile.TemporaryDirectory() as tmp:
-        for name, fn in sorted(globals().items()):
-            if not (name.startswith("test_") and callable(fn)):
-                continue
-            try:
-                kwargs = {"tmp_path": tmp} if "tmp_path" in \
-                    fn.__code__.co_varnames[:fn.__code__.co_argcount] else {}
-                fn(**kwargs)
-                print(f"  ok    {name}")
-            except AssertionError as e:
-                fehler += 1
-                print(f"  ROT   {name}: {e}")
-            except Exception as e:  # noqa: BLE001
-                fehler += 1
-                print(f"  BRUCH {name}: {type(e).__name__}: {e}")
-    print(f"\n{'alle Tests gruen' if not fehler else f'{fehler} Test(s) rot'}")
-    sys.exit(1 if fehler else 0)
 
 
 # ─────────────────────────────────────────── Modell an den Daten (Schritt 4)
@@ -800,3 +799,25 @@ def test_kv_textbloecke_landen_in_der_datenbank(tmp_path=None):
     ziel.unlink(missing_ok=True)
     assert n > 400, n
     assert z and "2,55 Prozent" in z[0]
+
+if __name__ == "__main__":
+    import tempfile
+    fehler = 0
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, fn in sorted(globals().items()):
+            if not (name.startswith("test_") and callable(fn)):
+                continue
+            try:
+                kwargs = {"tmp_path": tmp} if "tmp_path" in \
+                    fn.__code__.co_varnames[:fn.__code__.co_argcount] else {}
+                fn(**kwargs)
+                print(f"  ok    {name}")
+            except AssertionError as e:
+                fehler += 1
+                print(f"  ROT   {name}: {e}")
+            except Exception as e:  # noqa: BLE001
+                fehler += 1
+                print(f"  BRUCH {name}: {type(e).__name__}: {e}")
+    print(f"\n{'alle Tests gruen' if not fehler else f'{fehler} Test(s) rot'}")
+    sys.exit(1 if fehler else 0)
+

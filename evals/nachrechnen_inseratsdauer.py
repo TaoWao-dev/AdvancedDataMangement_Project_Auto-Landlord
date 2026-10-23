@@ -21,17 +21,23 @@ ZIEL = WURZEL / "evals" / "references" / "inseratsdauer_zwei_abrufe.json"
 PLZ = "1020"
 
 
-def ids_je_tag() -> dict[str, set[str]]:
+DATENSTAND = ["2026-09-25", "2026-10-09"]   # der Stand, den die Referenz beschreibt
+
+
+def ids_je_tag(stand: list[str] | None) -> dict[str, set[str]]:
     tage: dict[str, set[str]] = {}
     for datei in sorted((WURZEL / "data" / "raw").glob(f"*/wh_{PLZ}_*.json")):
+        if stand is not None and datei.parent.name not in stand:
+            continue
         d = json.loads(datei.read_text(encoding="utf-8"))
         ads = d["props"]["pageProps"]["searchResult"]["advertSummaryList"]["advertSummary"]
         tage.setdefault(datei.parent.name, set()).update(str(a["id"]) for a in ads)
     return tage
 
 
-def rechnen() -> dict:
-    tage = ids_je_tag()
+def rechnen(stand: list[str] | None = DATENSTAND) -> dict:
+    """stand=None: alle Rohordner (fuer den Test gegen den aktuellen Stand)."""
+    tage = ids_je_tag(stand)
     reihenfolge = sorted(tage)
     letzter = tage[reihenfolge[-1]]
     alle = set().union(*tage.values())
@@ -52,7 +58,7 @@ if __name__ == "__main__":
     fall = {
         "fall_id": "inseratsdauer_zwei_abrufe",
         "eingabe": {"abfrage": "src/sql/kennzahl_inseratsdauer.sql", "filter": {"plz": PLZ},
-                    "datenstand": ["2026-09-25", "2026-10-09"]},
+                    "datenstand": DATENSTAND},
         "erwartete_antwort": {k: v for k, v in r.items() if k != "abrufe"},
         "pruefregel": "exakter Vergleich; Anteil auf 0,01",
         "toleranz": {"anteil_aeltere_noch_online": 0.01},

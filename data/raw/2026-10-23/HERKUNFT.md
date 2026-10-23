@@ -35,3 +35,21 @@ gespeichert wurden.
 **Was fehlt.** Für Versicherungen (Innendienst), Landes-Krankenanstalten und
 Wirtschaftstreuhänder nennt keine der Seiten einen Prozentsatz für 2026. Das
 ist in den Referenzen als Befund geführt, nicht als Lücke gefüllt.
+
+## Inserate 1020 vom 23.10.2026 (dritter Abruf)
+
+| | |
+|---|---|
+| Quelle | willhaben.at, Suche „Mietwohnungen Wien 1020 Leopoldstadt", `?rows=90`, Seite 1 und `&page=2` |
+| Abruf | Seite 1: 23.10.2026, 16:26:53 · Seite 2: 16:27:32 — laut `searchDate` des Servers |
+| Beschaffung | manuell über `view-source:`, gespeichert vom Studierenden; JSON aus der Quelltextansicht mit `src/wh_next_data.lade_rohdaten`, redigiert mit `tools/redigiere_schnappschuss.py` (Selbstprüfung: gleiche Lesung) |
+| Prüfung | `verticalId` 2, `pageRequested` 1 bzw. 2, alle Inserate PLZ 1020 |
+| Treffer | 174; auf den Seiten 90 + 84 = **174, vollständig** |
+
+| Datei | SHA256 Original (Quelltextansicht) | SHA256 redigiert |
+|---|---|---|
+| `wh_1020_mietwohnungen_2026-10-23T1626.json` | `f70c82f50d125cbd…` | `e274c9d10c6707d5…` |
+| `wh_1020_mietwohnungen_2026-10-23T1627_s2.json` | `121a1571ebeb0367…` | `30dc7cdd39023d5d…` |
+
+Mit diesem dritten Abruf ist die Inseratsdauer erstmals messbar: Inserate,
+die am 09.10. standen und am 23.10. fehlen, haben eine gemessene Dauer.

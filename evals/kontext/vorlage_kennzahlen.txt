@@ -1,6 +1,6 @@
 ### kennzahl_abdeckung
 plz;bezirk_name;cluster_id;rolle;abrufe;seiten;letzter_abruf;beobachtungen;treffer_letzter;letzter_vollstaendig;befund
-1020;Leopoldstadt;NORDBAHN;portfolio;2;3;2026-10-09;268;178;1;ok
+1020;Leopoldstadt;NORDBAHN;portfolio;3;5;2026-10-23;442;174;1;ok
 1100;Favoriten;SONNWEND;portfolio;0;0;-;0;0;;fehlt
 1220;Donaustadt;SEESTADT;portfolio;0;0;-;0;0;;fehlt
 1010;Innere Stadt;-;referenz;0;0;-;0;0;;fehlt
@@ -12,66 +12,72 @@ plz;bezirk_name;groessenklasse;abruf_datum;anbietertyp;fallzahl;median_eur_m2;be
 1020;Leopoldstadt;80-100;2026-09-25;privat;3;23.16;nicht belastbar
 1020;Leopoldstadt;80-100;2026-10-09;gewerblich;20;24.9;belastbar
 1020;Leopoldstadt;80-100;2026-10-09;privat;12;22.61;duenn
+1020;Leopoldstadt;80-100;2026-10-23;gewerblich;21;24.85;belastbar
+1020;Leopoldstadt;80-100;2026-10-23;privat;12;22.3;duenn
 
 ### kennzahl_bezirksvergleich
 plz;bezirk_name;cluster_id;rolle;abruf_datum;fallzahl;median_eur_m2;q1_eur_m2;q3_eur_m2;gewerblich_pct;belastbarkeit;rang_teuer;abstand_zum_mittel
-1020;Leopoldstadt;NORDBAHN;portfolio;2026-10-09;32;24.01;19.88;29.21;62.5;belastbar;1;0.0
+1020;Leopoldstadt;NORDBAHN;portfolio;2026-10-23;33;23.86;19.01;27.13;63.6;belastbar;1;0.0
 
 ### kennzahl_empfehlung
 cluster_id;datenstand;marktmiete_eur_m2;marktmiete_fallzahl;eignung;vertraege;mit_empfehlung;verlaengern;auslaufen;median_aufschlag_pct;min_aufschlag_pct;max_aufschlag_pct;mittel_p_annahme;erwartete_auszuege;bw_empfehlung_summe;bw_nur_index_summe;mehrwert_gegen_nur_index;bw_alle_auslaufen_summe;mehrwert_gegen_auslaufen;min_angebot_eur_m2;max_angebot_eur_m2;ohne_wertsicherung;konvergiert;iterationen;leerstand_fixpunkt_monate
-NORDBAHN;2026-10-09;24.01;32;verwendbar;20;20;20;0;15.0;12.0;25.0;0.482;10.4;2251247.0;2104246.0;147001.0;2080265.0;170982.0;23.55;24.7;1;1;7;3.054
+NORDBAHN;2026-10-23;23.86;33;verwendbar;20;20;20;0;13.5;9.0;25.0;0.485;10.3;2238745.0;2101523.0;137222.0;2067584.0;171161.0;23.55;24.61;1;1;6;3.045
 SEESTADT;;;;kein Schnappschuss;10;0;;;;;;;1.0;;;;;;;;;;;
 SONNWEND;;;;kein Schnappschuss;20;0;;;;;;;1.0;;;;;;;;;;;
 
 ### kennzahl_empfehlung_vertrag
 vertrag_id;cluster_id;vertragsende;flaeche_m2;wertsicherung;miete_aktuell_eur_m2;marktmiete_eur_m2;luecke_zum_markt_pct;option;aufschlag_pct;angebot_eur;angebot_eur_m2;p_annahme;berufsgruppe;belastungsquote;bw_empfehlung;bw_nur_index;bw_auslaufen;varianten_ueber_sensitivitaet
-NO-01;NORDBAHN;2027-07;95.3;1;20.68;24.01;16.1;verlaengern;15.0;2265.98;23.78;0.6366;VERS;0.3247;118947.0;108669.0;108325.0;4
-NO-08;NORDBAHN;2027-07;95.9;1;21.61;24.01;11.1;verlaengern;12.0;2321.32;24.21;0.5799;INDUSTRIE;0.3006;120058.0;113551.0;109007.0;5
-NO-19;NORDBAHN;2027-07;91.7;1;19.97;24.01;20.2;verlaengern;20.0;2197.72;23.97;0.3012;INDUSTRIE;0.4493;108991.0;101859.0;104233.0;5
-NO-06;NORDBAHN;2027-08;95.4;1;19.87;24.01;20.8;verlaengern;20.0;2274.44;23.84;0.2478;INDUSTRIE;0.4851;112187.0;105889.0;108438.0;5
-NO-03;NORDBAHN;2027-09;80.8;1;20.81;24.01;15.4;verlaengern;15.0;1933.52;23.93;0.4889;BANK;0.3736;98987.0;92670.0;91843.0;5
-NO-07;NORDBAHN;2027-10;87.3;1;19.98;24.01;20.2;verlaengern;20.0;2092.68;23.97;0.3342;IT;0.4333;104563.0;96947.0;99560.0;5
-NO-02;NORDBAHN;2027-11;96.2;1;21.31;24.01;12.7;verlaengern;12.0;2296.25;23.87;0.2892;SPITAL;0.4581;114207.0;111160.0;109710.0;5
-NO-20;NORDBAHN;2027-11;97.6;1;21.52;24.01;11.6;verlaengern;12.0;2352.6;24.1;0.5809;BANK;0.333;122041.0;115229.0;111306.0;5
-NO-12;NORDBAHN;2027-12;89.4;1;21.68;24.01;10.7;verlaengern;12.0;2170.78;24.28;0.5102;IT;0.3506;111000.0;106186.0;101955.0;5
-NO-05;NORDBAHN;2028-01;88.4;1;19.62;24.01;22.4;verlaengern;20.0;2081.63;23.55;0.4659;BANK;0.3913;106775.0;95994.0;100087.0;4
-NO-17;NORDBAHN;2028-01;86.5;1;20.05;24.01;19.8;verlaengern;20.0;2080.88;24.06;0.579;BANK;0.3389;107689.0;95814.0;97935.0;5
-NO-18;NORDBAHN;2028-01;89.5;1;21.97;24.01;9.3;verlaengern;12.0;2202.72;24.61;0.5325;SPITAL;0.2758;112082.0;107276.0;101332.0;6
-NO-11;NORDBAHN;2028-02;97.1;1;21.93;24.01;9.5;verlaengern;12.0;2385.34;24.57;0.5297;IT;0.3264;121410.0;116190.0;109937.0;5
-NO-13;NORDBAHN;2028-02;91.6;1;21.48;24.01;11.8;verlaengern;15.0;2262.62;24.7;0.5175;IT;0.3171;114638.0;107882.0;103710.0;5
-NO-10;NORDBAHN;2028-03;90.2;1;21.5;24.01;11.7;verlaengern;12.0;2171.64;24.08;0.4506;SPITAL;0.3788;109962.0;105989.0;102125.0;5
-NO-14;NORDBAHN;2028-03;93.9;1;20.93;24.01;14.7;verlaengern;15.0;2260.06;24.07;0.5348;BANK;0.3493;116101.0;108197.0;106314.0;5
-NO-16;NORDBAHN;2028-04;88.6;1;21.1;24.01;13.8;verlaengern;15.0;2150.2;24.27;0.5134;VERS;0.3504;110142.0;102938.0;101269.0;5
-NO-04;NORDBAHN;2028-05;89.2;1;21.19;24.01;13.3;verlaengern;15.0;2173.19;24.36;0.4752;IT;0.3593;110418.0;103983.0;101955.0;6
-NO-09;NORDBAHN;2028-05;98.8;1;21.14;24.01;13.6;verlaengern;15.0;2402.13;24.31;0.5624;SPITAL;0.3239;123946.0;114959.0;112927.0;4
-NO-15;NORDBAHN;2028-06;86.0;0;19.51;24.01;23.0;verlaengern;25.0;2097.7;24.39;0.507;BUND;0.3486;107103.0;92864.0;98297.0;5
+NO-01;NORDBAHN;2027-07;95.3;1;20.68;23.86;15.4;verlaengern;15.0;2265.98;23.78;0.6173;VERS;0.3247;118367.0;108598.0;107650.0;4
+NO-08;NORDBAHN;2027-07;95.9;1;21.61;23.86;10.4;verlaengern;12.0;2321.32;24.21;0.5597;INDUSTRIE;0.3006;119374.0;113386.0;108328.0;6
+NO-19;NORDBAHN;2027-07;91.7;1;19.97;23.86;19.5;verlaengern;20.0;2197.72;23.97;0.2916;INDUSTRIE;0.4493;108379.0;101666.0;103584.0;5
+NO-06;NORDBAHN;2027-08;95.4;1;19.87;23.86;20.1;verlaengern;20.0;2274.44;23.84;0.2402;INDUSTRIE;0.4851;111558.0;105612.0;107763.0;5
+NO-03;NORDBAHN;2027-09;80.8;1;20.81;23.86;14.7;verlaengern;15.0;1933.52;23.93;0.4741;BANK;0.3736;98469.0;92606.0;91271.0;5
+NO-07;NORDBAHN;2027-10;87.3;1;19.98;23.86;19.4;verlaengern;20.0;2092.68;23.97;0.3236;IT;0.4333;104013.0;96811.0;98980.0;5
+NO-02;NORDBAHN;2027-11;96.2;1;21.31;23.86;12.0;verlaengern;12.0;2296.25;23.87;0.2802;SPITAL;0.4581;113606.0;110838.0;109070.0;5
+NO-20;NORDBAHN;2027-11;97.6;1;21.52;23.86;10.9;verlaengern;12.0;2352.6;24.1;0.5612;BANK;0.333;121392.0;115081.0;110658.0;5
+NO-12;NORDBAHN;2027-12;89.4;1;21.68;23.86;10.1;verlaengern;9.0;2112.64;23.63;0.5976;IT;0.3421;110419.0;106038.0;101360.0;6
+NO-05;NORDBAHN;2028-01;88.4;1;19.62;23.86;21.6;verlaengern;20.0;2081.63;23.55;0.4531;BANK;0.3913;106236.0;95965.0;99436.0;4
+NO-17;NORDBAHN;2028-01;86.5;1;20.05;23.86;19.0;verlaengern;20.0;2080.88;24.06;0.5603;BANK;0.3389;107094.0;95781.0;97298.0;5
+NO-18;NORDBAHN;2028-01;89.5;1;21.97;23.86;8.6;verlaengern;12.0;2202.72;24.61;0.5119;SPITAL;0.2758;111345.0;107069.0;100673.0;6
+NO-11;NORDBAHN;2028-02;97.1;1;21.93;23.86;8.8;verlaengern;12.0;2385.34;24.57;0.5092;IT;0.3264;120613.0;115966.0;109222.0;5
+NO-13;NORDBAHN;2028-02;91.6;1;21.48;23.86;11.1;verlaengern;12.0;2203.6;24.06;0.5847;IT;0.3096;113872.0;107734.0;103035.0;5
+NO-10;NORDBAHN;2028-03;90.2;1;21.5;23.86;11.0;verlaengern;12.0;2171.64;24.08;0.4357;SPITAL;0.3788;109329.0;105806.0;101460.0;6
+NO-14;NORDBAHN;2028-03;93.9;1;20.93;23.86;14.0;verlaengern;15.0;2260.06;24.07;0.517;BANK;0.3493;115442.0;108101.0;105622.0;5
+NO-16;NORDBAHN;2028-04;88.6;1;21.1;23.86;13.1;verlaengern;12.0;2094.11;23.64;0.5981;VERS;0.3421;109555.0;102855.0;100713.0;6
+NO-04;NORDBAHN;2028-05;89.2;1;21.19;23.86;12.6;verlaengern;12.0;2116.5;23.73;0.5565;IT;0.3509;109908.0;103892.0;101395.0;5
+NO-09;NORDBAHN;2028-05;98.8;1;21.14;23.86;12.9;verlaengern;15.0;2402.13;24.31;0.542;SPITAL;0.3239;123263.0;114859.0;112308.0;5
+NO-15;NORDBAHN;2028-06;86.0;0;19.51;23.86;22.3;verlaengern;25.0;2097.7;24.39;0.4888;BUND;0.3486;106511.0;92859.0;97758.0;5
 
 ### kennzahl_inseratsdauer
 plz;bezirk_name;inserate;davon_zensiert;anteil_zensiert;abgaenge_ungemessen;mittel_tage_abgeschlossen;max_tage_beobachtet;anteil_aeltere_noch_online;befund
-1020;Leopoldstadt;205;178;0.87;27;;14;0.7;Dauer noch nicht messbar, nur Anteil noch online
+1020;Leopoldstadt;285;174;0.61;84;14.0;28;0.46;mit Vorsicht: ueberwiegend zensiert
 
 ### kennzahl_marktniveau
 plz;bezirk_name;rolle;groessenklasse;abruf_datum;fallzahl;median_eur_m2;q1_eur_m2;q3_eur_m2;min_eur_m2;max_eur_m2;davon_privat;davon_gewerblich;belastbarkeit
 1020;Leopoldstadt;portfolio;bis 50;2026-09-25;10;33.49;25.16;41.94;21.11;62.1;4;6;duenn
 1020;Leopoldstadt;portfolio;bis 50;2026-10-09;30;29.81;25.14;37.28;17.0;42.76;16;14;belastbar
+1020;Leopoldstadt;portfolio;bis 50;2026-10-23;36;28.35;24.45;32.76;8.86;42.16;16;20;belastbar
 1020;Leopoldstadt;portfolio;50-80;2026-09-25;37;24.98;21.05;33.91;7.51;39.15;14;23;belastbar
 1020;Leopoldstadt;portfolio;50-80;2026-10-09;71;24.8;21.69;31.58;11.92;40.74;25;46;belastbar
+1020;Leopoldstadt;portfolio;50-80;2026-10-23;64;24.25;21.57;30.18;16.75;38.89;23;41;belastbar
 1020;Leopoldstadt;portfolio;80-100;2026-09-25;15;26.67;20.77;30.79;18.4;37.04;3;12;belastbar
 1020;Leopoldstadt;portfolio;80-100;2026-10-09;32;24.01;19.88;29.21;11.0;44.33;12;20;belastbar
+1020;Leopoldstadt;portfolio;80-100;2026-10-23;33;23.86;19.01;27.13;11.0;44.33;12;21;belastbar
 1020;Leopoldstadt;portfolio;ueber 100;2026-09-25;24;19.02;17.75;21.57;14.07;46.52;3;21;belastbar
 1020;Leopoldstadt;portfolio;ueber 100;2026-10-09;32;19.68;17.63;22.88;14.07;31.82;5;27;belastbar
+1020;Leopoldstadt;portfolio;ueber 100;2026-10-23;29;19.89;17.75;21.59;13.75;70.37;3;26;belastbar
 
 ### kennzahl_sensitivitaet
 parameter;rand;wert;vertraege;geaendert;auslaufen;mittel_aufschlag_pct;mittel_aufschlag_basis_pct
-marktmiete;oben;29.21;20;20;0;36.5;15.7
-marktmiete;unten;19.88;20;20;0;0.6;15.7
-wechselbereitschaft_k;unten;0.3;20;20;0;20.5;15.7
-marktrisiko_abschlag;unten;0.0;20;17;0;19.3;15.7
-marktrisiko_abschlag;oben;0.12;20;16;0;12.7;15.7
-wechselbereitschaft_k;oben;0.9;20;9;0;14.3;15.7
-belastungsquote_schmerzgrenze;oben;0.4;20;6;0;16.9;15.7
-umzugskosten_eur;unten;2500.0;20;5;0;14.9;15.7
-leerstand_monate;oben;4.0;20;4;0;15.0;15.7
-leerstand_monate;unten;1.5;20;4;0;16.5;15.7
-umzugskosten_eur;oben;7000.0;20;3;0;16.4;15.7
-belastungsquote_schmerzgrenze;unten;0.28;20;2;0;15.4;15.7
+marktmiete;oben;27.13;20;20;0;29.0;15.1
+marktmiete;unten;19.01;20;20;0;0.1;15.1
+wechselbereitschaft_k;unten;0.3;20;20;0;20.3;15.1
+marktrisiko_abschlag;oben;0.12;20;17;0;11.9;15.1
+marktrisiko_abschlag;unten;0.0;20;17;0;18.6;15.1
+wechselbereitschaft_k;oben;0.9;20;10;0;13.5;15.1
+leerstand_monate;unten;1.5;20;7;0;16.4;15.1
+belastungsquote_schmerzgrenze;oben;0.4;20;6;0;16.3;15.1
+leerstand_monate;oben;4.0;20;6;0;14.1;15.1
+umzugskosten_eur;oben;7000.0;20;6;0;16.1;15.1
+umzugskosten_eur;unten;2500.0;20;5;0;14.3;15.1
+belastungsquote_schmerzgrenze;unten;0.28;20;3;0;14.9;15.1
