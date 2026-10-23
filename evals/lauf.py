@@ -110,7 +110,7 @@ def task_laufen(task: str) -> dict:
     else:
         info["modell"] = {"extrakt": "Claude Opus 5.5, gespeicherte Ausgabe von kv_zeitreihe_v1 (23.10.2026)",
                           "sql": "SQL (src/sql/kennzahl_*.sql)",
-                          "datei": "docs/vorlage.md (Ausgabe von prompts/vorlage_v1.md)"}[provider]
+                          "datei": "docs/vorlage.md (Ausgabe von prompts/vorlage_v2.md)"}[provider]
     start = time.monotonic()
     for t in tests:
         v = {k: _var(x) for k, x in t["vars"].items()}

@@ -1,206 +1,163 @@
-# Entscheidungsvorlage: Verlängerungsangebote im Mietportfolio Wien
+# Entscheidungsvorlage: Mietanpassung im Portfolio Leopoldstadt (Demo-Fall)
 
 ## 1 Kopf
 
 | | |
 |---|---|
 | **An** | Leitung Asset Management Wohnen |
-| **Entscheidung** | Zu welchem Mietzins wird je auslaufendem Vertrag die Verlängerung um 5 Jahre angeboten — oder wird der Vertrag auslaufen gelassen und neu vermietet? |
-| **Bis wann** | je Vertrag 6 Monate vor Vertragsende; erste Tranche im 1. Quartal 2027 (Beginn 01.01.2027) |
-| **Empfehlung in einem Satz** | Im Nordbahnviertel allen 20 Mietern die Verlängerung zur beobachteten Marktmiete anbieten (Aufschlag 12 bis 25 %, Median 15 %) — für Sonnwendviertel und Seestadt heute **nicht** entscheiden, sondern zuerst deren Marktmiete erheben. |
-| **Datenstand** | Marktdaten 1020 Wien vom 09.10.2026 [kennzahl_bezirksvergleich]; Vorlage vom 23.10.2026 |
-| **Wichtigster Vorbehalt** | Die Verträge sind **synthetisch**, die Modellparameter **Annahmen**. Gemessen ist nur die Marktmiete — und an ihr hängt die Empfehlung fast vollständig (Abschnitt 6). |
+| **Entscheidung** | Für jeden laufenden Mietvertrag: Miete erhöhen oder nicht, und um wie viel? |
+| **Bis wann** | laufend, im Takt der 14-tägigen Marktwertkontrolle; nächster Abruf vor der nächsten Anpassungsrunde |
+| **Empfehlung in einem Satz** | Eine Erhöhung anbieten, wo die Miete unter dem Markt liegt — in der Klasse 50–80 m² bei 18 von 25 Verträgen (Median 6 %), in der Klasse 80–100 m² bei 11 von 25 (Median 0 %) [kennzahl_empfehlung] —, sonst nicht erhöhen. |
+| **Datenstand** | Marktdaten Leopoldstadt vom 23.10.2026 [kennzahl_empfehlung]; KV-Abschlüsse vom 23.10.2026 [kennzahl_kv_entwicklung] |
+| **Wichtigster Vorbehalt** | Die Mieter sind **synthetisch**, das Verhaltensmodell beruht auf **Annahmen**, und der Markt ist erst seit drei Abrufen beobachtet. Die Empfehlung zeigt den Mechanismus, sie ist kein Budget. |
 
-Jede Zahl in dieser Vorlage nennt in eckigen Klammern die Abfrage, aus der
-sie stammt (`src/sql/<name>.sql`, Ergebnis in `data/processed/<name>.csv`),
-oder die Annahme in `config/portfolio.json`. Formuliert wurde der Text von
-einem Sprachmodell nach `prompts/vorlage_v1.md`; gerechnet hat es nicht. Ein
-Prüfprogramm (`evals/graders/zahlen_herkunft.py`) gleicht jede Zahl gegen
-die Kennzahltabellen ab.
+Jede Zahl nennt in eckigen Klammern die Abfrage (`src/sql/<name>.sql`,
+Ergebnis in `data/processed/<name>.csv`). Formuliert hat ein Sprachmodell
+nach `prompts/vorlage_v2.md`; gerechnet hat es nicht. Ein Prüfprogramm
+gleicht jede Zahl gegen die Tabellen ab. Das ganze Verzeichnis:
+`python3 -m src.demo` und `docs/demo/mieterverzeichnis.html`.
 
 ## 2 Ausgangslage
 
-Das Portfolio umfasst 50 Eigentumswohnungen mit 80 bis 100 m² in 3 Wiener
-Neubauquartieren. Die befristeten Mietverträge laufen zwischen Juli 2027 und
-Juni 2028 aus. Für jeden Vertrag ist zu entscheiden, ob und zu welchem
-Mietzins eine Verlängerung angeboten wird.
-
-Bisher wurde das nach Gefühl entschieden. Zwei Dinge waren unbekannt: das
-aktuelle Preisniveau in den eigenen Quartieren und die Frage, bei welchem
-Angebot ein Mieter eher auszieht als verlängert. Beides bestimmt, ob ein
-Aufschlag Geld bringt oder Leerstand kostet.
-
-Die Entscheidung hat drei Optionen je Vertrag: nur die vertragliche
-Wertsicherung weitergeben, einen Aufschlag bis zur Marktmiete anbieten, oder
-den Vertrag auslaufen lassen und neu vermieten.
+Das Portfolio umfasst 50 vermietete Eigentumswohnungen in der Leopoldstadt.
+Bei jedem Vertrag stellt sich die Frage, ob die Miete erhöht werden kann,
+ohne den Mieter zu verlieren. Zwei Dinge sollen das beantworten: wie sich der
+Markt für vergleichbar große Wohnungen seit der letzten Erhöhung entwickelt
+hat, und wie sich der Kollektivvertragslohn in der Branche des Mieters
+entwickelt hat.
 
 ## 3 Wie die Entscheidung vorbereitet wurde
 
-**Gemessen:** die Angebotsmieten im Inseratsportal für 1020 Wien, an zwei
-Tagen gespeichert (25.09.2026 und 09.10.2026), zusammen 205 verschiedene
-Inserate [kennzahl_inseratsdauer]. Die Seiten wurden von Hand im Browser
-gespeichert, weil das Portal automatisierten Abruf untersagt; verarbeitet
-werden sie von einer Pipeline mit drei Prüfstufen.
+**Gemessen:** die Angebotsmieten der Leopoldstadt an drei Tagen im Abstand
+von zwei Wochen, insgesamt 285 verschiedene Inserate
+[kennzahl_inseratsdauer]. Die Seiten hat ein Mensch im Browser gespeichert;
+das Portal untersagt automatisierten Abruf.
 
-**Nicht gemessen:** Für Favoriten (Sonnwendviertel) und Donaustadt
-(Seestadt) gibt es noch keinen Abruf; beide stehen in der Abdeckung als
-„fehlt" [kennzahl_abdeckung]. Die Entwicklung der Einkommen nach den
-Kollektivvertragsabschlüssen 2026 wird gerade als Modellaufgabe aufgebaut,
-ist aber noch nicht in die Rechnung eingeflossen.
+**Extrahiert:** die KV-Abschlüsse 2024 bis 2026 für fünf Branchen aus den
+Seiten von ÖGB und WKO, die ebenfalls von Hand gespeichert wurden. Ein
+Sprachmodell hat die Zahlen herausgelesen; ein Programm hat jede davon
+gegen den Wortlaut der Quellzeile geprüft, bevor sie verwendet wurde.
 
-**Angenommen:** die Verträge selbst (synthetischer Bestand, siehe Abschnitt
-7) und die Verhaltensparameter des Modells — wie schnell Mieter bei einem
-Preisunterschied wechseln, wie lange eine Wohnung leer steht, was eine
-Neuvermietung kostet. Jede Annahme hat eine Spanne, und Abschnitt 6 zeigt,
-welche davon die Empfehlung verändert.
+**Simuliert:** das Mieterverzeichnis — Wohnung, Miete, letzte Erhöhung,
+Branche, drei Lohnzettel vor Vertragsabschluss.
 
-**Gerechnet:** je Vertrag der Barwert über 5 Jahre für jedes Angebot im
-Raster von 0 bis 40 % Aufschlag, gewichtet mit der geschätzten
-Wahrscheinlichkeit, dass der Mieter annimmt. Weil viele ähnliche Wohnungen
-im selben Quartal frei werden können, wird der Leerstand je Quartal so lange
-angepasst, bis Angebote und erwartete Auszüge zusammenpassen. Das Verfahren
-kam nach 7 Runden zur Ruhe, bei einem Leerstand von rund 3,05 Monaten statt
-der angenommenen 2,5 [kennzahl_empfehlung].
+**Gerechnet:** für jeden Vertrag der erwartete Ertrag über 5 Jahre bei
+jedem Erhöhungsschritt von 0 bis 40 %, gewichtet mit der Wahrscheinlichkeit,
+dass der Mieter bleibt. Gewählt wird der Schritt mit dem höchsten
+Erwartungswert.
 
 ## 4 Die entscheidenden Daten
 
-### Marktmiete im Zielsegment 80–100 m², 1020 Wien
+### Markt für vergleichbare Wohnungen
 
-| Abruf | Fallzahl | Median €/m² | Q1 | Q3 | Belastbarkeit | Quelle |
-|---|---:|---:|---:|---:|---|---|
-| 25.09.2026 | 15 | 26,67 | 20,77 | 30,79 | belastbar | [kennzahl_marktniveau] |
-| 09.10.2026 | 32 | 24,01 | 19,88 | 29,21 | belastbar | [kennzahl_marktniveau] |
+| Größenklasse | Abruf | Fallzahl | Median €/m² | Belastbarkeit | seit erstem Abruf | Quelle |
+|---|---|---:|---:|---|---:|---|
+| 50–80 m² | 25.09.2026 | 37 | 24,98 | belastbar | — | [kennzahl_marktentwicklung] |
+| 50–80 m² | 23.10.2026 | 64 | 24,25 | belastbar | −2,9 % | [kennzahl_marktentwicklung] |
+| 80–100 m² | 25.09.2026 | 15 | 26,67 | belastbar | — | [kennzahl_marktentwicklung] |
+| 80–100 m² | 23.10.2026 | 33 | 23,86 | belastbar | −10,5 % | [kennzahl_marktentwicklung] |
 
-Der Wert vom 09.10.2026 ist der verwendete: Dieser Abruf ist vollständig,
-der vom 25.09.2026 war nur die erste von mehreren Ergebnisseiten. Dass der
-Median zwischen den beiden Abrufen von 26,67 auf 24,01 €/m² fällt, ist
-deshalb kein Marktrückgang, sondern vor allem der Unterschied zwischen
-einer Teilseite und dem ganzen Angebot. Es zeigt aber, wie empfindlich die
-Zahl auf die Auswahl der Inserate reagiert.
+Zwei Einschränkungen gehören direkt zu diesen Zahlen. Der erste Abruf war
+nur die erste Ergebnisseite; der Rückgang bei 80–100 m² ist zum großen Teil
+der Unterschied zwischen dieser Teilseite und dem vollständigen Angebot,
+nicht ein fallender Markt. Und **alle** letzten Mieterhöhungen im
+Verzeichnis liegen vor dem ersten Abruf [kennzahl_empfehlung]: Die Frage
+„wie hat sich der Markt seit der letzten Erhöhung bewegt" lässt sich heute
+nur für die Zeit seit dem 25.09.2026 beantworten.
 
-### Wer anbietet
+Ein Inserat steht im Mittel 14 Tage, beobachtet bis zu 28 Tage; 46 % der
+älteren Inserate sind beim letzten Abruf noch online
+[kennzahl_inseratsdauer].
 
-| Abruf | Anbieter | Fallzahl | Median €/m² | Belastbarkeit | Quelle |
-|---|---|---:|---:|---|---|
-| 09.10.2026 | gewerblich | 20 | 24,9 | belastbar | [kennzahl_anbietertyp] |
-| 09.10.2026 | privat | 12 | 22,61 | dünn | [kennzahl_anbietertyp] |
+### KV-Lohn je Branche
 
-62,5 % der Inserate im Segment sind gewerblich [kennzahl_bezirksvergleich].
-Gewerbliche Anbieter — darunter möblierte Kurzzeitwohnungen — liegen höher.
-Die Marktmiete von 24,01 €/m² ist damit eher eine Obergrenze dessen, was
-ein unmöbliertes Neubauangebot erzielt. Eine Bereinigung um möblierte
-Angebote ist vorbereitet (Klassifikation des Inseratstitels), aber noch
-nicht gelaufen.
+| Branche | 2024 | 2025 | 2026 | Quelle |
+|---|---:|---:|---:|---|
+| Banken | 7,25 % | 3 % | 3 % | [kennzahl_kv_entwicklung] |
+| IT | 7,8 % | 3,2 % | 2,9 % | [kennzahl_kv_entwicklung] |
+| Elektroindustrie | 7,5 % | 3 % | 3 % | [kennzahl_kv_entwicklung] |
+| Handelsangestellte | 8,43 % | 3,3 % | 2,55 % | [kennzahl_kv_entwicklung] |
+| Privatkrankenanstalten | 9,15 % | 2,7 % | 3 % bis 3.750 € | [kennzahl_kv_entwicklung] |
 
-### Wie lange Inserate stehen
+Bei IT 2026 ist der Satz die Mitte einer Staffel, beim Handel 2024 der
+Durchschnitt, den die Quelle selbst nennt. Wo die Quelle keinen Tag nennt
+(Elektroindustrie und Handel 2024 und 2025), wird ab 1. Jänner gerechnet.
+Der KV-Lohn ist ein Mindestlohn; was Mieter tatsächlich verdienen, kann
+stärker steigen.
 
-Von den Inseraten des ersten Abrufs stehen 70 % zwei Wochen später noch
-online; beobachtet ist eine Dauer von höchstens 14 Tagen
-[kennzahl_inseratsdauer]. Eine Leerstandsdauer lässt sich daraus noch nicht
-messen — 178 Inserate sind beim letzten Abruf noch offen. Belastbar ist nur:
-Ein typisches Inserat steht länger als zwei Wochen. Das stützt die Annahme
-von 2,5 Monaten Leerstand nicht und widerlegt sie nicht.
+## 5 Optionen und Konsequenzen
 
-### Was nicht gemessen ist
+| Größenklasse | Verträge | erhöhen | nicht erhöhen | Median | höchste | Ertrag 5 J. mit Empfehlung | ohne Erhöhung | Quelle |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| 50–80 m² | 25 | 18 | 7 | 6 % | 12 % | 2.114.466 € | 2.081.879 € | [kennzahl_empfehlung] |
+| 80–100 m² | 25 | 11 | 14 | 0 % | 6 % | 2.772.252 € | 2.765.974 € | [kennzahl_empfehlung] |
 
-Für die beiden anderen Quartiere — Sonnwendviertel (20 Verträge) und
-Seestadt (10 Verträge) — gibt es keine Marktmiete [kennzahl_empfehlung]. Für sie gibt die
-Vorlage bewusst **keine** Empfehlung ab. Eine Übertragung des Werts aus
-der Leopoldstadt wäre eine Schätzung, keine Messung.
+Der Mehrertrag gegenüber „nirgends erhöhen" liegt bei 32.587 € bzw.
+6.278 € über 5 Jahre [kennzahl_empfehlung]. Das ist wenig, weil die
+simulierten Mieten nahe am Markt liegen; erhöht wird dort, wo eine Miete
+deutlich darunter liegt.
 
-## 5 Optionen und Konsequenzen (Nordbahnviertel, 20 Verträge)
+**Was das für einzelne Mieter heißt.** Bei einer Handelsangestellten
+(Vertrag LS-45) liegt der Markt 12,8 % über ihrer Miete; empfohlen werden
+12 %, ihre Mietbelastung stiege von 35,3 % auf 39,1 % des
+Haushaltsnettos, und sie nimmt nur zu 46 % an [kennzahl_empfehlung_vertrag].
+Bei einer Bankangestellten (Vertrag LS-29) liegt der Markt nur 9,7 % über
+ihrer Miete; empfohlen werden ebenfalls 12 %, ihre Belastung stiege von 15 %
+auf 16,6 %, und sie nimmt zu 60 % an [kennzahl_empfehlung_vertrag].
 
-| Option | Barwert 5 Jahre, Summe | Quelle |
-|---|---:|---|
-| nur Wertsicherung weitergeben (Aufschlag 0) | 2.104.246 € | [kennzahl_empfehlung] |
-| alle Verträge auslaufen lassen und neu vermieten | 2.080.265 € | [kennzahl_empfehlung] |
-| **Empfehlung: Angebot je Vertrag nach Modell** | **2.251.247 €** | [kennzahl_empfehlung] |
-
-Gegenüber der reinen Wertsicherung bringt die Empfehlung im Erwartungswert
-147.001 € mehr, gegenüber dem Auslaufenlassen 170.982 € [kennzahl_empfehlung].
-
-**Was die Empfehlung kostet.** Die Angebote liegen zwischen 23,55 und
-24,7 €/m², also an der beobachteten Marktmiete. Die geschätzte
-Annahmewahrscheinlichkeit liegt im Mittel bei 48 %; erwartet werden 10,4
-Auszüge [kennzahl_empfehlung]. Die Empfehlung nimmt also bewusst in Kauf,
-dass etwa die Hälfte der Mieter auszieht — weil die Bestandsmieten so weit
-unter dem Markt liegen, dass sich auch eine Neuvermietung mit Leerstand
-rechnet. Das ist operativ eine Aufgabe für die Vermarktung im Jahr 2027 und
-der Grund, warum der Leerstand im Modell mit der Zahl gleichzeitiger
-Auszüge steigt.
-
-**Warum die Aufschläge so verschieden sind.** Sie folgen dem Abstand der
-heutigen Miete zum Markt. Beim Vertrag ohne Wertsicherung liegt die
-Marktmiete 23 % über der heutigen Miete, angeboten werden 25 % Aufschlag;
-bei einem Vertrag mit Wertsicherung, bei dem der Markt nur 11,1 % darüber
-liegt, sind es 12 %
-[kennzahl_empfehlung_vertrag]. Nur 1 der 20 Verträge hat keine
-Wertsicherungsklausel [kennzahl_empfehlung].
-
-**Auslaufen lassen** empfiehlt das Modell bei keinem Vertrag
-[kennzahl_empfehlung]: Ein sicherer Auszug ist in jedem Fall schlechter als
-ein Angebot nahe am Markt, das der Mieter annehmen oder ablehnen kann.
+Das ist der wichtigste Befund dieser Vorlage: **Das Einkommen wirkt doch auf
+die Höhe.** Das Modell soll das Einkommen nur für die Frage nutzen, ob ein
+Mieter annimmt. Weil aber ein Mieter mit hohem Einkommen eher annimmt, lohnt
+sich bei ihm eine Rasterstufe mehr — die Bankangestellte landet über dem
+Markt, die Handelsangestellte darunter. Die Regel „das Einkommen ist kein
+Preisargument" hält im Modell nicht vollständig.
 
 ## 6 Empfehlung und wann sie kippt
 
-**Empfehlung.**
+1. Die Erhöhungen aus `kennzahl_empfehlung_vertrag` als **Obergrenze** für
+   die nächste Anpassung verwenden, nicht als Automatik: Wo die Empfehlung
+   über den Marktmedian geht (wie bei LS-29), auf den Markt begrenzen.
+2. Bei Verträgen, in denen die Belastung nach der Erhöhung über 35 % läge,
+   nicht erhöhen — diese Grenze hat der Vermieter bei Vertragsabschluss
+   selbst angelegt.
+3. Die Marktwertkontrolle im 14-Tage-Takt fortführen; erst mit mehreren
+   vollständigen Abrufen ist eine Veränderung des Markts von der Auswahl der
+   Inserate zu trennen.
 
-1. Nordbahnviertel: allen 20 Mietern die Verlängerung zum Angebot aus
-   `kennzahl_empfehlung_vertrag` anbieten, beginnend mit der Tranche im
-   1. Quartal 2027.
-2. Sonnwendviertel und Seestadt: keine Entscheidung auf Basis dieser
-   Vorlage. Zuerst je einen vollständigen Abruf für 1100 und 1220
-   beschaffen.
-3. Vor der ersten Tranche einen dritten Abruf für 1020: Er macht die
-   Inseratsdauer erstmals messbar und prüft, ob 24,01 €/m² hält.
+**Woran die Empfehlung hängt** [kennzahl_sensitivitaet]:
 
-**Woran die Empfehlung hängt.** Jeder Parameter wurde an den Rand seiner
-Spanne gesetzt [kennzahl_sensitivitaet]:
-
-| Parameter | Wert | Angebote geändert (von 20) | mittlerer Aufschlag |
+| Annahme am Rand | Wert | Empfehlungen geändert (von 50) | mittlere Erhöhung |
 |---|---:|---:|---:|
-| Marktmiete = Q1 | 19,88 €/m² | 20 | 0,6 % |
-| Marktmiete = Q3 | 29,21 €/m² | 20 | 36,5 % |
-| Wechselbereitschaft niedrig | 0,3 | 20 | 20,5 % |
-| Marktrisikoabschlag 0 | 0,0 | 17 | 19,3 % |
-| Marktrisikoabschlag hoch | 12 % | 16 | 12,7 % |
-| Leerstand 1,5 Monate | 1,5 | 4 | 16,5 % |
-| Leerstand 4 Monate | 4,0 | 4 | 15,0 % |
+| Wechselbereitschaft niedrig | 0,3 | 43 | 8,3 % |
+| kein Marktrisikoabschlag | 0,0 | 32 | 5,3 % |
+| Marktrisikoabschlag hoch | 12 % | 20 | 2,2 % |
+| Leerstand 4 Monate | 4,0 | 7 | 2,9 % |
 
-Im Basisfall liegt der mittlere Aufschlag bei 15,7 % [kennzahl_sensitivitaet].
+Im Basisfall liegt die mittlere Erhöhung bei 3,4 % [kennzahl_sensitivitaet].
+Wie bereitwillig Mieter wechseln, ist die Annahme, an der fast alles hängt —
+und sie ist nicht gemessen. Liegt der Markt am oberen Quartil, steigt die
+mittlere Erhöhung in einer Klasse auf 27,6 %, am unteren fällt sie auf 0,0 %
+[kennzahl_sensitivitaet].
 
-Die Lesart ist eindeutig: **Die Empfehlung ist im Wesentlichen eine Aussage
-über die Marktmiete.** Liegt der Markt am unteren Quartil, gibt es fast
-nichts aufzuschlagen; liegt er am oberen, mehr als doppelt so viel wie
-empfohlen. Die Leerstandsannahme dagegen ändert nur 4 von 20 Angeboten. Wer
-die Empfehlung absichern will, investiert in bessere Marktdaten — weitere
-Abrufe, die Bereinigung um möblierte Angebote —, nicht in die Feinjustierung
-der Modellparameter.
+## 7 Grenzen
 
-Kein Parameter am Rand seiner Spanne führt dazu, dass ein Vertrag besser
-ausläuft [kennzahl_sensitivitaet]. Die Richtung „verlängern statt auslaufen"
-ist also robust; die Höhe des Angebots ist es nicht.
-
-## 7 Grenzen dieser Vorlage
-
-- **Die Verträge sind synthetisch.** Bestand, Mieten und Haushaltseinkommen
-  sind nach festen Annahmen erzeugt (`config/vertraege.json`). Beim Erzeugen
-  bestand jeder Haushalt eine Bonitätsprüfung (Bruttomiete höchstens 35 %
-  des Nettoeinkommens); dadurch haben 44 der 50 Haushalte ein
-  Zweiteinkommen statt der angenommenen 40 %, also 88 %. Das heißt: Die
-  Einkommensannahmen passen nicht gut zu diesem Segment.
-- **Angebot ist nicht Abschluss.** Die Marktmiete stammt aus Inseraten. Was
-  tatsächlich gezahlt wird, liegt darunter; der Abschlag dafür (6 %) ist
-  eine Annahme.
-- **Ein Bezirk, zwei Tage.** Die Marktmiete beruht auf 32 Inseraten eines
-  einzigen Abrufs [kennzahl_bezirksvergleich].
-- **Einkommen nicht fortgeschrieben.** Die Haushaltseinkommen stehen auf dem
-  Stand bei Vertragsabschluss. Das Modell schätzt die heutige Belastung
-  eher zu hoch und bietet eher zu vorsichtig an.
-- **Das Einkommen ist kein Preisargument.** Es wirkt im Modell nur auf die
-  Wahrscheinlichkeit, dass ein Mieter annimmt, und auf das Ausfallrisiko —
-  der Mietzins bemisst sich am Objekt und am Markt. Die Belastung durch
-  höhere Mieten tragen die Mieter; das ist die Prämisse dieses Auftrags,
-  nicht ein Nebeneffekt.
-- **Kein Rechtsrat.** Der Rahmen der gedeckelten Wertsicherung seit
-  01.01.2026 ist nach öffentlichen Zusammenfassungen modelliert.
+- **Synthetische Mieter.** Verzeichnis, Mieten und Lohnzettel sind
+  erfunden (`config/vertraege.json`). Die Einkommensniveaus sind
+  Platzhalter; dass fast alle Haushalte für diese Mieten ein Zweiteinkommen
+  brauchen, zeigt, dass sie zu niedrig angesetzt sind.
+- **Modell für Verlängerungen, angewendet auf laufende Verträge.** Das
+  Verhaltensmodell erwartet auch ohne Erhöhung viele Auszüge (11,1 bzw. 13,5
+  je 25 Verträge über 5 Jahre) [kennzahl_empfehlung]. Für laufende Verträge
+  ist das zu hoch; die Rangfolge der Empfehlungen ist brauchbarer als die
+  Euro-Beträge.
+- **Kurze Marktreihe.** Drei Abrufe, der erste eine Teilseite. Eine
+  Mieterhöhung vor dem 25.09.2026 hat keinen gemessenen Marktbezug.
+- **Angebot ist nicht Abschluss.** Inserate zeigen, was verlangt wird.
+- **Rechtsrahmen.** Während eines laufenden Vertrags ist eine Erhöhung nur
+  über die vereinbarte, seit 01.01.2026 gedeckelte Wertsicherung möglich;
+  darüber hinaus nur bei Verlängerung oder Neuvereinbarung. Die Empfehlung
+  sagt, was der Markt trägt, nicht was rechtlich sofort durchsetzbar ist.
+  Kein Rechtsrat.
+- **Das Einkommen ist kein Preisargument** — und Abschnitt 5 zeigt, dass
+  das Modell diese Regel nicht vollständig einhält. Die Belastung durch
+  höhere Mieten tragen die Mieter; das ist die Prämisse dieses Auftrags.

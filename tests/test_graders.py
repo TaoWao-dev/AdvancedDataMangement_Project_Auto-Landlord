@@ -192,6 +192,14 @@ def test_zitat_bindet_an_die_zitierte_datei():
     assert zahlen_herkunft.pruefen("Für 40 der 50 Wohnungen.", q)["pass"]
 
 
+def test_typografisches_minus_ist_ein_vorzeichen():
+    q = {"kennzahl": [(-2.9, "kennzahl_marktentwicklung.csv:veraenderung_seit_erstem_abruf_pct")],
+         "annahme": [], "konstante": [], "daten": {}}
+    assert zahlen_herkunft.pruefen("Rückgang −2,9 % [kennzahl_marktentwicklung]", q)["pass"]
+    assert zahlen_herkunft.pruefen("Rückgang -2,9 % [kennzahl_marktentwicklung]", q)["pass"]
+    assert not zahlen_herkunft.pruefen("Anstieg 2,9 % [kennzahl_marktentwicklung]", q)["pass"]
+
+
 def test_falsches_datum_faellt_durch():
     assert not zahlen_herkunft.pruefen("Datenstand 10.10.2026", Q)["pass"]
 
@@ -211,12 +219,12 @@ def test_echte_kennzahlen_sind_als_quelle_lesbar():
 # ────────────────────────────────────────────────────── Pflichten Vorlage
 def test_pflichten_vollstaendig_und_unvollstaendig():
     gut = ("# Vorlage\n## Ausgangslage\n## Wie sie vorbereitet wurde\n## Die entscheidenden Daten\n"
-           "## Optionen\n## Empfehlung\n## Grenzen\nFallzahl, belastbar. 1100 und 1220 fehlen. "
+           "## Optionen\n## Empfehlung\n## Grenzen\nFallzahl, belastbar. Der erste Abruf war eine Teilseite. "
            "Verträge synthetisch, Parameter sind Annahmen. Das Einkommen ist kein Preisargument.")
     assert vorlage_pflichten.pruefen(gut)["pass"]
-    schlecht = gut.replace("1220", "").replace("Donaustadt", "")
+    schlecht = gut.replace("Der erste Abruf war eine Teilseite. ", "")
     r = vorlage_pflichten.pruefen(schlecht)
-    assert not r["pass"] and "Donaustadt" in r["reason"]
+    assert not r["pass"] and "Marktbeobachtung" in r["reason"] and "Teilseite" in r["reason"]
 
 
 if __name__ == "__main__":

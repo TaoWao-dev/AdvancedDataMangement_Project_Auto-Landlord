@@ -21,8 +21,10 @@ except ImportError:  # promptfoo laedt die Datei als einzelnes Skript
 
 ABSCHNITTE = ["Ausgangslage", "vorbereitet", "Daten", "Optionen", "Empfehlung", "Grenzen"]
 PFLICHT = {
-    "Luecke Favoriten genannt": r"1100|Favoriten|Sonnwend",
-    "Luecke Donaustadt genannt": r"1220|Donaustadt|Seestadt",
+    # Demo-Fall (E44): die Luecke ist nicht ein fehlender Bezirk, sondern die
+    # kurze Marktreihe - sie muss in der Vorlage stehen.
+    "Grenze der Marktbeobachtung genannt": r"erste[nr]? Abruf|vor dem 25\.09\.2026|seit dem 25\.09\.2026",
+    "Teilseite des ersten Abrufs genannt": r"Teilseite",
     "Fallzahl genannt": r"[Ff]allzahl|\bn\s*=\s*\d",
     "Belastbarkeit genannt": r"belastbar",
     "Vertraege als synthetisch benannt": r"synthetisch|erfunden",

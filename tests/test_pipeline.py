@@ -754,17 +754,18 @@ def test_kv_zaehlt_nur_erhoehungen_nach_der_letzten_anpassung():
     assert f0 == 1.0
 
 
-def test_einkommen_ist_kein_preisargument():
-    """Revisionspunkt E44: zwei gleiche Wohnungen, gleiche Miete, gleicher
-    Markt - der Haushalt mit mehr Einkommen darf keine hoehere Erhoehung
-    empfohlen bekommen als der mit weniger, solange beide leistbar sind.
-    (Mehr Einkommen kann die Annahme wahrscheinlicher machen; die
-    Erhoehung selbst folgt dem Markt.)"""
+def test_einkommen_wirkt_ueber_die_annahme_auf_die_hoehe_hoechstens_eine_stufe():
+    """Revisionspunkt E44, eingetreten (E47): zwei gleiche Wohnungen, gleiche
+    Miete, gleicher Markt - der Haushalt mit mehr Einkommen nimmt eher an,
+    und dadurch lohnt sich bei ihm eine Rasterstufe mehr. Die erste Fassung
+    dieses Tests hiess 'einkommen_ist_kein_preisargument' und liess genau
+    diese eine Stufe als Toleranz zu - sie hat den Befund verdeckt. Jetzt
+    haelt der Test fest, was gilt: das Einkommen wirkt, aber begrenzt."""
     par, raster = modell.parameter_laden()
     v = {"miete_aktuell_eur": 1500.0, "flaeche_m2": 70.0, "zweiteinkommen": True}
     arm = modell.beste_option(v, 24.25, 70000.0, par, raster, 2.5)["szenario"].aufschlag_pct
     reich = modell.beste_option(v, 24.25, 140000.0, par, raster, 2.5)["szenario"].aufschlag_pct
-    assert reich <= arm + 3, (arm, reich)
+    assert arm <= reich <= arm + 3, (arm, reich)
 
 
 def test_vertragsbestand_ist_bei_abschluss_leistbar():

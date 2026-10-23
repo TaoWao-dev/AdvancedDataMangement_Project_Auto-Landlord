@@ -23,7 +23,7 @@
   },
   "metadata": {
    "task": "vorlage",
-   "referenz": "prompts/vorlage_v1.md (Gliederung)",
+   "referenz": "prompts/vorlage_v2.md (Gliederung)",
    "von_hand_bestaetigt": true
   },
   "assert": [

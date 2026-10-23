@@ -61,6 +61,7 @@ Revisionspunkt (woran man erkennt, dass sie falsch war).
 | [E44](#e44) | 23.10. | Scope: Demo-Fall Mietanpassung je laufendem Vertrag statt Verlaengerungsentscheidung in drei Quartieren | beim bisherigen Zuschnitt bleiben | Entscheidung des Studierenden: ein lauffaehiger, sichtbarer Prototyp bis 23:59; nur Branchen und Groessen mit guter Datenlage | `config/vertraege.json, src/modell.py, docs/vorlage.md` |
 | [E45](#e45) | 23.10. | KV-Extraktion durch das Modell der Arbeitssitzung, gesichert durch Gate 4 (Wortlaut in der Quellzeile); kein lokales Modell | LM Studio mit Qwen3 8B (E42 geplant) | LM Studio brachte keinen unmittelbaren Nutzen und haette den Ablauf verkompliziert (Studierender); Gate 4 prueft jeden Datensatz unabhaengig vom Modell | `src/kv_extrakt.py, data/extrakt/, prompts/kv_zeitreihe_v1.md` |
 | [E46](#e46) | 23.10. | Demo-Portfolio: 1020, Groessen 50-80 und 80-100, fuenf Branchen mit KV-Reihe 2024-2026; Ausschluss von WG-Zimmern und ausdruecklichen Gemeindewohnungen nach eigenen Kriterien | alle Groessen und Branchen; Klassifikation mit menschlicher Referenz (E37) | nur was in jedem Abruf belastbar ist und eine lueckenlose KV-Reihe hat; die Markierung war weder fuer Mensch noch Modell eindeutig (Studierender) | `config.PORTFOLIO_GROESSEN, tools/erzeuge_vertraege.py, Gate 3` |
+| [E47](#e47) | 23.10. | Befund offen in die Vorlage: das Einkommen wirkt ueber die Annahmewahrscheinlichkeit doch auf die Hoehe; Empfehlung als Obergrenze, beim Markt gedeckelt | Modell so lassen und schweigen; Einkommen ganz aus dem Modell nehmen | der Revisionspunkt von E44 ist eingetreten; ihn zu verschweigen waere genau die glatte Zahl, die CLAUDE.md verbietet | `docs/vorlage.md, tests/test_pipeline.py` |
 
 ---
 
@@ -1643,3 +1644,40 @@ landen (`test_daempfung_aendert_den_fixpunkt_nicht`).
 **Revisionspunkt.** Gate 3: „Portfolio-Größen in jedem Abruf belastbar",
 „jede Branche mit KV-Reihe". Fällt eine der beiden Prüfungen, ist der
 Zuschnitt nicht mehr durch die Daten gedeckt.
+
+---
+
+## E47 {#e47}
+### Das Einkommen wirkt doch auf die Höhe — und das steht in der Vorlage
+**Datum:** 23.10.2026 · Revisionspunkt von E44 eingetreten
+
+**Situation.** E44 legte fest, dass die KV-Entwicklung nur auf die
+Annahmewahrscheinlichkeit wirkt, nicht auf den Preis, und nannte als
+Revisionspunkt: eine höhere Empfehlung für einen Mieter mit mehr Einkommen
+bei gleicher Wohnung und gleichem Markt. In der Vorlage v2 zeigt sich genau
+das: Eine Bankangestellte mit 9,7 % Abstand zum Markt bekommt dieselben
+12 % wie eine Handelsangestellte mit 12,8 % Abstand und landet damit über
+dem Markt — weil sie mit höherer Wahrscheinlichkeit annimmt und sich die
+nächste Rasterstufe bei ihr lohnt. Der Test, der das hätte melden sollen,
+ließ eine Rasterstufe Toleranz zu und hieß trotzdem
+„einkommen_ist_kein_preisargument".
+
+**Alternativen.**
+1. Modell lassen, Befund nicht erwähnen.
+2. Das Einkommen ganz aus dem Modell nehmen.
+3. Befund offen in die Vorlage, die Empfehlung als Obergrenze lesen und beim
+   Marktmedian deckeln; den Test umbenennen, damit er sagt, was gilt.
+
+**Entscheidung.** Variante 3.
+
+**Begründung.** (1) wäre die glatte Zahl statt der belegten Unsicherheit.
+(2) würde den Kern des Demo-Falls entfernen, den der Studierende verlangt
+hat, und die Leistbarkeitsbremse gleich mit. (3) macht sichtbar, dass eine
+Regel, die man in einen Kommentar schreibt, nicht automatisch im Modell gilt
+— und dass ein Erwartungswert-Optimierer genau dort mehr verlangt, wo es
+leichter durchgeht. Das ist zugleich der inhaltliche Befund für die
+Präsentation (07, Schwäche 5).
+
+**Revisionspunkt.** `test_einkommen_wirkt_ueber_die_annahme_auf_die_hoehe_hoechstens_eine_stufe`:
+wirkt das Einkommen um mehr als eine Rasterstufe, ist der Effekt kein
+Randeffekt mehr.

@@ -124,7 +124,7 @@ def vorlage_tests() -> list[dict]:
          "metadata": {"task": "vorlage", "referenz": "data/processed/kennzahl_*.csv", "von_hand_bestaetigt": True},
          "assert": _assert("zahlen_herkunft")},
         {"description": "vorlage_pflichten", "vars": {"pfad": "docs/vorlage.md"},
-         "metadata": {"task": "vorlage", "referenz": "prompts/vorlage_v1.md (Gliederung)", "von_hand_bestaetigt": True},
+         "metadata": {"task": "vorlage", "referenz": "prompts/vorlage_v2.md (Gliederung)", "von_hand_bestaetigt": True},
          "assert": _assert("vorlage_pflichten")},
     ]
 

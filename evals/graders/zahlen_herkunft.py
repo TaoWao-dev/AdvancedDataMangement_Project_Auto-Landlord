@@ -56,7 +56,9 @@ def _bereinigen(text: str) -> str:
 
 
 def zahlen_im_text(text: str) -> list[dict]:
-    t = _bereinigen(text)
+    # Typografisches Minus (U+2212) und Gedankenstrich vor einer Zahl sind
+    # ein Vorzeichen. Die erste Fassung las "−2,9 %" als +2,9 (Vorlage v2).
+    t = re.sub(r"(?<![\w,.])[\u2212\u2013](?=\d)", "-", _bereinigen(text))
     gefunden = []
     for m in DATUM.finditer(t):
         gefunden.append({"roh": m.group(0), "art": "datum",
